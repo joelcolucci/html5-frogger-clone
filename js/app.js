@@ -1,8 +1,14 @@
+// Constants
+var UP = 100;
+var DOWN = "";
+var LEFT = "";
+var RIGHT = "";
+
 // Enemies our player must avoid
 var Enemy = function(yCoord, speedMultiplier) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-    this.x = -100;
+    this.x = -103;
     this.y = yCoord;
     this.speed = speedMultiplier;
     // The image/sprite for our enemies, this uses
@@ -16,7 +22,7 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-    if (this.x > 503) {
+    if (this.x > ctx.canvas.width) {
         this.x = -100;
         return;
     }
@@ -32,17 +38,36 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function() {
-    this.x = 204;
-    this.y = 400;
+    this.x = 0;
+    this.y = 0;
+    this.top = "";
+    this.bottom = "";
+    this.left = "";
+    this.right = "";
+    
     this.sprite = 'images/char-boy.png';
 }
 
 Player.prototype.update = function(axis, val) {
-    if (axis === "x") { this.x += val; return; }
-    if (axis === "y") { this.y += val; return; }
-    //TODO
-    // DECIDE if up or left then val is negative
-    // DECIDE x or y axis
+    if (axis === "x") {
+        var newX = this.x + val;
+        if (newX < 0 || newX >= ctx.canvas.width) {
+            console.log(newX);
+            return;
+        }
+        this.x += val;
+    }
+    else if (axis === "y") {
+        var newY = this.y + val;
+        if (newY < 0 || newY >= ctx.canvas.height) {
+            console.log(newY);
+            return;
+        }
+        this.y += val;
+    }
+
+    // PREVENT PLAYER FROM MOVING off screen.
+    // can we use modulo in this case?
 }
 
 // Draw the player on the screen, required method for game
@@ -53,16 +78,16 @@ Player.prototype.render = function() {
 Player.prototype.handleInput = function(keyPressed) {
     switch(keyPressed) {
         case "left":
-            this.update("x", -100);
+            this.update("x", -101);
             return;
         case "right":
-            this.update("x", 100);
+            this.update("x", 101);
             return;
         case "up":
-            this.update("y", -85);
+            this.update("y", -83);
             return;
         case "down":
-            this.update("y", 85);
+            this.update("y", 83);
             return;
         default:
             return;

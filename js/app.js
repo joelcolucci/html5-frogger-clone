@@ -9,9 +9,10 @@
 
 
 // Constants
-var PLAYER_START_X = 200;
+var PLAYER_START_X = 200,
     PLAYER_START_Y = 380;
-    STEP_X = 101,
+
+var STEP_X = 101,
     STEP_Y = 83;
 
 var LEFT_WALL = -5,

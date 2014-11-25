@@ -20,23 +20,58 @@ var LEFT_WALL = -5,
     TOP_WALL = -100,
     BOTTOM_WALL = 450;
 
+// Utilities
+// Returns a random integer between min (included) and max (excluded)
+// Using Math.round() will give you a non-uniform distribution!
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+function getRandomSpeed() {
+    return getRandomInt(1, 5);
+}
+function getRandomXStart() {
+    var xStarts = [
+        -150,
+        -100,
+        -50
+    ];
 
+    var rand = getRandomInt(0,3);
+    return xStarts[rand];
+}
+function getRandomYStart() {
+    var yStarts = [
+        60,
+        140,
+        225
+    ];
+
+    var rand = getRandomInt(0,3);
+    return yStarts[rand];
+}
+
+// Enemies
+    // varying speed - Complete
+    // random placement at start
 
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
-    // Position on canvas
-    this.x = 0;
-    this.y = 0;
+    // Coords on canvas
+    this.x = getRandomXStart();
+    this.y = getRandomYStart();
+
+    // Random speed multipler
+    this.speed = getRandomSpeed();
 
     // Collision detections frame
     var top = 0;
     var bottom = 0;
     var left = 0;
     var right = 0;
-
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -51,17 +86,18 @@ Enemy.prototype.render = function() {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    var newX = (100 * dt) + this.x;
+    // You should multiply any movement by the dt parameter
+    // which will ensure the game runs at the same speed for
+    // all computers.
+    var newX = (this.speed * 100 * dt) + this.x;
 
     if (newX > 500) {
         this.x = -100;
     }
     else {
-        this.x += 100 * dt;       
+        this.x = newX;       
     }
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+
 }
 
 

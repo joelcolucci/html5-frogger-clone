@@ -1,3 +1,21 @@
+// Player moves
+// Bug moves
+// Player doesn't fall off screen
+// Collision
+    // xCoord + bugWidth
+    // in update is player on dangerous row and if so is the nose greater than top left of player and then call reset
+
+
+// FOCUS
+// Moving player elegantly
+// char = 101 x 171
+
+// Constants
+var PLAYER_START_X = 200;
+    PLAYER_START_Y = 380;
+    STEP_X = 101,
+    STEP_Y = 83;
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -26,9 +44,19 @@ Enemy.prototype.render = function() {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
+    var newX = (100 * dt) + this.x;
+
+    if (newX > 500) {
+        this.x = -100;
+    }
+    else {
+        this.x += 100 * dt;       
+    }
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+
+
 }
 
 
@@ -40,8 +68,8 @@ Enemy.prototype.update = function(dt) {
 // a handleInput() method.
 var Player = function() {
     // Position on canvas
-    this.x = 0;
-    this.y = 0;
+    this.x = PLAYER_START_X;
+    this.y = PLAYER_START_Y;
     
     // Collision detections frame
     this.top = "";
@@ -56,11 +84,31 @@ var Player = function() {
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
-Player.prototype.update = function(dt) {
-
+Player.prototype.update = function(axis, step) {
+    if (axis === "x") {
+        this.x += step;
+    }
+    else if (axis === "y") {
+        this.y += step;
+    }
 }
-Player.prototype.handleInput = function(dir) {
-    // dir = left, up, right, down
+Player.prototype.handleInput = function(direction) {
+    switch (direction) {
+        case "left":
+            this.update("x", -STEP_X);
+            break;
+        case "right":
+            this.update("x", STEP_X)
+            break;
+        case "up":
+            this.update("y", -STEP_Y)
+            break;
+        case "down":
+            this.update("y", STEP_Y);
+            break;
+        default:
+            return;
+    }
 }
 
 
@@ -69,8 +117,6 @@ Player.prototype.handleInput = function(dir) {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [
-    new Enemy(),
-    new Enemy(),
     new Enemy()
 ];
 

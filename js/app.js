@@ -1,14 +1,12 @@
-// Player moves
+// MUST HAVE FEATURES
+// Player moves - Complete
+// Player doesn't fall off screen - Complete
 // Bug moves
-// Player doesn't fall off screen
 // Collision
     // xCoord + bugWidth
     // in update is player on dangerous row and if so is the nose greater than top left of player and then call reset
 
 
-// FOCUS
-// Moving player elegantly
-// char = 101 x 171
 
 // Constants
 var PLAYER_START_X = 200;
@@ -20,6 +18,8 @@ var LEFT_WALL = -5,
     RIGHT_WALL = 500,
     TOP_WALL = -100,
     BOTTOM_WALL = 450;
+
+
 
 // Enemies our player must avoid
 var Enemy = function() {
@@ -46,6 +46,7 @@ var Enemy = function() {
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
+
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
@@ -60,11 +61,7 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
-
-
 }
-
-
 
 
 
@@ -89,6 +86,7 @@ var Player = function() {
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
+
 Player.prototype.update = function(axis, step) {
     if (axis === "x") {
         var newX = this.x + step;
@@ -103,6 +101,7 @@ Player.prototype.update = function(axis, step) {
         }
     }
 }
+
 Player.prototype.handleInput = function(direction) {
     switch (direction) {
         case "left":

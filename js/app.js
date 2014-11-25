@@ -16,6 +16,11 @@ var PLAYER_START_X = 200;
     STEP_X = 101,
     STEP_Y = 83;
 
+var LEFT_WALL = -5,
+    RIGHT_WALL = 500,
+    TOP_WALL = -100,
+    BOTTOM_WALL = 450;
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
@@ -86,10 +91,16 @@ Player.prototype.render = function() {
 }
 Player.prototype.update = function(axis, step) {
     if (axis === "x") {
-        this.x += step;
+        var newX = this.x + step;
+        if (newX <= RIGHT_WALL && newX >= LEFT_WALL) {
+            this.x = newX;
+        }
     }
     else if (axis === "y") {
-        this.y += step;
+        var newY = this.y + step;
+        if (newY >= TOP_WALL && newY <= BOTTOM_WALL) {
+            this.y = newY;
+        }
     }
 }
 Player.prototype.handleInput = function(direction) {

@@ -1,7 +1,7 @@
 // MUST HAVE FEATURES
 // Player moves - Complete
 // Player doesn't fall off screen - Complete
-// Bug moves
+// Bug moves - Complete
 // Collision
     // xCoord + bugWidth
     // in update is player on dangerous row and if so is the nose greater than top left of player and then call reset
@@ -32,12 +32,13 @@ function getRandomSpeed() {
 }
 function getRandomXStart() {
     var xStarts = [
-        -150,
+        -300,
+        -200,
         -100,
         -50
     ];
 
-    var rand = getRandomInt(0,3);
+    var rand = getRandomInt(0,4);
     return xStarts[rand];
 }
 function getRandomYStart() {
@@ -66,7 +67,7 @@ var Enemy = function() {
 
     // Random speed multipler
     this.speed = getRandomSpeed();
-
+    console.log("New!!!" + this.x);
     // Collision detections frame
     var top = 0;
     var bottom = 0;
@@ -92,7 +93,7 @@ Enemy.prototype.update = function(dt) {
     var newX = (this.speed * 100 * dt) + this.x;
 
     if (newX > 500) {
-        this.x = -100;
+        this.x = getRandomXStart();
     }
     else {
         this.x = newX;       
@@ -164,6 +165,10 @@ Player.prototype.handleInput = function(direction) {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [
+    new Enemy(),
+    new Enemy(),
+    new Enemy(),
+    new Enemy(),
     new Enemy()
 ];
 

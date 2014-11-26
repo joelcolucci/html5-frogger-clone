@@ -12,10 +12,16 @@
 var PLAYER_START_X = 200,
     PLAYER_START_Y = 380;
 
+var PLAYER_HEIGHT = 170 ,
+    PLAYER_WIDTH = 100,
+    ENEMY_HEIGHT = 100,
+    ENEMY_WIDTH = 100;
+
 var STEP_X = 101,
     STEP_Y = 83;
 
-var LEFT_WALL = -5,
+var FINISH_LINE = 0,
+    LEFT_WALL = -5,
     RIGHT_WALL = 500,
     TOP_WALL = -100,
     BOTTOM_WALL = 450;
@@ -52,9 +58,7 @@ function getRandomYStart() {
     return yStarts[rand];
 }
 
-// Enemies
-    // varying speed - Complete
-    // random placement at start
+
 
 // Enemies our player must avoid
 var Enemy = function() {
@@ -67,12 +71,12 @@ var Enemy = function() {
 
     // Random speed multipler
     this.speed = getRandomSpeed();
-    console.log("New!!!" + this.x);
+    
     // Collision detections frame
-    var top = 0;
-    var bottom = 0;
-    var left = 0;
-    var right = 0;
+    this.left = this.x;
+    this.right = this.x + ENEMY_WIDTH;
+    this.top = this.y;
+    this.bottom = this.y + ENEMY_HEIGHT;
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
@@ -94,11 +98,14 @@ Enemy.prototype.update = function(dt) {
 
     if (newX > 500) {
         this.x = getRandomXStart();
+        this.left = this.x;
+        this.right = this.x + ENEMY_WIDTH;
     }
     else {
-        this.x = newX;       
+        this.x = newX;   
+        this.left = this.x; 
+        this.right = this.x + ENEMY_WIDTH;
     }
-
 }
 
 
@@ -112,10 +119,10 @@ var Player = function() {
     this.y = PLAYER_START_Y;
     
     // Collision detections frame
-    this.top = "";
-    var bottom = "";
-    var left = "";
-    var right = "";
+    this.left = this.x;
+    this.right = this.x + PLAYER_WIDTH;
+    this.top = this.y;
+    this.bottom = this.y + PLAYER_HEIGHT;
     
     this.sprite = 'images/char-boy.png';
 }
@@ -126,18 +133,26 @@ Player.prototype.render = function() {
 }
 
 Player.prototype.update = function(axis, step) {
+    checkCollisions();
+
     if (axis === "x") {
         var newX = this.x + step;
         if (newX <= RIGHT_WALL && newX >= LEFT_WALL) {
             this.x = newX;
+            this.left = this.x;
+            this.right = this.x + PLAYER_WIDTH;
         }
     }
     else if (axis === "y") {
         var newY = this.y + step;
         if (newY >= TOP_WALL && newY <= BOTTOM_WALL) {
             this.y = newY;
+            this.top = this.y;
+            this.bottom = this.y + PLAYER_HEIGHT;
         }
     }
+
+    
 }
 
 Player.prototype.handleInput = function(direction) {
@@ -165,15 +180,51 @@ Player.prototype.handleInput = function(direction) {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [
-    new Enemy(),
-    new Enemy(),
-    new Enemy(),
-    new Enemy(),
     new Enemy()
 ];
 
 var player = new Player();
 
+// Check Collisions
+// get coords on player piece
+    // loop through enemies and test if any overlap exists
+// Collision if statement from: http://silentmatt.com/rectangle-intersection/
+function checkCollisions() {
+
+    for (var i in allEnemies) {
+        var enemy = allEnemies[i];
+
+        if (player.left < enemy.right &&
+            player.right > enemy.left &&
+            player.top < enemy.bottom &&
+            player.bottom > enemy.top) {
+            console.log("Collision!");
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function resetPlayer() {
+    player.x = PLAYER_START_X;
+    player.y = PLAYER_START_Y;
+
+    player.left = player.x;
+    player.right = player.x + PLAYER_WIDTH;
+    player.top = player.y;
+    player.bottom = player.y + PLAYER_HEIGHT;
+}
+
+function checkWin() {
+    if (player.y < FINISH_LINE) {
+        resetPlayer();
+        alert("You won!!!");
+    }
+}
+// Win Game
+// get coords on player piece
+    // check if y indicates player reached end!
 
 
 // This listens for key presses and sends the keys to your

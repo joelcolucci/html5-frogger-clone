@@ -7,15 +7,17 @@
     // in update is player on dangerous row and if so is the nose greater than top left of player and then call reset
 
 
-
 // Constants
 var PLAYER_START_X = 200,
     PLAYER_START_Y = 380;
 
-var PLAYER_HEIGHT = 170 ,
+var PLAYER_HEIGHT = 170,
     PLAYER_WIDTH = 100,
-    ENEMY_HEIGHT = 100,
-    ENEMY_WIDTH = 100;
+    PLAYER_TOP_OFFSET = 100;
+
+var ENEMY_HEIGHT = 170,
+    ENEMY_WIDTH = 100,
+    ENEMY_TOP_OFFSET = 100;
 
 var STEP_X = 101,
     STEP_Y = 83;
@@ -25,6 +27,8 @@ var FINISH_LINE = 0,
     RIGHT_WALL = 500,
     TOP_WALL = -100,
     BOTTOM_WALL = 450;
+
+
 
 // Utilities
 // Returns a random integer between min (included) and max (excluded)
@@ -62,9 +66,6 @@ function getRandomYStart() {
 
 // Enemies our player must avoid
 var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
     // Coords on canvas
     this.x = getRandomXStart();
     this.y = getRandomYStart();
@@ -75,19 +76,25 @@ var Enemy = function() {
     // Collision detections frame
     this.left = this.x;
     this.right = this.x + ENEMY_WIDTH;
-    this.top = this.y;
+    this.top = this.y + ENEMY_TOP_OFFSET;
     this.bottom = this.y + ENEMY_HEIGHT;
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
+    // The image/sprite for our enemies
     this.sprite = 'images/enemy-bug.png';
 }
+
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
+Enemy.prototype.updateCollisionFrame = function() {
+    this.left = this.x;
+    this.right = this.x + ENEMY_WIDTH;
+    this.top = this.y + ENEMY_TOP_OFFSET;
+    this.bottom = this.y + ENEMY_HEIGHT;   
+}
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
@@ -98,13 +105,11 @@ Enemy.prototype.update = function(dt) {
 
     if (newX > 500) {
         this.x = getRandomXStart();
-        this.left = this.x;
-        this.right = this.x + ENEMY_WIDTH;
+        this.updateCollisionFrame();
     }
     else {
         this.x = newX;   
-        this.left = this.x; 
-        this.right = this.x + ENEMY_WIDTH;
+        this.updateCollisionFrame();
     }
 }
 
@@ -121,11 +126,12 @@ var Player = function() {
     // Collision detections frame
     this.left = this.x;
     this.right = this.x + PLAYER_WIDTH;
-    this.top = this.y;
+    this.top = this.y + PLAYER_TOP_OFFSET;
     this.bottom = this.y + PLAYER_HEIGHT;
-    
+
     this.sprite = 'images/char-boy.png';
 }
+
 
 // Draw the player on the screen, required method for game
 Player.prototype.render = function() {
@@ -155,6 +161,13 @@ Player.prototype.update = function(axis, step) {
     
 }
 
+Player.prototype.updateCollisionFrame = function() {
+    this.left = this.x;
+    this.right = this.x + PLAYER_WIDTH;
+    this.top = this.y + PLAYER_TOP_OFFSET;
+    this.bottom = this.y + PLAYER_HEIGHT;
+}
+
 Player.prototype.handleInput = function(direction) {
     switch (direction) {
         case "left":
@@ -176,15 +189,6 @@ Player.prototype.handleInput = function(direction) {
 
 
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-var allEnemies = [
-    new Enemy()
-];
-
-var player = new Player();
-
 // Check Collisions
 // get coords on player piece
     // loop through enemies and test if any overlap exists
@@ -205,7 +209,6 @@ function checkCollisions() {
 
     return false;
 }
-
 function resetPlayer() {
     player.x = PLAYER_START_X;
     player.y = PLAYER_START_Y;
@@ -222,10 +225,18 @@ function checkWin() {
         alert("You won!!!");
     }
 }
-// Win Game
-// get coords on player piece
-    // check if y indicates player reached end!
 
+
+
+
+// Now instantiate your objects.
+// Place all enemy objects in an array called allEnemies
+// Place the player object in a variable called player
+var allEnemies = [
+    new Enemy()
+];
+
+var player = new Player();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

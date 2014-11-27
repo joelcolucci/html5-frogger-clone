@@ -87,8 +87,15 @@ Enemy.prototype.getRandomY = function() {
     var rand = getRandomInt(0,3);
     return yPositions[rand];
 }
+
 Enemy.prototype.getRandomSpeed = function() {
     return getRandomInt(1, 5);
+}
+
+Enemy.prototype.reset = function() {
+    this.x = this.getRandomX();
+    this.y = this.getRandomY();
+    this.speed = this.getRandomSpeed();
 }
 
 // Update the enemy's position, required method for game
@@ -97,7 +104,7 @@ Enemy.prototype.update = function(dt) {
     var newX = (this.speed * 100 * dt) + this.x;
 
     if (newX > RIGHT_WALL) {
-        this.x = this.getRandomX();
+        this.reset();
         this.setCollisionFrame(ENEMY_FRAME);
     }
     else {

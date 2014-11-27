@@ -2,7 +2,14 @@
 var PLAYER_START_X = 200,
     PLAYER_START_Y = 380;
 
+var STEP_X = 101,
+    STEP_Y = 83;
 
+var FINISH_LINE = 83,
+    LEFT_WALL = -5,
+    RIGHT_WALL = 500,
+    TOP_WALL = -100,
+    BOTTOM_WALL = 450;
 
 var PLAYER_FRAME = {
     "left offset": 20,
@@ -18,21 +25,11 @@ var ENEMY_FRAME = {
     "sprite height": 170 
 }
 
-var STEP_X = 101,
-    STEP_Y = 83;
-
-var FINISH_LINE = 83,
-    LEFT_WALL = -5,
-    RIGHT_WALL = 500,
-    TOP_WALL = -100,
-    BOTTOM_WALL = 450;
 
 
 
 
-
-
-// Utilities
+/*** Utilities ***/
 // Returns a random integer between min (included) and max (excluded)
 // Using Math.round() will give you a non-uniform distribution!
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
@@ -68,7 +65,7 @@ function getRandomYStart() {
 
 
 
-
+/*** Classes ***/
 var Sprite = function() {
 
 }
@@ -85,17 +82,13 @@ Sprite.prototype.setCollisionFrame = function(settings) {
 
 
 var Enemy = function() {
-    // Coords on canvas
     this.x = getRandomXStart();
     this.y = getRandomYStart();
 
-    // Random speed multipler
     this.speed = getRandomSpeed();
     
-    // Collision detections frame
     this.setCollisionFrame(ENEMY_FRAME);
 
-    // The image/sprite for our enemies
     this.sprite = 'images/enemy-bug.png';
 }
 Enemy.prototype = Object.create(Sprite.prototype);
@@ -106,13 +99,9 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
     var newX = (this.speed * 100 * dt) + this.x;
 
     if (newX > 500) {
@@ -130,28 +119,16 @@ Enemy.prototype.update = function(dt) {
 
 
 
-
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
 var Player = function() {
-    // Position on canvas
     this.x = PLAYER_START_X;
     this.y = PLAYER_START_Y;
     
-    // Set collision frame
     this.setCollisionFrame(PLAYER_FRAME);
     
     this.sprite = 'images/char-boy.png';
 }
 Player.prototype = Object.create(Sprite.prototype);
 Player.prototype.constructor = Player;
-
-
-// ANOTHER OPTION IS TO CREATE A SUPER CLASS OF SPRITE
-
-// THIS IS THE BEST WAY so all characters are inited with collision frame
-// also inited with updateCollisin frame which accepts the fram settings
 
 Player.prototype.reset = function() {
     this.x = PLAYER_START_X;
@@ -167,7 +144,6 @@ Player.prototype.checkWin = function() {
     }
 }
 
-// Check Collisions
 // Conditional Check Source: http://silentmatt.com/rectangle-intersection/
 Player.prototype.checkCollisions = function() {
     for (var i in allEnemies) {
@@ -231,12 +207,6 @@ Player.prototype.handleInput = function(direction) {
             return;
     }
 }
-
-
-
-
-
-
 
 
 

@@ -143,7 +143,7 @@ Player.prototype.render = function() {
 }
 
 Player.prototype.update = function(axis, step) {
-    if (checkCollisions()) {
+    if (this.checkCollisions()) {
         this.reset();
     }
 
@@ -186,6 +186,25 @@ Player.prototype.checkWin = function() {
     }
 }
 
+// Check Collisions
+// Source: http://silentmatt.com/rectangle-intersection/
+Player.prototype.checkCollisions = function() {
+    for (var i in allEnemies) {
+        var enemy = allEnemies[i];
+
+        if (this.left < enemy.right &&
+            this.right > enemy.left &&
+            this.top < enemy.bottom &&
+            this.bottom > enemy.top) {
+            console.log("Collision!");
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
 Player.prototype.handleInput = function(direction) {
     switch (direction) {
         case "left":
@@ -210,24 +229,7 @@ Player.prototype.handleInput = function(direction) {
 
 
 
-// Check Collisions
-// Source: http://silentmatt.com/rectangle-intersection/
-function checkCollisions() {
 
-    for (var i in allEnemies) {
-        var enemy = allEnemies[i];
-
-        if (player.left < enemy.right &&
-            player.right > enemy.left &&
-            player.top < enemy.bottom &&
-            player.bottom > enemy.top) {
-            console.log("Collision!");
-            return true;
-        }
-    }
-
-    return false;
-}
 
 
 

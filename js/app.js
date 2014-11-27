@@ -7,18 +7,33 @@
     // in update is player on dangerous row and if so is the nose greater than top left of player and then call reset
 
 
-
-// Constants
+// Game Constants
 var PLAYER_START_X = 200,
     PLAYER_START_Y = 380;
+
+var PLAYER_HEIGHT = 170,
+    PLAYER_WIDTH = 82,
+    PLAYER_LEFT_OFFSET = 20;
+    PLAYER_TOP_OFFSET = 100;
+
+var ENEMY_HEIGHT = 170,
+    ENEMY_WIDTH = 100,
+    ENEMY_LEFT_OFFSET = 3;
+    ENEMY_TOP_OFFSET = 90;
 
 var STEP_X = 101,
     STEP_Y = 83;
 
-var LEFT_WALL = -5,
+var FINISH_LINE = 83,
+    LEFT_WALL = -5,
     RIGHT_WALL = 500,
     TOP_WALL = -100,
     BOTTOM_WALL = 450;
+
+
+
+
+
 
 // Utilities
 // Returns a random integer between min (included) and max (excluded)
@@ -52,38 +67,43 @@ function getRandomYStart() {
     return yStarts[rand];
 }
 
-// Enemies
-    // varying speed - Complete
-    // random placement at start
+
+
+
+
+
 
 // Enemies our player must avoid
 var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
     // Coords on canvas
     this.x = getRandomXStart();
     this.y = getRandomYStart();
 
     // Random speed multipler
     this.speed = getRandomSpeed();
-    console.log("New!!!" + this.x);
+    
     // Collision detections frame
-    var top = 0;
-    var bottom = 0;
-    var left = 0;
-    var right = 0;
+    this.left = this.x + ENEMY_LEFT_OFFSET;
+    this.right = this.x + ENEMY_WIDTH;
+    this.top = this.y + ENEMY_TOP_OFFSET;
+    this.bottom = this.y + ENEMY_HEIGHT;
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
+    // The image/sprite for our enemies
     this.sprite = 'images/enemy-bug.png';
 }
+
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
+Enemy.prototype.updateCollisionFrame = function() {
+    this.left = this.x + ENEMY_LEFT_OFFSET;
+    this.right = this.x + ENEMY_WIDTH;
+    this.top = this.y + ENEMY_TOP_OFFSET;
+    this.bottom = this.y + ENEMY_HEIGHT;   
+}
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
@@ -94,12 +114,17 @@ Enemy.prototype.update = function(dt) {
 
     if (newX > 500) {
         this.x = getRandomXStart();
+        this.updateCollisionFrame();
     }
     else {
-        this.x = newX;       
+        this.x = newX;   
+        this.updateCollisionFrame();
     }
-
 }
+
+
+
+
 
 
 
@@ -112,13 +137,14 @@ var Player = function() {
     this.y = PLAYER_START_Y;
     
     // Collision detections frame
-    this.top = "";
-    var bottom = "";
-    var left = "";
-    var right = "";
-    
+    this.left = this.x + PLAYER_LEFT_OFFSET;
+    this.right = this.x + PLAYER_WIDTH;
+    this.top = this.y + PLAYER_TOP_OFFSET;
+    this.bottom = this.y + PLAYER_HEIGHT;
+
     this.sprite = 'images/char-boy.png';
 }
+
 
 // Draw the player on the screen, required method for game
 Player.prototype.render = function() {
@@ -126,17 +152,46 @@ Player.prototype.render = function() {
 }
 
 Player.prototype.update = function(axis, step) {
+    if (checkCollisions()) {
+        this.reset();
+    }
+
     if (axis === "x") {
         var newX = this.x + step;
         if (newX <= RIGHT_WALL && newX >= LEFT_WALL) {
             this.x = newX;
+            this.updateCollisionFrame();
         }
     }
     else if (axis === "y") {
         var newY = this.y + step;
         if (newY >= TOP_WALL && newY <= BOTTOM_WALL) {
             this.y = newY;
+            this.updateCollisionFrame();
         }
+    }
+
+    this.checkWin();
+}
+
+Player.prototype.updateCollisionFrame = function() {
+    this.left = this.x + PLAYER_LEFT_OFFSET;
+    this.right = this.x + PLAYER_WIDTH;
+    this.top = this.y + PLAYER_TOP_OFFSET;
+    this.bottom = this.y + PLAYER_HEIGHT;
+}
+
+Player.prototype.reset = function() {
+    this.x = PLAYER_START_X;
+    this.y = PLAYER_START_Y;
+
+    this.updateCollisionFrame();
+}
+
+Player.prototype.checkWin = function() {
+    if (this.top < FINISH_LINE) {
+        this.reset();
+        alert("You won!!!");
     }
 }
 
@@ -161,6 +216,34 @@ Player.prototype.handleInput = function(direction) {
 
 
 
+
+
+
+// Check Collisions
+// get coords on player piece
+    // loop through enemies and test if any overlap exists
+// Collision if statement from: http://silentmatt.com/rectangle-intersection/
+function checkCollisions() {
+
+    for (var i in allEnemies) {
+        var enemy = allEnemies[i];
+
+        if (player.left < enemy.right &&
+            player.right > enemy.left &&
+            player.top < enemy.bottom &&
+            player.bottom > enemy.top) {
+            console.log("Collision!");
+            return true;
+        }
+    }
+
+    return false;
+}
+
+
+
+
+
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
@@ -173,8 +256,6 @@ var allEnemies = [
 ];
 
 var player = new Player();
-
-
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

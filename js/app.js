@@ -1,4 +1,4 @@
-// Game Constants
+/*** Game Constants ***/
 var PLAYER_START_X = 200,
     PLAYER_START_Y = 380;
 
@@ -24,6 +24,7 @@ var ENEMY_FRAME = {
     "sprite width": 100,
     "sprite height": 170 
 }
+
 
 
 
@@ -133,7 +134,7 @@ Player.prototype.checkWin = function() {
 }
 
 // Conditional Check Source: http://silentmatt.com/rectangle-intersection/
-Player.prototype.checkForCollision = function() {
+Player.prototype.checkForCollisions = function() {
     for (var i in allEnemies) {
         var enemy = allEnemies[i];
 
@@ -155,7 +156,7 @@ Player.prototype.render = function() {
 }
 
 Player.prototype.update = function(axis, step) {
-    if (this.checkForCollision()) {
+    if (this.checkForCollisions()) {
         this.reset();
     }
 
@@ -175,7 +176,6 @@ Player.prototype.update = function(axis, step) {
         }
     }
 }
-
 
 Player.prototype.handleInput = function(direction) {
     switch (direction) {
@@ -200,10 +200,9 @@ Player.prototype.handleInput = function(direction) {
 
 
 
-
+/*** Game Play ***/
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
 var allEnemies = [
     new Enemy(),
     new Enemy(),
@@ -212,6 +211,7 @@ var allEnemies = [
     new Enemy()
 ];
 
+// Place the player object in a variable called player
 var player = new Player();
 
 // This listens for key presses and sends the keys to your

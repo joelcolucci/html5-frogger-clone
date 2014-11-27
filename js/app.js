@@ -2,10 +2,7 @@
 var PLAYER_START_X = 200,
     PLAYER_START_Y = 380;
 
-var PLAYER_HEIGHT = 170,
-    PLAYER_WIDTH = 82,
-    PLAYER_LEFT_OFFSET = 20,
-    PLAYER_TOP_OFFSET = 100;
+
 
 var PLAYER_FRAME = {
     "left offset": 20,
@@ -13,12 +10,6 @@ var PLAYER_FRAME = {
     "sprite width": 82,
     "sprite height": 170
 }
-
-
-var ENEMY_HEIGHT = 170,
-    ENEMY_WIDTH = 100,
-    ENEMY_LEFT_OFFSET = 3,
-    ENEMY_TOP_OFFSET = 90;
 
 var ENEMY_FRAME = {
     "left offset": 3,
@@ -78,8 +69,21 @@ function getRandomYStart() {
 
 
 
+var Sprite = function() {
 
-// Enemies our player must avoid
+}
+Sprite.prototype.setCollisionFrame = function(settings) {
+    this.left = this.x + settings["left offset"];
+    this.right = this.x + settings["sprite width"];
+    this.top = this.y + settings["top offset"];
+    this.bottom = this.y + settings["sprite height"];   
+}
+
+
+
+
+
+
 var Enemy = function() {
     // Coords on canvas
     this.x = getRandomXStart();
@@ -89,28 +93,20 @@ var Enemy = function() {
     this.speed = getRandomSpeed();
     
     // Collision detections frame
-    initCollisionFrame.call(this, ENEMY_FRAME)
-    // this.left = this.x + ENEMY_LEFT_OFFSET;
-    // this.right = this.x + ENEMY_WIDTH;
-    // this.top = this.y + ENEMY_TOP_OFFSET;
-    // this.bottom = this.y + ENEMY_HEIGHT;
+    this.setCollisionFrame(ENEMY_FRAME);
 
     // The image/sprite for our enemies
     this.sprite = 'images/enemy-bug.png';
 }
-
+Enemy.prototype = Object.create(Sprite.prototype);
+Enemy.prototype.constructor = Enemy;
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-Enemy.prototype.updateCollisionFrame = function() {
-    this.left = this.x + ENEMY_LEFT_OFFSET;
-    this.right = this.x + ENEMY_WIDTH;
-    this.top = this.y + ENEMY_TOP_OFFSET;
-    this.bottom = this.y + ENEMY_HEIGHT;   
-}
+
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
@@ -121,11 +117,11 @@ Enemy.prototype.update = function(dt) {
 
     if (newX > 500) {
         this.x = getRandomXStart();
-        this.updateCollisionFrame();
+        this.setCollisionFrame(ENEMY_FRAME);
     }
     else {
         this.x = newX;   
-        this.updateCollisionFrame();
+        this.setCollisionFrame(ENEMY_FRAME);
     }
 }
 
@@ -143,38 +139,25 @@ var Player = function() {
     this.x = PLAYER_START_X;
     this.y = PLAYER_START_Y;
     
-    // Collision detections frame
-    initCollisionFrame.call(this, PLAYER_FRAME)
-    // this.left = this.x + PLAYER_LEFT_OFFSET;
-    // this.right = this.x + PLAYER_WIDTH;
-    // this.top = this.y + PLAYER_TOP_OFFSET;
-    // this.bottom = this.y + PLAYER_HEIGHT;
-
+    // Set collision frame
+    this.setCollisionFrame(PLAYER_FRAME);
+    
     this.sprite = 'images/char-boy.png';
 }
+Player.prototype = Object.create(Sprite.prototype);
+Player.prototype.constructor = Player;
 
-function initCollisionFrame(settings) {
-    this.left = this.x + settings["left offset"];
-    this.right = this.x + settings["sprite width"];
-    this.top = this.y + settings["top offset"];
-    this.bottom = this.y + settings["sprite height"];
-}
 
 // ANOTHER OPTION IS TO CREATE A SUPER CLASS OF SPRITE
 
-
-Player.prototype.updateCollisionFrame = function() {
-    this.left = this.x + PLAYER_LEFT_OFFSET;
-    this.right = this.x + PLAYER_WIDTH;
-    this.top = this.y + PLAYER_TOP_OFFSET;
-    this.bottom = this.y + PLAYER_HEIGHT;
-}
+// THIS IS THE BEST WAY so all characters are inited with collision frame
+// also inited with updateCollisin frame which accepts the fram settings
 
 Player.prototype.reset = function() {
     this.x = PLAYER_START_X;
     this.y = PLAYER_START_Y;
 
-    this.updateCollisionFrame();
+    this.setCollisionFrame(PLAYER_FRAME);
 }
 
 Player.prototype.checkWin = function() {
@@ -216,14 +199,14 @@ Player.prototype.update = function(axis, step) {
         var newX = this.x + step;
         if (newX <= RIGHT_WALL && newX >= LEFT_WALL) {
             this.x = newX;
-            this.updateCollisionFrame();
+            this.setCollisionFrame(PLAYER_FRAME);
         }
     }
     else if (axis === "y") {
         var newY = this.y + step;
         if (newY >= TOP_WALL && newY <= BOTTOM_WALL) {
             this.y = newY;  
-            this.updateCollisionFrame();
+            this.setCollisionFrame(PLAYER_FRAME);
             this.checkWin();
         }
     }

@@ -4,13 +4,28 @@ var PLAYER_START_X = 200,
 
 var PLAYER_HEIGHT = 170,
     PLAYER_WIDTH = 82,
-    PLAYER_LEFT_OFFSET = 20;
+    PLAYER_LEFT_OFFSET = 20,
     PLAYER_TOP_OFFSET = 100;
+
+var PLAYER_FRAME = {
+    "left offset": 20,
+    "top offset": 100,
+    "sprite width": 82,
+    "sprite height": 170
+}
+
 
 var ENEMY_HEIGHT = 170,
     ENEMY_WIDTH = 100,
-    ENEMY_LEFT_OFFSET = 3;
+    ENEMY_LEFT_OFFSET = 3,
     ENEMY_TOP_OFFSET = 90;
+
+var ENEMY_FRAME = {
+    "left offset": 3,
+    "top offset": 90,
+    "sprite width": 100,
+    "sprite height": 170 
+}
 
 var STEP_X = 101,
     STEP_Y = 83;
@@ -74,10 +89,11 @@ var Enemy = function() {
     this.speed = getRandomSpeed();
     
     // Collision detections frame
-    this.left = this.x + ENEMY_LEFT_OFFSET;
-    this.right = this.x + ENEMY_WIDTH;
-    this.top = this.y + ENEMY_TOP_OFFSET;
-    this.bottom = this.y + ENEMY_HEIGHT;
+    initCollisionFrame.call(this, ENEMY_FRAME)
+    // this.left = this.x + ENEMY_LEFT_OFFSET;
+    // this.right = this.x + ENEMY_WIDTH;
+    // this.top = this.y + ENEMY_TOP_OFFSET;
+    // this.bottom = this.y + ENEMY_HEIGHT;
 
     // The image/sprite for our enemies
     this.sprite = 'images/enemy-bug.png';
@@ -128,42 +144,24 @@ var Player = function() {
     this.y = PLAYER_START_Y;
     
     // Collision detections frame
-    this.left = this.x + PLAYER_LEFT_OFFSET;
-    this.right = this.x + PLAYER_WIDTH;
-    this.top = this.y + PLAYER_TOP_OFFSET;
-    this.bottom = this.y + PLAYER_HEIGHT;
+    initCollisionFrame.call(this, PLAYER_FRAME)
+    // this.left = this.x + PLAYER_LEFT_OFFSET;
+    // this.right = this.x + PLAYER_WIDTH;
+    // this.top = this.y + PLAYER_TOP_OFFSET;
+    // this.bottom = this.y + PLAYER_HEIGHT;
 
     this.sprite = 'images/char-boy.png';
 }
 
-
-// Draw the player on the screen, required method for game
-Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+function initCollisionFrame(settings) {
+    this.left = this.x + settings["left offset"];
+    this.right = this.x + settings["sprite width"];
+    this.top = this.y + settings["top offset"];
+    this.bottom = this.y + settings["sprite height"];
 }
 
-Player.prototype.update = function(axis, step) {
-    if (this.checkCollisions()) {
-        this.reset();
-    }
+// ANOTHER OPTION IS TO CREATE A SUPER CLASS OF SPRITE
 
-    if (axis === "x") {
-        var newX = this.x + step;
-        if (newX <= RIGHT_WALL && newX >= LEFT_WALL) {
-            this.x = newX;
-            this.updateCollisionFrame();
-        }
-    }
-    else if (axis === "y") {
-        var newY = this.y + step;
-        if (newY >= TOP_WALL && newY <= BOTTOM_WALL) {
-            this.y = newY;
-            this.updateCollisionFrame();
-        }
-    }
-
-    this.checkWin();
-}
 
 Player.prototype.updateCollisionFrame = function() {
     this.left = this.x + PLAYER_LEFT_OFFSET;
@@ -187,7 +185,7 @@ Player.prototype.checkWin = function() {
 }
 
 // Check Collisions
-// Source: http://silentmatt.com/rectangle-intersection/
+// Conditional Check Source: http://silentmatt.com/rectangle-intersection/
 Player.prototype.checkCollisions = function() {
     for (var i in allEnemies) {
         var enemy = allEnemies[i];
@@ -202,6 +200,33 @@ Player.prototype.checkCollisions = function() {
     }
 
     return false;
+}
+
+// Draw the player on the screen, required method for game
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+Player.prototype.update = function(axis, step) {
+    if (this.checkCollisions()) {
+        this.reset();
+    }
+
+    if (axis === "x") {
+        var newX = this.x + step;
+        if (newX <= RIGHT_WALL && newX >= LEFT_WALL) {
+            this.x = newX;
+            this.updateCollisionFrame();
+        }
+    }
+    else if (axis === "y") {
+        var newY = this.y + step;
+        if (newY >= TOP_WALL && newY <= BOTTOM_WALL) {
+            this.y = newY;  
+            this.updateCollisionFrame();
+            this.checkWin();
+        }
+    }
 }
 
 

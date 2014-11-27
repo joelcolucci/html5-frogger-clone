@@ -36,30 +36,7 @@ var ENEMY_FRAME = {
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
-function getRandomSpeed() {
-    return getRandomInt(1, 5);
-}
-function getRandomXStart() {
-    var xStarts = [
-        -300,
-        -200,
-        -100,
-        -50
-    ];
 
-    var rand = getRandomInt(0,4);
-    return xStarts[rand];
-}
-function getRandomYStart() {
-    var yStarts = [
-        60,
-        140,
-        225
-    ];
-
-    var rand = getRandomInt(0,3);
-    return yStarts[rand];
-}
 
 
 
@@ -78,14 +55,11 @@ Sprite.prototype.setCollisionFrame = function(settings) {
 
 
 
-
-
-
 var Enemy = function() {
-    this.x = getRandomXStart();
-    this.y = getRandomYStart();
+    this.x = this.getRandomX();
+    this.y = this.getRandomY();
 
-    this.speed = getRandomSpeed();
+    this.speed = this.getRandomSpeed();
     
     this.setCollisionFrame(ENEMY_FRAME);
 
@@ -99,13 +73,30 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
+Enemy.prototype.getRandomX = function() {
+    var xPositions = [-300, -200, -100, -50];
+
+    var rand = getRandomInt(0,4);
+    return xPositions[rand];
+}
+
+Enemy.prototype.getRandomY = function() {
+    var yPositions = [60, 140, 225];
+
+    var rand = getRandomInt(0,3);
+    return yPositions[rand];
+}
+Enemy.prototype.getRandomSpeed = function() {
+    return getRandomInt(1, 5);
+}
+
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
     var newX = (this.speed * 100 * dt) + this.x;
 
-    if (newX > 500) {
-        this.x = getRandomXStart();
+    if (newX > RIGHT_WALL) {
+        this.x = this.getRandomX();
         this.setCollisionFrame(ENEMY_FRAME);
     }
     else {
@@ -113,9 +104,6 @@ Enemy.prototype.update = function(dt) {
         this.setCollisionFrame(ENEMY_FRAME);
     }
 }
-
-
-
 
 
 
@@ -145,7 +133,7 @@ Player.prototype.checkWin = function() {
 }
 
 // Conditional Check Source: http://silentmatt.com/rectangle-intersection/
-Player.prototype.checkCollisions = function() {
+Player.prototype.checkForCollision = function() {
     for (var i in allEnemies) {
         var enemy = allEnemies[i];
 
@@ -167,7 +155,7 @@ Player.prototype.render = function() {
 }
 
 Player.prototype.update = function(axis, step) {
-    if (this.checkCollisions()) {
+    if (this.checkForCollision()) {
         this.reset();
     }
 

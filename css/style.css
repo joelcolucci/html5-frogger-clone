@@ -19,3 +19,10 @@ body {
 .game-instructions {
   padding-top: 50px;
 }
+
+.modal {
+  color: #333;
+}
+.modal h3:first-child {
+  margin-top: 0;
+}

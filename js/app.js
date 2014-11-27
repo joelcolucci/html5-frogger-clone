@@ -7,26 +7,31 @@
     // in update is player on dangerous row and if so is the nose greater than top left of player and then call reset
 
 
-// Constants
+// Game Constants
 var PLAYER_START_X = 200,
     PLAYER_START_Y = 380;
 
 var PLAYER_HEIGHT = 170,
-    PLAYER_WIDTH = 100,
+    PLAYER_WIDTH = 82,
+    PLAYER_LEFT_OFFSET = 20;
     PLAYER_TOP_OFFSET = 100;
 
 var ENEMY_HEIGHT = 170,
     ENEMY_WIDTH = 100,
-    ENEMY_TOP_OFFSET = 100;
+    ENEMY_LEFT_OFFSET = 3;
+    ENEMY_TOP_OFFSET = 90;
 
 var STEP_X = 101,
     STEP_Y = 83;
 
-var FINISH_LINE = 0,
+var FINISH_LINE = 83,
     LEFT_WALL = -5,
     RIGHT_WALL = 500,
     TOP_WALL = -100,
     BOTTOM_WALL = 450;
+
+
+
 
 
 
@@ -64,6 +69,10 @@ function getRandomYStart() {
 
 
 
+
+
+
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Coords on canvas
@@ -74,7 +83,7 @@ var Enemy = function() {
     this.speed = getRandomSpeed();
     
     // Collision detections frame
-    this.left = this.x;
+    this.left = this.x + ENEMY_LEFT_OFFSET;
     this.right = this.x + ENEMY_WIDTH;
     this.top = this.y + ENEMY_TOP_OFFSET;
     this.bottom = this.y + ENEMY_HEIGHT;
@@ -90,7 +99,7 @@ Enemy.prototype.render = function() {
 }
 
 Enemy.prototype.updateCollisionFrame = function() {
-    this.left = this.x;
+    this.left = this.x + ENEMY_LEFT_OFFSET;
     this.right = this.x + ENEMY_WIDTH;
     this.top = this.y + ENEMY_TOP_OFFSET;
     this.bottom = this.y + ENEMY_HEIGHT;   
@@ -115,6 +124,10 @@ Enemy.prototype.update = function(dt) {
 
 
 
+
+
+
+
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
@@ -124,7 +137,7 @@ var Player = function() {
     this.y = PLAYER_START_Y;
     
     // Collision detections frame
-    this.left = this.x;
+    this.left = this.x + PLAYER_LEFT_OFFSET;
     this.right = this.x + PLAYER_WIDTH;
     this.top = this.y + PLAYER_TOP_OFFSET;
     this.bottom = this.y + PLAYER_HEIGHT;
@@ -139,33 +152,47 @@ Player.prototype.render = function() {
 }
 
 Player.prototype.update = function(axis, step) {
-    checkCollisions();
+    if (checkCollisions()) {
+        this.reset();
+    }
 
     if (axis === "x") {
         var newX = this.x + step;
         if (newX <= RIGHT_WALL && newX >= LEFT_WALL) {
             this.x = newX;
-            this.left = this.x;
-            this.right = this.x + PLAYER_WIDTH;
+            this.updateCollisionFrame();
         }
     }
     else if (axis === "y") {
         var newY = this.y + step;
         if (newY >= TOP_WALL && newY <= BOTTOM_WALL) {
             this.y = newY;
-            this.top = this.y;
-            this.bottom = this.y + PLAYER_HEIGHT;
+            this.updateCollisionFrame();
         }
     }
 
-    
+    this.checkWin();
 }
 
 Player.prototype.updateCollisionFrame = function() {
-    this.left = this.x;
+    this.left = this.x + PLAYER_LEFT_OFFSET;
     this.right = this.x + PLAYER_WIDTH;
     this.top = this.y + PLAYER_TOP_OFFSET;
     this.bottom = this.y + PLAYER_HEIGHT;
+}
+
+Player.prototype.reset = function() {
+    this.x = PLAYER_START_X;
+    this.y = PLAYER_START_Y;
+
+    this.updateCollisionFrame();
+}
+
+Player.prototype.checkWin = function() {
+    if (this.top < FINISH_LINE) {
+        this.reset();
+        alert("You won!!!");
+    }
 }
 
 Player.prototype.handleInput = function(direction) {
@@ -189,6 +216,9 @@ Player.prototype.handleInput = function(direction) {
 
 
 
+
+
+
 // Check Collisions
 // get coords on player piece
     // loop through enemies and test if any overlap exists
@@ -209,22 +239,7 @@ function checkCollisions() {
 
     return false;
 }
-function resetPlayer() {
-    player.x = PLAYER_START_X;
-    player.y = PLAYER_START_Y;
 
-    player.left = player.x;
-    player.right = player.x + PLAYER_WIDTH;
-    player.top = player.y;
-    player.bottom = player.y + PLAYER_HEIGHT;
-}
-
-function checkWin() {
-    if (player.y < FINISH_LINE) {
-        resetPlayer();
-        alert("You won!!!");
-    }
-}
 
 
 
@@ -233,6 +248,10 @@ function checkWin() {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [
+    new Enemy(),
+    new Enemy(),
+    new Enemy(),
+    new Enemy(),
     new Enemy()
 ];
 

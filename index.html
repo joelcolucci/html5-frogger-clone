@@ -15,13 +15,13 @@
         <div class="game-title text-center">
           <h1 class="title">ArcadeGame2000</h1>
         </div>
-        <div class="game-clock">
+        <div>
           <h2 class="primary-heading">Game Clock</h2>
-          <div class="counter"></div>
+          <div class="counter text-center"><span id="game-clock">30</span></div>
         </div>
-        <div class="game-scoreboard">
+        <div>
           <h2 class="primary-heading">Points Earned</h2>
-          <div class="counter"></div>
+          <div class="counter text-center"><span id="game-score">15</span></div>
         </div>
         <div class="game-instructions text-center">
           <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
@@ -29,8 +29,7 @@ Click here for instructions</button>
         </div>
       </div>
       <div class="col-md-6">
-        <div id="game-canvas">
-        </div>
+        <div id="game-canvas"></div>
       </div>
     </div> <!-- End row -->
   </div> <!-- End container -->

@@ -12,8 +12,11 @@ body {
   height: 125px;
   width: 225px;
   margin: 0 auto;
+  padding: 15px;
   background: rgba(255, 255, 255, .1);
   border: 1px solid #aaa;
+  font-size: 62px;
+  letter-spacing: 2px;
 }
 
 .game-instructions {

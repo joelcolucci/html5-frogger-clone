@@ -1,12 +1,3 @@
-// MUST HAVE FEATURES
-// Player moves - Complete
-// Player doesn't fall off screen - Complete
-// Bug moves - Complete
-// Collision
-    // xCoord + bugWidth
-    // in update is player on dangerous row and if so is the nose greater than top left of player and then call reset
-
-
 // Game Constants
 var PLAYER_START_X = 200,
     PLAYER_START_Y = 380;
@@ -220,9 +211,7 @@ Player.prototype.handleInput = function(direction) {
 
 
 // Check Collisions
-// get coords on player piece
-    // loop through enemies and test if any overlap exists
-// Collision if statement from: http://silentmatt.com/rectangle-intersection/
+// Source: http://silentmatt.com/rectangle-intersection/
 function checkCollisions() {
 
     for (var i in allEnemies) {

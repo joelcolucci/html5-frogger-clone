@@ -8,7 +8,8 @@ body {
   letter-spacing: 2px;
 }
 
-.counter {
+
+.game-board {
   height: 125px;
   width: 225px;
   margin: 0 auto;
@@ -18,7 +19,10 @@ body {
   font-size: 62px;
   letter-spacing: 2px;
 }
-
+.game-lives {
+  padding-top: 15px;
+  font-size: 42px;
+}
 .game-instructions {
   padding-top: 50px;
 }

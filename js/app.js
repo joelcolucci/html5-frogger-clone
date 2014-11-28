@@ -224,7 +224,7 @@ Player.prototype.handleInput = function(direction) {
 
 
 
-/*** Game Play ***/l
+/*** Game Play ***/
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [

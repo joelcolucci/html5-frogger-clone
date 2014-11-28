@@ -6,22 +6,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ArcadeGame2000</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <div class="container">
     <div class="row">
       <div class="col-md-6">
-        <div class="game-title text-center">
+        <div class="text-center">
           <h1 class="title">ArcadeGame2000</h1>
         </div>
         <div>
-          <h2 class="primary-heading">Game Clock</h2>
-          <div class="counter text-center"><span id="game-clock">30</span></div>
+          <h2 class="primary-heading">Current Level</h2>
+          <div class="game-board text-center">
+            <span id="game-level">1</span>
+          </div>
         </div>
         <div>
-          <h2 class="primary-heading">Points Earned</h2>
-          <div class="counter text-center"><span id="game-score">15</span></div>
+          <h2 class="primary-heading">Lives Remaining</h2>
+          <div class="game-board">
+            <div class="game-lives text-center">
+              <i class="fa fa-heart fa-fw"></i>
+              <i class="fa fa-heart fa-fw"></i>
+              <i class="fa fa-heart fa-fw"></i>
+            </div>
+          </div>
         </div>
         <div class="game-instructions text-center">
           <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">

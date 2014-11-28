@@ -23,6 +23,10 @@ body {
   padding-top: 15px;
   font-size: 42px;
 }
+.game-lives p {
+  padding-top: 10px;
+  font-size: 28px;
+}
 .game-instructions {
   padding-top: 50px;
 }

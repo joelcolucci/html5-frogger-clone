@@ -25,6 +25,7 @@ var ENEMY_FRAME = {
     "sprite height": 170 
 }
 
+var GAME_OVER = false;
 
 
 
@@ -52,30 +53,58 @@ var Game = function() {
     this.lifeBox = document.getElementById("lives");
     this.liveElms = document.getElementsByTagName("i");
 }
+
 Game.prototype.increaseLevel = function() {
     // Up the level
     this.level++;
 
     // update DOM
-    this.gameLevel.innerText = this.level;
+    this.setLevel();
 
-    // add enemy
-    var newEnemy = new Enemy();
-    allEnemies.push(newEnemy);
+    if (this.level > 5) {
+        // TIME TO TURN UP SPEED
+    } else {
+        allEnemies.push(new Enemy());
+    }
+}
+
+Game.prototype.setLevel = function(level) {
+    this.gameLevel.innerText = level || this.level;
 }
 Game.prototype.subtractLife = function() {
-    if (this.lives === 1) {
-        alert("Game over");
-        allEnemies = [];
-        return;
-    }
-
     this.lives--;
+
     // update the DOM
-    this.lifeBox.removeChild(this.liveElms[0]);
+    this.setLives();
+
+    if (this.lives === 0) {
+        this.endGame();
+    }
 }
 
+Game.prototype.setLives = function() {
+    this.lifeBox.removeChild(this.liveElms[0]);
+}
+Game.prototype.endGame = function() {
+    var p = document.createElement("p");
+    var msg = document.createTextNode("GAME OVER");
+    p.appendChild(msg);
+    this.lifeBox.appendChild(p);
 
+    // Cease game play
+    allEnemies = [];
+    GAME_OVER = true;    
+}
+
+Game.prototype.reset = function() {
+    // reset properties
+    this.level = 1;
+    this.lives = 3;
+
+    // reset DOM
+    this.setLevel();
+    this.setLives();
+}
 
 
 
@@ -228,44 +257,25 @@ Player.prototype.update = function(axis, step) {
 }
 
 Player.prototype.handleInput = function(direction) {
-    switch (direction) {
-        case "left":
-            this.update("x", -STEP_X);
-            break;
-        case "right":
-            this.update("x", STEP_X)
-            break;
-        case "up":
-            this.update("y", -STEP_Y)
-            break;
-        case "down":
-            this.update("y", STEP_Y);
-            break;
-        default:
-            return;
+    if (!GAME_OVER) {
+        switch (direction) {
+            case "left":
+                this.update("x", -STEP_X);
+                break;
+            case "right":
+                this.update("x", STEP_X)
+                break;
+            case "up":
+                this.update("y", -STEP_Y)
+                break;
+            case "down":
+                this.update("y", STEP_Y);
+                break;
+            default:
+                return;
+        }
     }
 }
-
-
-
-/*** Game Play Features ***/
-// Game Clock
-    // On space bar
-        // init/reset() game
-        // init game clock
-            // countdown from 30
-            // if zero
-            // pause game
-            // game over
-    // one technique is to use a flag value to prevent movement of characters
-    // event listen for space bar enables movement
-    // OR add to reset() in engine.js the generation of enemies and player???
-// Game Level
-    // if player reaches river
-        // increase level by one
-        // add a bug to allEnemies
-/* Maybe we create a Game object
-    properties of lives, levels */
 
 
 
@@ -276,7 +286,6 @@ Player.prototype.handleInput = function(direction) {
 var game = new Game();
 
 var allEnemies = [
-    new Enemy(),
     new Enemy()
 ];
 

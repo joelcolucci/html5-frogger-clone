@@ -29,7 +29,6 @@ var ENEMY_FRAME = {
 
 
 
-
 /*** Utilities ***/
 // Returns a random integer between min (included) and max (excluded)
 // Using Math.round() will give you a non-uniform distribution!
@@ -205,9 +204,27 @@ Player.prototype.handleInput = function(direction) {
 
 
 
+/*** Game Play Features ***/
+// Game Clock
+    // On space bar
+        // init/reset() game
+        // init game clock
+            // countdown from 30
+            // if zero
+            // pause game
+            // game over
+    // one technique is to use a flag value to prevent movement of characters
+    // event listen for space bar enables movement
+    // OR add to reset() in engine.js the generation of enemies and player???
+// Game Score
+    // if player reaches river
+        // increase score by one
 
 
-/*** Game Play ***/
+
+
+
+/*** Game Play ***/l
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [

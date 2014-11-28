@@ -64,7 +64,7 @@ Game.prototype.increaseLevel = function() {
     allEnemies.push(newEnemy);
 }
 Game.prototype.subtractLife = function() {
-    if (this.level === 1) {
+    if (this.lives === 1) {
         alert("Game over");
         allEnemies = [];
         return;
@@ -206,6 +206,7 @@ Player.prototype.render = function() {
 
 Player.prototype.update = function(axis, step) {
     if (this.checkForCollisions()) {
+        game.subtractLife();
         this.reset();
     }
 

@@ -1,10 +1,4 @@
 /*** Game Constants ***/
-var PLAYER_START_X = 200,
-    PLAYER_START_Y = 380;
-
-var STEP_X = 101,
-    STEP_Y = 83;
-
 var FINISH_LINE = 83,
     LEFT_WALL = -5,
     RIGHT_WALL = 500,
@@ -18,6 +12,12 @@ var PLAYER_FRAME = {
     "sprite height": 170
 }
 
+var PLAYER_START_X = 200,
+    PLAYER_START_Y = 380;
+
+var STEP_X = 101,
+    STEP_Y = 83;
+
 var ENEMY_FRAME = {
     "left offset": 3,
     "top offset": 90,
@@ -25,11 +25,19 @@ var ENEMY_FRAME = {
     "sprite height": 170 
 }
 
+var ENEMY_X_STARTS = [-300, -200, -100, -50];
+var ENEMY_Y_STARTS = [60, 140, 225];
+var MAX_SPEED = 6;
+
+
 var GAME_OVER = false;
 
-// TODO: Instead of having hard coded xCoords, yCoords and Enemy speeds have them as constants
-// so they can be manipulated
-
+// TODO:
+    // Notifications
+        // "Level up"
+        // "Lost life"
+    // REFACTOR
+    // COMMENT
 
 /*** Utilities ***/
 // Returns a random integer between min (included) and max (excluded)
@@ -62,12 +70,12 @@ Game.prototype.addLevel = function() {
     // Increase difficulty
     if (this.level > 5) {
         // More speed!!!
+        MAX_SPEED++;
     } else {
         // More enemies!!!
         allEnemies.push(new Enemy());
     }
 }
-
 
 Game.prototype.subtractLife = function() {
     // Subtract life
@@ -82,7 +90,6 @@ Game.prototype.subtractLife = function() {
     }
 }
 
-
 Game.prototype.endGame = function() {
     // Remove all enemies
     allEnemies = [];
@@ -94,6 +101,7 @@ Game.prototype.endGame = function() {
 
 Game.prototype.reset = function() {
     GAME_OVER = false;
+    MAX_SPEED = 6;
 
     // Reset properties
     this.level = 1;
@@ -182,21 +190,21 @@ Enemy.prototype.render = function() {
 }
 
 Enemy.prototype.getRandomX = function() {
-    var xPositions = [-300, -200, -100, -50];
+    var len = ENEMY_X_STARTS.length;
+    var rand = getRandomInt(0, len);
 
-    var rand = getRandomInt(0,4);
-    return xPositions[rand];
+    return ENEMY_X_STARTS[rand];
 }
 
 Enemy.prototype.getRandomY = function() {
-    var yPositions = [60, 140, 225];
+    var len = ENEMY_Y_STARTS.length;
+    var rand = getRandomInt(0, len);
 
-    var rand = getRandomInt(0,3);
-    return yPositions[rand];
+    return ENEMY_Y_STARTS[rand];
 }
 
 Enemy.prototype.getRandomSpeed = function() {
-    return getRandomInt(1, 5);
+    return getRandomInt(1, MAX_SPEED);
 }
 
 Enemy.prototype.reset = function() {
@@ -232,6 +240,7 @@ var Player = function() {
     
     this.sprite = 'images/char-boy.png';
 }
+
 Player.prototype = Object.create(Sprite.prototype);
 Player.prototype.constructor = Player;
 
@@ -318,30 +327,17 @@ Player.prototype.handleInput = function(direction) {
 
 
 
-// TODO:
-    // FINISH RESTART
-        // remove "GAME OVER"
-        // ADD BACK IN I elements
-    // Notifications
-        // "Level up"
-        // "Lost life"
-    // REFACTOR
-    // COMMENT
-
-
-
-
-
-
 /*** Game Play ***/
 // Instantiate all necessary game objects.
 var game = new Game();
+
+var player = new Player();
 
 var allEnemies = [
     new Enemy()
 ];
 
-var player = new Player();
+
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

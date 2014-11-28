@@ -27,7 +27,8 @@ var ENEMY_FRAME = {
 
 var GAME_OVER = false;
 
-
+// TODO: Instead of having hard coded xCoords, yCoords and Enemy speeds have them as constants
+// so they can be manipulated
 
 
 /*** Utilities ***/
@@ -41,69 +42,105 @@ function getRandomInt(min, max) {
 
 
 
-
-
 /*** Classes ***/
+// canvas can be directly manipulated by Game
+// other page content is handled by Interface
 var Game = function() {
     this.lives = 3;
     this.level = 1;
 
-    // cache DOM objects
-    this.gameLevel = document.getElementById("game-level");
-    this.lifeBox = document.getElementById("lives");
-    this.liveElms = document.getElementsByTagName("i");
+    this.interface = new Interface();
 }
 
-Game.prototype.increaseLevel = function() {
+Game.prototype.addLevel = function() {
     // Up the level
     this.level++;
 
-    // update DOM
-    this.setLevel();
+    // Update DOM
+    this.interface.updateLevel(this.level);
 
+    // Increase difficulty
     if (this.level > 5) {
-        // TIME TO TURN UP SPEED
+        // More speed!!!
     } else {
+        // More enemies!!!
         allEnemies.push(new Enemy());
     }
 }
 
-Game.prototype.setLevel = function(level) {
-    this.gameLevel.innerText = level || this.level;
-}
+
 Game.prototype.subtractLife = function() {
+    // Subtract life
     this.lives--;
 
-    // update the DOM
-    this.setLives();
+    // Update the DOM
+    this.interface.updateLife(this.lives);
 
+    // Check for end of game
     if (this.lives === 0) {
         this.endGame();
     }
 }
 
-Game.prototype.setLives = function() {
-    this.lifeBox.removeChild(this.liveElms[0]);
-}
-Game.prototype.endGame = function() {
-    var p = document.createElement("p");
-    var msg = document.createTextNode("GAME OVER");
-    p.appendChild(msg);
-    this.lifeBox.appendChild(p);
 
-    // Cease game play
+Game.prototype.endGame = function() {
+    // Remove all enemies
     allEnemies = [];
-    GAME_OVER = true;    
+    // Flag prevent player movement
+    GAME_OVER = true;  
+
+    this.interface.endGame();  
 }
 
 Game.prototype.reset = function() {
-    // reset properties
+    GAME_OVER = false;
+
+    // Reset properties
     this.level = 1;
     this.lives = 3;
 
-    // reset DOM
-    this.setLevel();
-    this.setLives();
+    // Reset DOM interface
+    this.interface.reset();
+
+    // Reset 
+    allEnemies = [];
+    allEnemies.push(new Enemy());
+}
+
+
+
+
+
+var Interface = function() {
+    // Cache DOM objects
+    this.$level = $("#game-level");
+    this.$lifeBox = $("#lives");
+}
+
+Interface.prototype.updateLevel = function(level) {
+    this.$level.text(level);
+}
+
+Interface.prototype.updateLife = function(numLifes) {
+    var htmlLife = '<i class="fa fa-heart fa-fw"></i>';
+
+    this.$lifeBox.empty();
+
+    for (var i = 0; i < numLifes; i++) {
+        this.$lifeBox.append(htmlLife);
+    }
+}
+
+Interface.prototype.endGame = function() {
+    // Replace lives with game over message
+    var msg = "<p>Game Over</p>";
+    this.$lifeBox.append(msg);
+}
+
+Interface.prototype.reset = function() {
+    // Reset DOM
+    this.updateLevel(1);
+    this.updateLife(3);
 }
 
 
@@ -113,6 +150,7 @@ Game.prototype.reset = function() {
 var Sprite = function() {
 
 }
+
 Sprite.prototype.setCollisionFrame = function(settings) {
     this.left = this.x + settings["left offset"];
     this.right = this.x + settings["sprite width"];
@@ -207,7 +245,7 @@ Player.prototype.reset = function() {
 Player.prototype.checkWin = function() {
     if (this.top < FINISH_LINE) {
         this.reset();
-        game.increaseLevel();
+        game.addLevel();
     }
 }
 
@@ -220,7 +258,6 @@ Player.prototype.checkForCollisions = function() {
             this.right > enemy.left &&
             this.top < enemy.bottom &&
             this.bottom > enemy.top) {
-            console.log("Collision!");
             return true;
         }
     }
@@ -234,7 +271,9 @@ Player.prototype.render = function() {
 }
 
 Player.prototype.update = function(axis, step) {
-    if (this.checkForCollisions()) {
+    var collisionDetected = this.checkForCollisions();
+
+    if (collisionDetected) {
         game.subtractLife();
         this.reset();
     }
@@ -279,6 +318,19 @@ Player.prototype.handleInput = function(direction) {
 
 
 
+// TODO:
+    // FINISH RESTART
+        // remove "GAME OVER"
+        // ADD BACK IN I elements
+    // Notifications
+        // "Level up"
+        // "Lost life"
+    // REFACTOR
+    // COMMENT
+
+
+
+
 
 
 /*** Game Play ***/
@@ -303,3 +355,9 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+var resetButton = document.getElementById("btn-restart");
+
+resetButton.addEventListener("click", function(e) {
+    game.reset();
+})

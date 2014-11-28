@@ -43,6 +43,44 @@ function getRandomInt(min, max) {
 
 
 /*** Classes ***/
+var Game = function() {
+    this.lives = 3;
+    this.level = 1;
+
+    // cache DOM objects
+    this.gameLevel = document.getElementById("game-level");
+    this.lifeBox = document.getElementById("lives");
+    this.liveElms = document.getElementsByTagName("i");
+}
+Game.prototype.increaseLevel = function() {
+    // Up the level
+    this.level++;
+
+    // update DOM
+    this.gameLevel.innerText = this.level;
+
+    // add enemy
+    var newEnemy = new Enemy();
+    allEnemies.push(newEnemy);
+}
+Game.prototype.subtractLife = function() {
+    if (this.level === 1) {
+        alert("Game over");
+        allEnemies = [];
+        return;
+    }
+
+    this.lives--;
+    // update the DOM
+    this.lifeBox.removeChild(this.liveElms[0]);
+}
+
+
+
+
+
+
+
 var Sprite = function() {
 
 }
@@ -52,6 +90,9 @@ Sprite.prototype.setCollisionFrame = function(settings) {
     this.top = this.y + settings["top offset"];
     this.bottom = this.y + settings["sprite height"];   
 }
+
+
+
 
 
 
@@ -114,6 +155,8 @@ Enemy.prototype.update = function(dt) {
 
 
 
+
+
 var Player = function() {
     this.x = PLAYER_START_X;
     this.y = PLAYER_START_Y;
@@ -135,7 +178,7 @@ Player.prototype.reset = function() {
 Player.prototype.checkWin = function() {
     if (this.top < FINISH_LINE) {
         this.reset();
-        alert("You won!!!");
+        game.increaseLevel();
     }
 }
 
@@ -216,26 +259,26 @@ Player.prototype.handleInput = function(direction) {
     // one technique is to use a flag value to prevent movement of characters
     // event listen for space bar enables movement
     // OR add to reset() in engine.js the generation of enemies and player???
-// Game Score
+// Game Level
     // if player reaches river
-        // increase score by one
+        // increase level by one
+        // add a bug to allEnemies
+/* Maybe we create a Game object
+    properties of lives, levels */
 
 
 
 
 
 /*** Game Play ***/
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
+// Instantiate all necessary game objects.
+var game = new Game();
+
 var allEnemies = [
-    new Enemy(),
-    new Enemy(),
-    new Enemy(),
     new Enemy(),
     new Enemy()
 ];
 
-// Place the player object in a variable called player
 var player = new Player();
 
 // This listens for key presses and sends the keys to your

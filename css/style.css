@@ -40,10 +40,10 @@ body {
   width: 505px;
   height: 83px;
   margin: 50px 0 0;
-  background: rgba(0, 255, 0, .5);
+  background: rgba(0, 255, 0, .6);
 }
 .notify-bad {
-  background: rgba(255, 0, 0, .5);
+  background: rgba(255, 0, 0, .6);
 }
 
 

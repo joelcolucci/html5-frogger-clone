@@ -6,6 +6,9 @@
     // Notifications
         // "Level up"
         // "Lost life"
+    // Notifications
+        // Handle discrepancy between dom manip and effects
+        // MAIN culprit is the showNotification() method on Interface
     // REFACTOR
     // COMMENT
 
@@ -110,9 +113,11 @@ Game.prototype.subtractLife = function() {
 Game.prototype.endGame = function() {
     // Remove all enemies
     allEnemies = [];
-    // Flag prevent player movement
+
+    // Flag prevents player movement
     GAME_OVER = true;  
 
+    // Update DOM
     this.interface.endGame();  
 }
 
@@ -150,7 +155,7 @@ var Interface = function() {
 Interface.prototype.updateLevel = function(level) {    
     this.$level.text(level);
 
-    this.showNotification("level");
+    this.showNotification("good", "WICKED - Level up!");
 }
 
 Interface.prototype.updateLife = function(numLifes) {    
@@ -162,30 +167,26 @@ Interface.prototype.updateLife = function(numLifes) {
         this.$lifeBox.append(htmlLife);
     }
 
-    this.showNotification("life");  
+    this.showNotification("bad", "No! - Life lost!");  
 }
 
-Interface.prototype.showNotification = function(type) {
-    var htmlMsg;
-
-    if (type === "level") {
-        htmlMsg = "<h1>NICE - Level up!</h1>";
+Interface.prototype.showNotification = function(type, msg) {
+    // Determine notification box style
+    if (type === "good") {
         this.$gameNotification.removeClass("notify-bad");
-        console.log("showNotification level just ran")
-    }
-    else if (type === "life")  {
-        htmlMsg = "<h1>DOH - Life lost!</h1>";
-        this.$gameNotification.addClass("notify-bad");
-        console.log("showNotification life just ran")
-    }
-    else if (type === "game over") {
-        htmlMsg = "<h1>SHAME - GAME OVER</h1>";
+    } else if (type === "bad") {
         this.$gameNotification.addClass("notify-bad");
     }
 
+    // Construct HTML message
+    var htmlMsg = '<h1>' + msg + '</h1>';
+
+    // Add message to DOM
     this.$gameNotification.empty();
     this.$gameNotification.append(htmlMsg);
-    this.$gameNotification.fadeIn(200);
+
+    // Diplay notification to user
+    this.$gameNotification.fadeIn(100);
     this.$gameNotification.fadeOut(1500);
 }
 
@@ -193,7 +194,7 @@ Interface.prototype.endGame = function() {
     // Replace lives with game over message
     var msg = "<p>Game Over</p>";
     this.$lifeBox.append(msg);
-    this.showNotification("game over");
+    this.showNotification("bad", "Shameful - GAME OVER");
 }
 
 Interface.prototype.reset = function() {

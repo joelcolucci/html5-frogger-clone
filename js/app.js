@@ -1,4 +1,19 @@
-/*** Game Constants ***/
+/***** NOTES *****/
+// canvas can be directly manipulated by Game
+// other page content is handled by Interface
+
+// TODO:
+    // Notifications
+        // "Level up"
+        // "Lost life"
+    // REFACTOR
+    // COMMENT
+
+
+
+
+/***** Game Constants *****/
+
 var FINISH_LINE = 83,
     LEFT_WALL = -5,
     RIGHT_WALL = 500,
@@ -33,12 +48,7 @@ var ENEMY_MAX_SPEED = 5,
 
 var GAME_OVER = false;
 
-// TODO:
-    // Notifications
-        // "Level up"
-        // "Lost life"
-    // REFACTOR
-    // COMMENT
+
 
 /***** Utilities *****/
 
@@ -51,11 +61,12 @@ function getRandomInt(min, max) {
 
 
 
-
 /***** Classes *****/
 
-// canvas can be directly manipulated by Game
-// other page content is handled by Interface
+/** 
+ * A Game
+ * @constructor
+ */
 var Game = function() {
     this.lives = 3;
     this.level = 1;
@@ -125,8 +136,10 @@ Game.prototype.reset = function() {
 
 
 
-
-
+/** 
+ * A Interface
+ * @constructor
+ */
 var Interface = function() {
     // Cache DOM objects
     this.$level = $("#game-level");
@@ -191,8 +204,10 @@ Interface.prototype.reset = function() {
 
 
 
-
-
+/** 
+ * A Sprite
+ * @constructor
+ */
 var Sprite = function() {
 
 }
@@ -206,9 +221,10 @@ Sprite.prototype.setCollisionFrame = function(settings) {
 
 
 
-
-
-
+/** 
+ * An Enemy
+ * @constructor
+ */
 var Enemy = function() {
     this.x = this.getRandomX();
     this.y = this.getRandomY();
@@ -268,8 +284,10 @@ Enemy.prototype.update = function(dt) {
 
 
 
-
-
+/** 
+ * A Player
+ * @constructor
+ */
 var Player = function() {
     this.x = PLAYER_START_X;
     this.y = PLAYER_START_Y;
@@ -366,16 +384,13 @@ Player.prototype.handleInput = function(direction) {
 
 
 /***** Game Play *****/
+
 // Instantiate all necessary game objects.
 var game = new Game();
 
 var player = new Player();
 
-var allEnemies = [
-    new Enemy()
-];
-
-
+var allEnemies = [new Enemy()];
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -390,9 +405,9 @@ document.addEventListener('keyup', function(e) {
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
+// Adds event listener and action to restart button
 var resetButton = document.getElementById("btn-restart");
 
-// Listens for click event on restart button
 resetButton.addEventListener("click", function(e) {
     game.reset();
 })

@@ -27,8 +27,8 @@ var ENEMY_FRAME = {
 
 var ENEMY_X_STARTS = [-300, -200, -100, -50];
 var ENEMY_Y_STARTS = [60, 140, 225];
-var MAX_SPEED = 6;
-
+var ENEMY_MAX_SPEED = 5;
+var ENEMY_MIN_SPEED = 1;
 
 var GAME_OVER = false;
 
@@ -39,7 +39,8 @@ var GAME_OVER = false;
     // REFACTOR
     // COMMENT
 
-/*** Utilities ***/
+/***** Utilities *****/
+
 // Returns a random integer between min (included) and max (excluded)
 // Using Math.round() will give you a non-uniform distribution!
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
@@ -50,7 +51,8 @@ function getRandomInt(min, max) {
 
 
 
-/*** Classes ***/
+/***** Classes *****/
+
 // canvas can be directly manipulated by Game
 // other page content is handled by Interface
 var Game = function() {
@@ -68,9 +70,11 @@ Game.prototype.addLevel = function() {
     this.interface.updateLevel(this.level);
 
     // Increase difficulty
-    if (this.level > 5) {
+    if (this.level > 10 && ENEMY_MAX_SPEED > ENEMY_MIN_SPEED) {
+        ENEMY_MIN_SPEED++;
+    } else if (this.level > 5) {
         // More speed!!!
-        MAX_SPEED++;
+        ENEMY_MAX_SPEED++;
     } else {
         // More enemies!!!
         allEnemies.push(new Enemy());
@@ -101,7 +105,8 @@ Game.prototype.endGame = function() {
 
 Game.prototype.reset = function() {
     GAME_OVER = false;
-    MAX_SPEED = 6;
+    ENEMY_MAX_SPEED = 5;
+    ENEMY_MIN_SPEED = 1;
 
     // Reset properties
     this.level = 1;
@@ -204,7 +209,7 @@ Enemy.prototype.getRandomY = function() {
 }
 
 Enemy.prototype.getRandomSpeed = function() {
-    return getRandomInt(1, MAX_SPEED);
+    return getRandomInt(ENEMY_MIN_SPEED, ENEMY_MAX_SPEED);
 }
 
 Enemy.prototype.reset = function() {
@@ -327,7 +332,7 @@ Player.prototype.handleInput = function(direction) {
 
 
 
-/*** Game Play ***/
+/***** Game Play *****/
 // Instantiate all necessary game objects.
 var game = new Game();
 

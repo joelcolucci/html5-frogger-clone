@@ -5,7 +5,11 @@
 // TODO:
     // Notifications
         // Handle discrepancy between dom manip and effects
+            // Two flashes on game over, 1 for death, 1 for game over
+            // Both display game over because of DOM manip occurring 
+            // faster than effects
         // MAIN culprit is the showNotification() method on Interface
+    // FEATURE Extra life if necessary on every 5th level
     // Leader board
         // Google app engine leader board on data store
         // New points system???
@@ -173,11 +177,11 @@ Interface.prototype.updateLife = function(numLifes) {
         this.showNotification("bad", "No! - Life lost!");      
     }
 
-    var htmlLife = '<i class="fa fa-heart fa-fw"></i>';
+    var htmlHeart = '<i class="fa fa-heart fa-fw"></i>';
 
     this.$lifeBox.empty();
     for (var i = 0; i < numLifes; i++) {
-        this.$lifeBox.append(htmlLife);
+        this.$lifeBox.append(htmlHeart);
     }   
 }
 
@@ -198,7 +202,7 @@ Interface.prototype.showNotification = function(type, msg) {
 
     // Diplay notification to user
     this.$gameNotification.fadeIn(100);
-    this.$gameNotification.fadeOut(1200, "swing");
+    this.$gameNotification.fadeOut(1000, "swing");
 }
 
 Interface.prototype.endGame = function() {
@@ -223,7 +227,7 @@ Interface.prototype.reset = function() {
  * @constructor
  */
 var Sprite = function() {
-
+    // Enemy and Player prototype chains points here
 }
 
 Sprite.prototype.setCollisionFrame = function(settings) {
@@ -248,12 +252,34 @@ var Enemy = function() {
 
     this.sprite = 'images/enemy-bug.png';
 }
+
 Enemy.prototype = Object.create(Sprite.prototype);
 Enemy.prototype.constructor = Enemy;
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
+
+// Update the enemy's position, required method for game
+// Parameter: dt, a time delta between ticks
+Enemy.prototype.update = function(dt) {
+    var newX = (this.speed * SPEED_MULTIPLIER * dt) + this.x;
+
+    if (newX > RIGHT_WALL) {
+        this.reset();
+        this.setCollisionFrame(ENEMY_FRAME);
+    }
+    else {
+        this.x = newX;   
+        this.setCollisionFrame(ENEMY_FRAME);
+    }
+}
+
+Enemy.prototype.reset = function() {
+    this.x = this.getRandomX();
+    this.y = this.getRandomY();
+    this.speed = this.getRandomSpeed();
 }
 
 Enemy.prototype.getRandomX = function() {
@@ -277,27 +303,6 @@ Enemy.prototype.getRandomSpeed = function() {
     return getRandomInt(ENEMY_MIN_SPEED, ENEMY_MAX_SPEED);
 }
 
-Enemy.prototype.reset = function() {
-    this.x = this.getRandomX();
-    this.y = this.getRandomY();
-    this.speed = this.getRandomSpeed();
-}
-
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
-    var newX = (this.speed * SPEED_MULTIPLIER * dt) + this.x;
-
-    if (newX > RIGHT_WALL) {
-        this.reset();
-        this.setCollisionFrame(ENEMY_FRAME);
-    }
-    else {
-        this.x = newX;   
-        this.setCollisionFrame(ENEMY_FRAME);
-    }
-}
-
 
 
 /** 
@@ -316,36 +321,6 @@ var Player = function() {
 Player.prototype = Object.create(Sprite.prototype);
 Player.prototype.constructor = Player;
 
-Player.prototype.reset = function() {
-    this.x = PLAYER_START_X;
-    this.y = PLAYER_START_Y;
-
-    this.setCollisionFrame(PLAYER_FRAME);
-}
-
-Player.prototype.checkWin = function() {
-    if (this.top < FINISH_LINE) {
-        this.reset();
-        game.addLevel();
-    }
-}
-
-// Conditional Check Source: http://silentmatt.com/rectangle-intersection/
-Player.prototype.checkForCollisions = function() {
-    for (var i in allEnemies) {
-        var enemy = allEnemies[i];
-
-        if (this.left < enemy.right &&
-            this.right > enemy.left &&
-            this.top < enemy.bottom &&
-            this.bottom > enemy.top) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
 // Draw the player on the screen, required method for game
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -356,6 +331,8 @@ Player.prototype.update = function(axis, step) {
 
     if (collisionDetected) {
         game.subtractLife();
+
+        // Reset players position on canvas
         this.reset();
     }
 
@@ -375,6 +352,42 @@ Player.prototype.update = function(axis, step) {
         }
     }
 }
+
+// Conditional Check Source: http://silentmatt.com/rectangle-intersection/
+Player.prototype.checkForCollisions = function() {
+    for (var i in allEnemies) {
+        var enemy = allEnemies[i];
+
+        if (this.left < enemy.right &&
+            this.right > enemy.left &&
+            this.top < enemy.bottom &&
+            this.bottom > enemy.top) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+Player.prototype.checkWin = function() {
+    if (this.top < FINISH_LINE) {
+        this.reset();
+        game.addLevel();
+    }
+}
+
+Player.prototype.reset = function() {
+    this.x = PLAYER_START_X;
+    this.y = PLAYER_START_Y;
+
+    this.setCollisionFrame(PLAYER_FRAME);
+}
+
+
+
+
+
+
 
 Player.prototype.handleInput = function(direction) {
     if (!GAME_OVER) {

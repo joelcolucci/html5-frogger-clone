@@ -8,7 +8,6 @@ body {
   letter-spacing: 2px;
 }
 
-
 .game-board {
   height: 125px;
   width: 225px;
@@ -31,6 +30,24 @@ body {
   padding-top: 50px;
 }
 
+/* Game Notification Styles */
+#game-canvas {
+/*  position: absolute;*/
+}
+.game-notification {
+  display: none;
+  position: absolute;
+  width: 505px;
+  height: 83px;
+  margin: 50px 0 0;
+  background: rgba(0, 255, 0, .5);
+}
+.notify-bad {
+  background: rgba(255, 0, 0, .5);
+}
+
+
+/* Modal Styles */
 .modal {
   color: #333;
 }

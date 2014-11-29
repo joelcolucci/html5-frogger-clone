@@ -66,11 +66,12 @@ Game.prototype.addLevel = function() {
     // Up the level
     this.level++;
 
-    // Update DOM
+    // Update the DOM
     this.interface.updateLevel(this.level);
 
     // Increase difficulty
     if (this.level > 10 && ENEMY_MAX_SPEED > ENEMY_MIN_SPEED) {
+        // Less slow pokes!!!
         ENEMY_MIN_SPEED++;
     } else if (this.level > 5) {
         // More speed!!!
@@ -104,10 +105,6 @@ Game.prototype.endGame = function() {
 }
 
 Game.prototype.reset = function() {
-    GAME_OVER = false;
-    ENEMY_MAX_SPEED = 5;
-    ENEMY_MIN_SPEED = 1;
-
     // Reset properties
     this.level = 1;
     this.lives = 3;
@@ -115,7 +112,12 @@ Game.prototype.reset = function() {
     // Reset DOM interface
     this.interface.reset();
 
-    // Reset 
+    // Reset game constants
+    GAME_OVER = false;
+    ENEMY_MAX_SPEED = 5;
+    ENEMY_MIN_SPEED = 1;
+
+    // Reset canvas
     allEnemies = [];
     allEnemies.push(new Enemy());
 }
@@ -128,13 +130,16 @@ var Interface = function() {
     // Cache DOM objects
     this.$level = $("#game-level");
     this.$lifeBox = $("#lives");
+    this.$gameNotification = $(".game-notification");
 }
 
-Interface.prototype.updateLevel = function(level) {
+Interface.prototype.updateLevel = function(level) {    
     this.$level.text(level);
+
+    this.showNotification("level");
 }
 
-Interface.prototype.updateLife = function(numLifes) {
+Interface.prototype.updateLife = function(numLifes) {    
     var htmlLife = '<i class="fa fa-heart fa-fw"></i>';
 
     this.$lifeBox.empty();
@@ -142,12 +147,39 @@ Interface.prototype.updateLife = function(numLifes) {
     for (var i = 0; i < numLifes; i++) {
         this.$lifeBox.append(htmlLife);
     }
+
+    this.showNotification("life");  
+}
+
+Interface.prototype.showNotification = function(type) {
+    var htmlMsg;
+
+    if (type === "level") {
+        htmlMsg = "<h1>NICE - Level up!</h1>";
+        this.$gameNotification.removeClass("notify-bad");
+        console.log("showNotification level just ran")
+    }
+    else if (type === "life")  {
+        htmlMsg = "<h1>DOH - Life lost!</h1>";
+        this.$gameNotification.addClass("notify-bad");
+        console.log("showNotification life just ran")
+    }
+    else if (type === "game over") {
+        htmlMsg = "<h1>SHAME - GAME OVER</h1>";
+        this.$gameNotification.addClass("notify-bad");
+    }
+
+    this.$gameNotification.empty();
+    this.$gameNotification.append(htmlMsg);
+    this.$gameNotification.fadeIn(200);
+    this.$gameNotification.fadeOut(1500);
 }
 
 Interface.prototype.endGame = function() {
     // Replace lives with game over message
     var msg = "<p>Game Over</p>";
     this.$lifeBox.append(msg);
+    this.showNotification("game over");
 }
 
 Interface.prototype.reset = function() {

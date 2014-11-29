@@ -15,8 +15,8 @@ var PLAYER_FRAME = {
 var PLAYER_START_X = 200,
     PLAYER_START_Y = 380;
 
-var STEP_X = 101,
-    STEP_Y = 83;
+var PLAYER_STEP_X = 101,
+    PLAYER_STEP_Y = 83;
 
 var ENEMY_FRAME = {
     "left offset": 3,
@@ -25,10 +25,11 @@ var ENEMY_FRAME = {
     "sprite height": 170 
 }
 
-var ENEMY_X_STARTS = [-300, -200, -100, -50];
-var ENEMY_Y_STARTS = [60, 140, 225];
-var ENEMY_MAX_SPEED = 5;
-var ENEMY_MIN_SPEED = 1;
+var ENEMY_X_STARTS = [-300, -200, -100, -50],
+    ENEMY_Y_STARTS = [60, 140, 225];
+
+var ENEMY_MAX_SPEED = 5,
+    ENEMY_MIN_SPEED = 1;
 
 var GAME_OVER = false;
 
@@ -345,16 +346,16 @@ Player.prototype.handleInput = function(direction) {
     if (!GAME_OVER) {
         switch (direction) {
             case "left":
-                this.update("x", -STEP_X);
+                this.update("x", -PLAYER_STEP_X);
                 break;
             case "right":
-                this.update("x", STEP_X)
+                this.update("x", PLAYER_STEP_X)
                 break;
             case "up":
-                this.update("y", -STEP_Y)
+                this.update("y", -PLAYER_STEP_Y)
                 break;
             case "down":
-                this.update("y", STEP_Y);
+                this.update("y", PLAYER_STEP_Y);
                 break;
             default:
                 return;
@@ -391,6 +392,7 @@ document.addEventListener('keyup', function(e) {
 
 var resetButton = document.getElementById("btn-restart");
 
+// Listens for click event on restart button
 resetButton.addEventListener("click", function(e) {
     game.reset();
 })

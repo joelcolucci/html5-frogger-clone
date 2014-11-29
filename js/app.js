@@ -4,24 +4,35 @@
 
 // TODO:
     // Notifications
-        // "Level up"
-        // "Lost life"
-    // Notifications
         // Handle discrepancy between dom manip and effects
         // MAIN culprit is the showNotification() method on Interface
+    // Leader board
+        // Google app engine leader board on data store
+        // New points system???
     // REFACTOR
     // COMMENT
 
 
 
 
-/***** Game Constants *****/
+/***** Game Settings & Constants *****/
 
 var FINISH_LINE = 83,
     LEFT_WALL = -5,
     RIGHT_WALL = 500,
     TOP_WALL = -100,
     BOTTOM_WALL = 450;
+
+var DEFAULT_LIVES = 3,
+    DEFAULT_LEVEL = 1;
+
+var SPEED_MULTIPLIER = 100;
+
+var PLAYER_START_X = 200,
+    PLAYER_START_Y = 380;
+
+var PLAYER_STEP_X = 101,
+    PLAYER_STEP_Y = 83;
 
 var PLAYER_FRAME = {
     "left offset": 20,
@@ -30,11 +41,11 @@ var PLAYER_FRAME = {
     "sprite height": 170
 }
 
-var PLAYER_START_X = 200,
-    PLAYER_START_Y = 380;
+var ENEMY_X_STARTS = [-300, -200, -100, -50],
+    ENEMY_Y_STARTS = [60, 140, 225];
 
-var PLAYER_STEP_X = 101,
-    PLAYER_STEP_Y = 83;
+var ENEMY_MAX_SPEED = 5,
+    ENEMY_MIN_SPEED = 1;
 
 var ENEMY_FRAME = {
     "left offset": 3,
@@ -42,12 +53,6 @@ var ENEMY_FRAME = {
     "sprite width": 100,
     "sprite height": 170 
 }
-
-var ENEMY_X_STARTS = [-300, -200, -100, -50],
-    ENEMY_Y_STARTS = [60, 140, 225];
-
-var ENEMY_MAX_SPEED = 5,
-    ENEMY_MIN_SPEED = 1;
 
 var GAME_OVER = false;
 
@@ -71,8 +76,8 @@ function getRandomInt(min, max) {
  * @constructor
  */
 var Game = function() {
-    this.lives = 3;
-    this.level = 1;
+    this.lives = DEFAULT_LIVES;
+    this.level = DEFAULT_LEVEL;
 
     this.interface = new Interface();
 }
@@ -123,8 +128,8 @@ Game.prototype.endGame = function() {
 
 Game.prototype.reset = function() {
     // Reset properties
-    this.level = 1;
-    this.lives = 3;
+    this.level = DEFAULT_LEVEL;
+    this.lives = DEFAULT_LIVES;
 
     // Reset DOM interface
     this.interface.reset();
@@ -158,6 +163,7 @@ Interface.prototype.updateLevel = function(level) {
         this.showNotification("good", "WICKED - Level up!");
     }
 
+    // Update DOM with current level
     this.$level.text(level);
 }
 
@@ -176,7 +182,7 @@ Interface.prototype.updateLife = function(numLifes) {
 }
 
 Interface.prototype.showNotification = function(type, msg) {
-    // Apply appropriate css style
+    // Apply appropriate css class
     if (type === "good") {
         this.$gameNotification.removeClass("notify-bad");
     } else if (type === "bad") {
@@ -206,8 +212,8 @@ Interface.prototype.endGame = function() {
 
 Interface.prototype.reset = function() {
     // Reset DOM
-    this.updateLevel(1);
-    this.updateLife(3);
+    this.updateLevel(DEFAULT_LEVEL);
+    this.updateLife(DEFAULT_LIVES);
 }
 
 
@@ -236,7 +242,6 @@ Sprite.prototype.setCollisionFrame = function(settings) {
 var Enemy = function() {
     this.x = this.getRandomX();
     this.y = this.getRandomY();
-
     this.speed = this.getRandomSpeed();
     
     this.setCollisionFrame(ENEMY_FRAME);
@@ -252,6 +257,7 @@ Enemy.prototype.render = function() {
 }
 
 Enemy.prototype.getRandomX = function() {
+    // Get valid random index for ENEMY_X_STARTS array
     var len = ENEMY_X_STARTS.length;
     var rand = getRandomInt(0, len);
 
@@ -259,6 +265,7 @@ Enemy.prototype.getRandomX = function() {
 }
 
 Enemy.prototype.getRandomY = function() {
+    // Get valid random index for ENEMY_Y_STARTS array
     var len = ENEMY_Y_STARTS.length;
     var rand = getRandomInt(0, len);
 
@@ -266,6 +273,7 @@ Enemy.prototype.getRandomY = function() {
 }
 
 Enemy.prototype.getRandomSpeed = function() {
+    // Get random int within min and max speed constraints
     return getRandomInt(ENEMY_MIN_SPEED, ENEMY_MAX_SPEED);
 }
 
@@ -278,7 +286,7 @@ Enemy.prototype.reset = function() {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
-    var newX = (this.speed * 100 * dt) + this.x;
+    var newX = (this.speed * SPEED_MULTIPLIER * dt) + this.x;
 
     if (newX > RIGHT_WALL) {
         this.reset();

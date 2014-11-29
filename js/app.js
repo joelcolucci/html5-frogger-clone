@@ -152,26 +152,31 @@ var Interface = function() {
     this.$gameNotification = $(".game-notification");
 }
 
-Interface.prototype.updateLevel = function(level) {    
-    this.$level.text(level);
+Interface.prototype.updateLevel = function(level) {
+    // Prevent notification showing on game reset 
+    if (!GAME_OVER) {
+        this.showNotification("good", "WICKED - Level up!");
+    }
 
-    this.showNotification("good", "WICKED - Level up!");
+    this.$level.text(level);
 }
 
-Interface.prototype.updateLife = function(numLifes) {    
+Interface.prototype.updateLife = function(numLifes) {
+    // Prevent notification showing on game reset 
+    if (!GAME_OVER) {
+        this.showNotification("bad", "No! - Life lost!");      
+    }
+
     var htmlLife = '<i class="fa fa-heart fa-fw"></i>';
 
     this.$lifeBox.empty();
-
     for (var i = 0; i < numLifes; i++) {
         this.$lifeBox.append(htmlLife);
-    }
-
-    this.showNotification("bad", "No! - Life lost!");  
+    }   
 }
 
 Interface.prototype.showNotification = function(type, msg) {
-    // Determine notification box style
+    // Apply appropriate css style
     if (type === "good") {
         this.$gameNotification.removeClass("notify-bad");
     } else if (type === "bad") {
@@ -187,14 +192,16 @@ Interface.prototype.showNotification = function(type, msg) {
 
     // Diplay notification to user
     this.$gameNotification.fadeIn(100);
-    this.$gameNotification.fadeOut(1500);
+    this.$gameNotification.fadeOut(1200, "swing");
 }
 
 Interface.prototype.endGame = function() {
+    this.showNotification("bad", "Shameful - GAME OVER");
+    
     // Replace lives with game over message
     var msg = "<p>Game Over</p>";
     this.$lifeBox.append(msg);
-    this.showNotification("bad", "Shameful - GAME OVER");
+    
 }
 
 Interface.prototype.reset = function() {

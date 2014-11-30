@@ -14,7 +14,9 @@ tbody tr:hover {
   text-shadow: none;
 }
 
-
+.hidden {
+  display: none;
+}
 
 .title {
   letter-spacing: 2px;
@@ -77,4 +79,16 @@ i {
 .high-scores {
   width: 75%;
   margin: 0 auto;
+}
+
+
+/* Form Styles */
+form {
+  width: 75%;
+  margin: 0 auto;
+}
+#form-container {
+  height: 606px;
+  width: 505px;
+  padding-top: 100px;
 }

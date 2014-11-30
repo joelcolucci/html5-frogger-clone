@@ -28,6 +28,7 @@ class MainPage(webapp2.RequestHandler):
     #TODO: Post to datastore
     post = HighScore.newScore(initials, location, score)
     post.put()
+    self.redirect('/')
 
 
 
@@ -52,6 +53,7 @@ class HighScore(db.Model):
     highscores = q.order('-score').fetch(limit=5)
     return highscores
 
+### Utilities ###
 
 
 

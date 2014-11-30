@@ -12,7 +12,14 @@
     // FEATURE Extra life if necessary on every 5th level
     // Leader board
         // Google app engine leader board on data store
-        // New points system???
+        // SOMEHOW PREVENT BOGUS POSTS??? Salts?
+        // modal form for high score
+        // auto submit on game over
+    // Rolling scoreboard
+        // Numbers should roll into place and not jump!!!
+        // Add var points to game object
+        // add rollPoints method to interface object
+        // SOMEHOW SALT???
     // REFACTOR
     // COMMENT
 
@@ -28,7 +35,8 @@ var FINISH_LINE = 83,
     BOTTOM_WALL = 450;
 
 var DEFAULT_LIVES = 3,
-    DEFAULT_LEVEL = 1;
+    DEFAULT_LEVEL = 1,
+    DEFAULT_POINTS = 0;
 
 var SPEED_MULTIPLIER = 100;
 
@@ -72,6 +80,8 @@ function getRandomInt(min, max) {
 }
 
 
+// roll(5, 5);
+
 
 /***** Classes *****/
 
@@ -82,6 +92,7 @@ function getRandomInt(min, max) {
 var Game = function() {
     this.lives = DEFAULT_LIVES;
     this.level = DEFAULT_LEVEL;
+    this.points = DEFAULT_POINTS;
 
     this.interface = new Interface();
 }
@@ -165,6 +176,7 @@ var Interface = function() {
     this.$level = $("#game-level");
     this.$lifeBox = $("#lives");
     this.$gameNotification = $(".game-notification");
+    this.$gamePoints = $("#game-points");
 }
 
 Interface.prototype.updateLevel = function(level) {
@@ -175,6 +187,8 @@ Interface.prototype.updateLevel = function(level) {
 
     // Update DOM with current level
     this.$level.text(level);
+
+    this.updatePoints(100);
 }
 
 Interface.prototype.updateLife = function(numLifes) {
@@ -189,6 +203,21 @@ Interface.prototype.updateLife = function(numLifes) {
     for (var i = 0; i < numLifes; i++) {
         this.$lifeBox.append(htmlHeart);
     }   
+}
+
+Interface.prototype.updatePoints = function(newPoints) {
+    var points = parseInt(this.$gamePoints.text());
+    var target = points + newPoints;
+    var gmPt = document.getElementById("game-points");
+    
+    function render() {
+        gmPt.innerHTML = points;
+        if (points >= target) {
+            clearInterval(interval);
+        }
+        points++; 
+    }
+    var interval = setInterval(render, 1);
 }
 
 Interface.prototype.showNotification = function(type, msg) {
@@ -221,6 +250,8 @@ Interface.prototype.reset = function() {
     // Reset DOM
     this.updateLevel(DEFAULT_LEVEL);
     this.updateLife(DEFAULT_LIVES);
+
+    this.$gamePoints.text('0');
 }
 
 

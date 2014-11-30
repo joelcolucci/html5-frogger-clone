@@ -149,6 +149,9 @@ Game.prototype.reset = function() {
     // Reset canvas
     allEnemies = [];
     allEnemies.push(new Enemy());
+
+    // Notify user ready to go!
+    this.interface.showNotification("good", "New Game!");
 }
 
 
@@ -205,16 +208,13 @@ Interface.prototype.showNotification = function(type, msg) {
 
     // Diplay notification to user
     this.$gameNotification.fadeIn(100);
-    this.$gameNotification.fadeOut(1000, "swing");
+    if (!GAME_OVER) {
+        this.$gameNotification.fadeOut(1000, "swing");
+    }
 }
 
 Interface.prototype.endGame = function() {
     this.showNotification("bad", "GAME OVER");
-    
-    // Replace lives with game over message
-    var msg = "<p>Game Over</p>";
-    this.$lifeBox.append(msg);
-    
 }
 
 Interface.prototype.reset = function() {

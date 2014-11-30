@@ -131,6 +131,9 @@ Game.prototype.endGame = function() {
 }
 
 Game.prototype.reset = function() {
+    // End sure game over protocol trickles down
+    GAME_OVER = true;
+
     // Reset properties
     this.level = DEFAULT_LEVEL;
     this.lives = DEFAULT_LIVES;

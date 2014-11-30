@@ -177,7 +177,7 @@ Interface.prototype.updateLevel = function(level) {
 Interface.prototype.updateLife = function(numLifes) {
     // Prevent notification showing on game reset 
     if (!GAME_OVER) {
-        this.showNotification("bad", "No! - Life lost!");      
+        this.showNotification("bad", "Life lost!");      
     }
 
     var htmlHeart = '<i class="fa fa-heart fa-fw"></i>';
@@ -209,7 +209,7 @@ Interface.prototype.showNotification = function(type, msg) {
 }
 
 Interface.prototype.endGame = function() {
-    this.showNotification("bad", "Shameful - GAME OVER");
+    this.showNotification("bad", "GAME OVER");
     
     // Replace lives with game over message
     var msg = "<p>Game Over</p>";

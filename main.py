@@ -12,7 +12,6 @@ jinja_env = jinja2.Environment(
 ### Handlers ###
 class MainPage(webapp2.RequestHandler):
   def get(self):
-    # get top 5 scores
     highscores = HighScore.getTopFive()
 
     template = jinja_env.get_template('index.html')
@@ -26,7 +25,7 @@ class MainPage(webapp2.RequestHandler):
 
     #TODO: Validate form post
 
-    #TODO: Post to datastore
+    #Post to datastore
     post = HighScore.newScore(initials, location, score)
     post.put()
     self.redirect('/')
@@ -36,13 +35,9 @@ class MainPage(webapp2.RequestHandler):
 class JsonHandler(webapp2.RequestHandler):
   #SOURCE: Udacity Course: Web Dev - Lesson 5
   def get(self):
-    # get JSON
+    highscores = HighScore.getTopFive()
 
-    q = HighScore.all()
-    db.delete(q)
-    highscores = q.order('-score').fetch(limit=5)
-
-    # serve JSON
+    #Serve as JSON
     return self.render_json([s.as_dict() for s in highscores])
 
   #SOURCE: Udacity Course: Web Dev - Lesson 5
@@ -68,8 +63,6 @@ class HighScore(db.Model):
   @classmethod
   def getTopFive(cls):
     """ Retrieve top 5 highscores """
-    # Similar to line 317 of web dev
-    #test = GqlQuery("SELECT * FROM HighScore ORDER BY score DESC LIMIT 5")
     q = HighScore.all()
     highscores = q.order('-score').fetch(limit=5)
     return highscores

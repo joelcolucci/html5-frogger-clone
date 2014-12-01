@@ -129,7 +129,7 @@ Game.prototype.addLevel = function() {
     var pointsEarned = 25;
 
     // Bonus time?
-    if (this.level % 5 === 0) {
+    if (this.level % 4 === 0) {
         if (this.lives === 3) {
             // Reward no lives lost
             pointsEarned += 50;

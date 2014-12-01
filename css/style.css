@@ -21,20 +21,36 @@ tbody tr:hover {
 .title {
   letter-spacing: 2px;
 }
+.primary-heading,
+.sub-heading {
+  color: #fafafa;
+}
+.sub-heading {
+  margin-top: 5px;
+}
 
+
+
+.board-level,
+.board-points {
+  display: inline-block;
+}
+.board-points {
+  margin-left: 20px;
+}
 .game-board {
-  height: 125px;
-  width: 225px;
+  height: 110px;
+  width: 180px;
   margin: 0 auto;
-  padding: 15px;
+  padding: 14px;
   background: rgba(255, 255, 255, .1);
   border: 1px solid #aaa;
-  font-size: 62px;
+  font-size: 52px;
   letter-spacing: 2px;
 }
 
 .game-instructions {
-  padding-top: 50px;
+  padding-top: 10px;
 }
 
 /* Game Notification Styles */
@@ -71,13 +87,10 @@ i {
 }
 
 /* Scoreboard */
-.half-width {
-  display: inline-block;
-  width: 49%;
-}
+
 /* High scores table container */
 .high-scores {
-  width: 75%;
+  width: 385px;
   margin: 0 auto;
 }
 

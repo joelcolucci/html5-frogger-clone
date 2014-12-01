@@ -80,8 +80,6 @@ function getRandomInt(min, max) {
 }
 
 
-// roll(5, 5);
-
 
 /***** Classes *****/
 
@@ -188,7 +186,7 @@ Interface.prototype.updateLevel = function(level) {
     // Update DOM with current level
     this.$level.text(level);
 
-    this.updatePoints(100);
+    this.updatePoints(25);
 }
 
 Interface.prototype.updateLife = function(numLifes) {

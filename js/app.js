@@ -103,16 +103,43 @@ Game.prototype.addLevel = function() {
     this.interface.updateLevel(this.level);
 
     // Increase difficulty
-    if (this.level > 10 && ENEMY_MAX_SPEED > ENEMY_MIN_SPEED) {
+    if (this.level > 14) {
+        allEnemies.pop();
+    }
+    else if (this.level > 10) {
+        allEnemies = [
+            new Enemy(),
+            new Enemy(),
+            new Enemy(),
+            new Enemy()
+        ]
+        // More speed!!!
+        ENEMY_MAX_SPEED++;
         // Less slow pokes!!!
         ENEMY_MIN_SPEED++;
     } else if (this.level > 5) {
-        // More speed!!!
-        ENEMY_MAX_SPEED++;
+
+        // Switch to Swarms
+
     } else {
         // More enemies!!!
         allEnemies.push(new Enemy());
     }
+
+    var pointsEarned = 25;
+
+    // Bonus time?
+    if (this.level % 5 === 0) {
+        if (this.lives === 3) {
+            // Reward no lives lost
+            pointsEarned += 50;
+        } else {
+            // Throw a dog a bone
+            this.addLife();
+        }
+    }
+    
+    this.addPoints(pointsEarned);
 }
 
 Game.prototype.subtractLife = function() {
@@ -120,12 +147,26 @@ Game.prototype.subtractLife = function() {
     this.lives--;
 
     // Update the DOM
-    this.interface.updateLife(this.lives);
+    this.interface.updateLife(this.lives, true);
 
     // Check for end of game
     if (this.lives === 0) {
         this.endGame();
     }
+}
+
+Game.prototype.addLife = function() {
+    // Add life
+    this.lives++;
+
+    // Update the Dom
+    this.interface.updateLife(this.lives);
+}
+
+Game.prototype.addPoints = function(points) {
+    this.points += points;
+
+    this.interface.updatePoints(points);
 }
 
 Game.prototype.endGame = function() {
@@ -146,6 +187,7 @@ Game.prototype.reset = function() {
     // Reset properties
     this.level = DEFAULT_LEVEL;
     this.lives = DEFAULT_LIVES;
+    this.points = DEFAULT_POINTS;
 
     // Reset DOM interface
     this.interface.reset();
@@ -185,14 +227,14 @@ Interface.prototype.updateLevel = function(level) {
 
     // Update DOM with current level
     this.$level.text(level);
-
-    this.updatePoints(25);
 }
 
-Interface.prototype.updateLife = function(numLifes) {
+Interface.prototype.updateLife = function(numLifes, isBad) {
     // Prevent notification showing on game reset 
     if (!GAME_OVER) {
-        this.showNotification("bad", "Life lost!");      
+        if (isBad) {
+            this.showNotification("bad", "Life lost!"); 
+        } 
     }
 
     var htmlHeart = '<i class="fa fa-heart fa-fw"></i>';

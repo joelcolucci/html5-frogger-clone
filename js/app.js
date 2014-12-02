@@ -113,15 +113,26 @@ Game.prototype.addLevel = function() {
             allEnemies.push(new Enemy());
             break;
         case 5:
-            this.swarm.spawn("pattern1");
+            this.swarm.spawn("pattern1", 2);
             break;
         case 6:
+            this.swarm.spawn("pattern2", 3);
+            break;
         case 7:
+            this.swarm.spawn("pattern2", 4)
+            break;
         case 8:
+            this.swarm.spawn("pattern3", 3);
+            break;
         case 9:
-            this.swarm.spawn("pattern2");
+            this.swarm.spawn("pattern3", 4);
             break;
         case 10:
+            // More speed!!!
+            ENEMY_MAX_SPEED++;
+            // Less slow pokes!!!
+            ENEMY_MIN_SPEED++;
+            
             // Toast the swarms
             allEnemies = [
                 new Enemy(),
@@ -132,6 +143,10 @@ Game.prototype.addLevel = function() {
             break;
         case 13:
             allEnemies.pop();
+            console.log("level 13");
+            break;
+        case 15:
+            allEnemies.pop();
             break;
         default:
             // More speed!!!
@@ -140,7 +155,7 @@ Game.prototype.addLevel = function() {
             ENEMY_MIN_SPEED++;
     }
 
-    
+
 
     var pointsEarned = 25;
     // Bonus time?
@@ -400,18 +415,23 @@ var Swarm = function() {
     // Factory of Swarmees
 
 }
-Swarm.prototype.spawn = function(pattern) {
+Swarm.prototype.spawn = function(pattern, speed) {
     // Handler for creation
     var patterns = {
         pattern1: {
-            xCoords: [-20, -70, -120],
+            xCoords: [-150, -100, -50],
             yCoords: ENEMY_Y_STARTS,
-            speed: 2
+            speed: speed
         },
         pattern2: {
-            xCoords: [-120, -70, -20],
+            xCoords: [-50, -100, -150],
             yCoords: ENEMY_Y_STARTS,
-            speed: 2
+            speed: speed
+        },
+        pattern3: {
+            xCoords: [-125, -50, -125],
+            yCoords: ENEMY_Y_STARTS,
+            speed: speed
         }
     };
 

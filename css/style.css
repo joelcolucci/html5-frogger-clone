@@ -109,12 +109,24 @@ a:hover {
 
 
 /* Form Styles */
-form {
-  width: 75%;
-  margin: 0 auto;
+
+/* Bootstrap over ride */
+.form-group {
+  margin-bottom: 10px;
 }
-#form-container {
-  height: 606px;
+#form-shell {
+  position: absolute;
   width: 505px;
-  padding-top: 100px;
+}
+.form-box {
+  margin: 150px 65px 0;
+  padding: 10px 20px;
+  background: #fff;
+  border-radius: 5px;
+  color: #333;
+  box-shadow: 0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24); /* lower hover */
+  box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28); /* high hover */
+}
+.form-box h2 {
+  margin: 10px 0 11px;
 }

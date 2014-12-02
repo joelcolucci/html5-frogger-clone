@@ -13,7 +13,12 @@ tbody tr:hover {
   color: #333;
   text-shadow: none;
 }
-
+a {
+  color: #fff;
+}
+a:hover {
+  color: #ddd;
+}
 .hidden {
   display: none;
 }
@@ -29,6 +34,14 @@ tbody tr:hover {
   margin-top: 5px;
 }
 
+
+.social-media {
+  padding-left: 10px;
+  font-size: 36px;
+}
+.inline {
+  display: inline-block;
+}
 
 
 .board-level,
@@ -75,7 +88,7 @@ tbody tr:hover {
   font-size: 56px;
   color: rgba(255, 0, 0, .8);
 }
-i {
+.fa-heart {
   margin-left: -10px;
 }
 /* Modal Styles */

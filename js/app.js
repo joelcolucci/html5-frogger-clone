@@ -93,6 +93,7 @@ var Game = function() {
     this.points = DEFAULT_POINTS;
 
     this.interface = new Interface();
+    this.swarm = new Swarm();
 }
 
 Game.prototype.addLevel = function() {
@@ -103,31 +104,45 @@ Game.prototype.addLevel = function() {
     this.interface.updateLevel(this.level);
 
     // Increase difficulty
-    if (this.level > 14) {
-        allEnemies.pop();
+    switch (this.level) {
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+            // More enemies!!!
+            allEnemies.push(new Enemy());
+            break;
+        case 5:
+            this.swarm.spawn("pattern1");
+            break;
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+            this.swarm.spawn("pattern2");
+            break;
+        case 10:
+            // Toast the swarms
+            allEnemies = [
+                new Enemy(),
+                new Enemy(),
+                new Enemy(),
+                new Enemy()
+            ];
+            break;
+        case 13:
+            allEnemies.pop();
+            break;
+        default:
+            // More speed!!!
+            ENEMY_MAX_SPEED++;
+            // Less slow pokes!!!
+            ENEMY_MIN_SPEED++;
     }
-    else if (this.level > 10) {
-        allEnemies = [
-            new Enemy(),
-            new Enemy(),
-            new Enemy(),
-            new Enemy()
-        ]
-        // More speed!!!
-        ENEMY_MAX_SPEED++;
-        // Less slow pokes!!!
-        ENEMY_MIN_SPEED++;
-    } else if (this.level > 5) {
 
-        // Switch to Swarms
-
-    } else {
-        // More enemies!!!
-        allEnemies.push(new Enemy());
-    }
+    
 
     var pointsEarned = 25;
-
     // Bonus time?
     if (this.level % 4 === 0) {
         if (this.lives === 3) {
@@ -310,7 +325,9 @@ Sprite.prototype.setCollisionFrame = function(settings) {
     this.top = this.y + settings["top offset"];
     this.bottom = this.y + settings["sprite height"];   
 }
-
+Sprite.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
 
 
 /** 
@@ -330,10 +347,6 @@ var Enemy = function() {
 Enemy.prototype = Object.create(Sprite.prototype);
 Enemy.prototype.constructor = Enemy;
 
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
@@ -380,6 +393,66 @@ Enemy.prototype.getRandomSpeed = function() {
 
 
 /** 
+ * A Swarm
+ * @constructor
+ */
+var Swarm = function() {
+    // Factory of Swarmees
+
+}
+Swarm.prototype.spawn = function(pattern) {
+    // Handler for creation
+    var patterns = {
+        pattern1: {
+            xCoords: [-20, -70, -120],
+            yCoords: ENEMY_Y_STARTS,
+            speed: 2
+        },
+        pattern2: {
+            xCoords: [-120, -70, -20],
+            yCoords: ENEMY_Y_STARTS,
+            speed: 2
+        }
+    };
+
+    allEnemies = [];
+    this.createPattern(patterns[pattern]);
+}
+Swarm.prototype.createPattern = function(options) {
+    for (var i = 0; i < 3; i++) {
+        var swarmee = new Swarmee({
+            x: options.xCoords[i],
+            y: options.yCoords[i],
+            speed: options.speed
+        });
+
+        allEnemies.push(swarmee);
+    }
+}
+
+/** 
+ * A Swarmee
+ * @constructor
+ */
+var Swarmee = function(options) {
+    this.x = options.x;
+    this.y = options.y;
+    this.speed = options.speed;
+
+    this.startX = this.x;
+
+    this.sprite = 'images/enemy-bug.png';
+}
+Swarmee.prototype = Object.create(Enemy.prototype);
+Swarmee.prototype.constructor = Swarmee;
+
+Swarmee.prototype.reset = function() {
+    this.x = this.startX;
+}
+
+
+
+/** 
  * A Player
  * @constructor
  */
@@ -395,10 +468,6 @@ var Player = function() {
 Player.prototype = Object.create(Sprite.prototype);
 Player.prototype.constructor = Player;
 
-// Draw the player on the screen, required method for game
-Player.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
 
 Player.prototype.update = function(axis, step) {
     var collisionDetected = this.checkForCollisions();

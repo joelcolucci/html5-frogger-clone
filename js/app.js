@@ -248,6 +248,7 @@ var Interface = function() {
     this.$gameNotification = $(".game-notification");
     this.$gamePoints = $("#game-points");
     this.$scoreForm = $("#form-shell");
+    this.$scoreInput = $("#score");
 }
 
 Interface.prototype.updateLevel = function(level) {
@@ -288,7 +289,12 @@ Interface.prototype.updatePoints = function(newPoints) {
         }
         points++; 
     }
+    // Roll score
     var interval = setInterval(render, 1);
+
+    // Add score to form
+    this.$scoreInput.val(target);
+
 }
 
 Interface.prototype.showNotification = function(type, msg) {

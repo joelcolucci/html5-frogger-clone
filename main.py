@@ -12,18 +12,20 @@ jinja_env = jinja2.Environment(
 ### Handlers ###
 class MainPage(webapp2.RequestHandler):
   def get(self):
-    highscores = HighScore.getTopFive()
+    #highscores = HighScore.getTopFive()
 
     template = jinja_env.get_template('index.html')
-    self.response.write(template.render(highscores = highscores))
+    self.response.write(template.render())
 
   def post(self):
     #Get the parameters from the request
     initials = self.request.get('initials')
     location = self.request.get('location')
-    score = int(self.request.get('score'))
+    score = self.request.get('score')
 
     #TODO: Validate form post
+    if score:
+      score = int(score)
 
     #Post to datastore
     post = HighScore.newScore(initials, location, score)
@@ -39,6 +41,12 @@ class JsonHandler(webapp2.RequestHandler):
 
     #Serve as JSON
     return self.render_json([s.as_dict() for s in highscores])
+
+  #def post(self):
+    # get form data
+    # validate form data
+    # add to datastore
+    # return json data
 
   #SOURCE: Udacity Course: Web Dev - Lesson 5
   def render_json(self, d):

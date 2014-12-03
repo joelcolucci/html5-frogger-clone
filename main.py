@@ -3,6 +3,8 @@ import webapp2
 import jinja2
 import json
 
+import logging
+
 from google.appengine.ext import db
 
 file_dir = os.path.join(os.path.dirname(__file__))
@@ -23,6 +25,10 @@ class MainPage(webapp2.RequestHandler):
     location = self.request.get('location')
     score = self.request.get('score')
 
+    # logging.error("value of initials is %s", str(initials))
+    # logging.error("value of location is %s", str(location))
+    # logging.error("value of score is %s", str(score))
+    
     #TODO: Validate form post
     if score:
       score = int(score)
@@ -30,7 +36,7 @@ class MainPage(webapp2.RequestHandler):
     #Post to datastore
     post = HighScore.newScore(initials, location, score)
     post.put()
-    self.redirect('/')
+    
 
 
 
@@ -73,6 +79,7 @@ class HighScore(db.Model):
     """ Retrieve top 5 highscores """
     q = HighScore.all()
     highscores = q.order('-score').fetch(limit=5)
+    # db.delete(q)
     return highscores
 
   #SOURCE: Udacity Course: Web Dev - Lesson 5

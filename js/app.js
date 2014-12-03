@@ -294,7 +294,6 @@ Interface.prototype.updatePoints = function(newPoints) {
 
     // Add score to form
     this.$scoreInput.val(target);
-
 }
 
 Interface.prototype.showNotification = function(type, msg) {
@@ -332,8 +331,9 @@ Interface.prototype.reset = function() {
     // Reset DOM
     this.updateLevel(DEFAULT_LEVEL);
     this.updateLife(DEFAULT_LIVES);
-    this.toggleForm();
-
+    if (!GAME_OVER) {
+        this.toggleForm();
+    }
     this.$gamePoints.text('0');
 }
 

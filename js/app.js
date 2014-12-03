@@ -247,6 +247,7 @@ var Interface = function() {
     this.$lifeBox = $("#lives");
     this.$gameNotification = $(".game-notification");
     this.$gamePoints = $("#game-points");
+    this.$scoreForm = $("#form-shell");
 }
 
 Interface.prototype.updateLevel = function(level) {
@@ -312,14 +313,20 @@ Interface.prototype.showNotification = function(type, msg) {
     }
 }
 
+Interface.prototype.toggleForm = function() {
+    this.$scoreForm.toggleClass("hidden");
+}
+
 Interface.prototype.endGame = function() {
     this.showNotification("bad", "GAME OVER");
+    this.toggleForm();
 }
 
 Interface.prototype.reset = function() {
     // Reset DOM
     this.updateLevel(DEFAULT_LEVEL);
     this.updateLife(DEFAULT_LIVES);
+    this.toggleForm();
 
     this.$gamePoints.text('0');
 }

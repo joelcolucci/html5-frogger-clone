@@ -318,22 +318,24 @@ Interface.prototype.showNotification = function(type, msg) {
     }
 }
 
-Interface.prototype.toggleForm = function() {
-    this.$scoreForm.toggleClass("hidden");
+Interface.prototype.displayForm = function(bool) {
+    if (bool) {
+        this.$scoreForm.removeClass("hidden");
+        return;
+    }
+    this.$scoreForm.addClass("hidden");
 }
 
 Interface.prototype.endGame = function() {
     this.showNotification("bad", "GAME OVER");
-    this.toggleForm();
+    this.displayForm(true);
 }
 
 Interface.prototype.reset = function() {
     // Reset DOM
     this.updateLevel(DEFAULT_LEVEL);
     this.updateLife(DEFAULT_LIVES);
-    if (!GAME_OVER) {
-        this.toggleForm();
-    }
+    this.displayForm(false);
     this.$gamePoints.text('0');
 }
 

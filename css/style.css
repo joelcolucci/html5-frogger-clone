@@ -1,3 +1,4 @@
+/* General Styles */
 body {
   background: #333;
   box-shadow: inset 0 0 100px rgba(0,0,0,.5);
@@ -19,6 +20,9 @@ a {
 a:hover {
   color: #ddd;
 }
+
+
+/* Helper Classes */
 .hidden {
   display: none;
 }
@@ -26,31 +30,36 @@ a:hover {
 .title {
   letter-spacing: 2px;
 }
+
 .primary-heading,
 .sub-heading {
   color: #fafafa;
 }
+
 .sub-heading {
   margin-top: 5px;
 }
 
+.inline {
+  display: inline-block;
+}
 
 .social-media {
   padding-left: 10px;
   font-size: 36px;
 }
-.inline {
-  display: inline-block;
-}
 
 
+/* Scoreboard Styles */
 .board-level,
 .board-points {
   display: inline-block;
 }
+
 .board-points {
   margin-left: 20px;
 }
+
 .game-board {
   height: 110px;
   width: 180px;
@@ -62,14 +71,15 @@ a:hover {
   letter-spacing: 2px;
 }
 
-.game-instructions {
-  padding-top: 10px;
+/* High scores table container */
+.high-scores {
+  width: 385px;
+  margin: 0 auto;
 }
 
+
+
 /* Game Notification Styles */
-#game-canvas {
-/*  position: absolute;*/
-}
 .game-notification {
   display: none;
   position: absolute;
@@ -78,9 +88,11 @@ a:hover {
   margin: 50px 0 0;
   background: rgba(0, 255, 0, .6);
 }
+
 .notify-bad {
   background: rgba(255, 0, 0, .6);
 }
+
 .game-lives {
   position: absolute;
   bottom: 30px;
@@ -88,36 +100,39 @@ a:hover {
   font-size: 56px;
   color: rgba(255, 0, 0, .8);
 }
+
 .fa-heart {
   margin-left: -10px;
 }
+
+
+
+
 /* Modal Styles */
 .modal {
   color: #333;
 }
+
 .modal h3:first-child {
   margin-top: 0;
 }
 
-/* Scoreboard */
-
-/* High scores table container */
-.high-scores {
-  width: 385px;
-  margin: 0 auto;
+.game-instructions {
+  padding-top: 10px;
 }
 
 
-/* Form Styles */
-
+/* Submit Score Form */
 /* Bootstrap over ride */
 .form-group {
   margin-bottom: 10px;
 }
+
 #form-shell {
   position: absolute;
   width: 505px;
 }
+
 .form-box {
   margin: 150px 65px 0;
   padding: 10px 20px;
@@ -127,6 +142,7 @@ a:hover {
   box-shadow: 0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24); /* lower hover */
   box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28); /* high hover */
 }
+
 .form-box h2 {
   margin: 10px 0 11px;
 }

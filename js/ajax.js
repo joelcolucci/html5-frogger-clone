@@ -7,6 +7,7 @@ $(document).ready(function(){
     event.preventDefault();
 
     var postData = $(this).serializeArray();
+
     $.ajax({
       type: "POST",
       url: "/json",
@@ -15,7 +16,29 @@ $(document).ready(function(){
     }).error(function(){
       // TODO: Add error handling
     });
+
+    // Notify user that AJAX is working
+    // Disable button
+    $("#myButton").text("Working...").attr("disabled", true);
+    // Disable input
+    $("#SuperForm input").attr("disabled", true);
+    // Change button to "loading"
+    // Show the spinner in the middle of the page
+
+
   }); // End Form Submit
+
+// // Adds event listener and action to restart button
+// var resetButton = document.getElementById("btn-restart");
+
+// resetButton.addEventListener("click", function(e) {
+//     game.reset();
+// })
+
+  $(".btn-restart").on("click", function() {
+    game.reset();
+  }); // End btn click
+
 
   /**
    * Load high scores on on page load
@@ -57,10 +80,14 @@ $(document).ready(function(){
   }
 
   function onSubmitSuccess(data) {
+    loadScores(data);
     console.log("POSTED");
     console.log(data);
-    $("#myButton").text("Play again!");
-    loadScores(data);
+    $(".form-title").text("Score Submitted!")
+    $("#SuperForm").slideUp()
+
+    $(".btn-restart").removeClass("hidden");
+  
   }
 
 }); // End document.ready

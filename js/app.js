@@ -248,7 +248,9 @@ var Interface = function() {
     this.$gameNotification = $(".game-notification");
     this.$gamePoints = $("#game-points");
     this.$scoreForm = $("#form-shell");
+    this.$form = $("#SuperForm");
     this.$scoreInput = $("#score");
+    this.$btnRestart = $("#form-shell .btn-restart");
 }
 
 Interface.prototype.updateLevel = function(level) {
@@ -337,6 +339,11 @@ Interface.prototype.reset = function() {
     this.updateLife(DEFAULT_LIVES);
     this.displayForm(false);
     this.$gamePoints.text('0');
+    this.$form.show()
+    $("#SuperForm input").attr("disabled", false);
+    $("#myButton").attr("disabled", false).text("Submit");
+    this.$btnRestart.hide();
+
 }
 
 
@@ -611,10 +618,3 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
-
-// Adds event listener and action to restart button
-var resetButton = document.getElementById("btn-restart");
-
-resetButton.addEventListener("click", function(e) {
-    game.reset();
-})

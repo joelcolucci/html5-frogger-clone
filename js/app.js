@@ -271,7 +271,7 @@ Interface.prototype.updateLife = function(numLifes, isBad) {
         } 
     }
 
-    var htmlHeart = '<i class="fa fa-heart fa-fw gm-icon"></i>';
+    var htmlHeart = '<i class="fa fa-heart fa-fw gm-heart"></i>';
 
     this.$lifeBox.empty();
     for (var i = 0; i < numLifes; i++) {

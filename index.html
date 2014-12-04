@@ -21,8 +21,8 @@
           </div>
           <div class="inline-box social-media-box">
             <span> - </span>
-            <a href="https://github.com/jcoluch" target="_blank"><i class="fa fa-github fa-fw"></i></a>
-            <a href="https://www.linkedin.com/in/joelcolucci" target="_blank"><i class="fa fa-linkedin fa-fw"></i></a>
+            <a class="social-media-link" href="https://github.com/jcoluch" target="_blank"><i class="fa fa-github fa-fw"></i></a>
+            <a class="social-media-link" href="https://www.linkedin.com/in/joelcolucci" target="_blank"><i class="fa fa-linkedin fa-fw"></i></a>
           </div>
         </div>
 
@@ -53,6 +53,7 @@
 
         <div>
           <h2 class="primary-heading">Top 5 Scores</h2>
+
           <div class="table-box">
             <table id="high-scores-table" class="table table-condensed table-hover table-dark">
               <thead>
@@ -65,11 +66,12 @@
                 <!-- Data will load via AJAX -->
               </tbody>
             </table>
-          </div> <!-- End high-scores -->
+          </div> <!-- End table-box -->
+
         </div>
 
 
-        <div class="game-instructions text-center">
+        <div class="text-center">
           <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
 Instructions</button>
           <button type="button" class="btn btn-warning btn-lg btn-restart">Restart</button>
@@ -109,12 +111,12 @@ Instructions</button>
 
         <div>
           <div class="alert-box gm-alert-box text-center">
-            <!-- JS fills content -->
+            <!-- Content inserted by app.js -->
           </div>
           <div id="life-box" class="gm-icon-box">
-            <i class="fa fa-heart fa-fw gm-icon"></i>
-            <i class="fa fa-heart fa-fw gm-icon"></i>
-            <i class="fa fa-heart fa-fw gm-icon"></i>
+            <i class="fa fa-heart fa-fw gm-heart"></i>
+            <i class="fa fa-heart fa-fw gm-heart"></i>
+            <i class="fa fa-heart fa-fw gm-heart"></i>
           </div>
           <div id="gm-canvas">
             <!-- Canvas inserted by engine.js -->

@@ -15,7 +15,6 @@ jinja_env = jinja2.Environment(
 class MainPage(webapp2.RequestHandler):
   def get(self):
     #highscores = HighScore.getTopFive()
-
     template = jinja_env.get_template('index.html')
     self.response.write(template.render())
 
@@ -43,16 +42,32 @@ class MainPage(webapp2.RequestHandler):
 class JsonHandler(webapp2.RequestHandler):
   #SOURCE: Udacity Course: Web Dev - Lesson 5
   def get(self):
-    highscores = HighScore.getTopFive()
+    return self.getHighScoresAsJson()
 
+  def post(self):
+    #Get the parameters from the request
+    initials = self.request.get('initials')
+    location = self.request.get('location')
+    score = self.request.get('score')
+
+    # logging.error("value of initials is %s", str(initials))
+    # logging.error("value of location is %s", str(location))
+    # logging.error("value of score is %s", str(score))
+    
+    #TODO: Validate form post
+    if score:
+      score = int(score)
+
+    #Post to datastore
+    post = HighScore.newScore(initials, location, score)
+    post.put()
+
+    return self.getHighScoresAsJson()
+
+  def getHighScoresAsJson(self):
+    highscores = HighScore.getTopFive()
     #Serve as JSON
     return self.render_json([s.as_dict() for s in highscores])
-
-  #def post(self):
-    # get form data
-    # validate form data
-    # add to datastore
-    # return json data
 
   #SOURCE: Udacity Course: Web Dev - Lesson 5
   def render_json(self, d):
@@ -80,6 +95,7 @@ class HighScore(db.Model):
     q = HighScore.all()
     highscores = q.order('-score').fetch(limit=5)
     # db.delete(q)
+
     return highscores
 
   #SOURCE: Udacity Course: Web Dev - Lesson 5

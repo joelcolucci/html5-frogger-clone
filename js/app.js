@@ -244,8 +244,8 @@ Game.prototype.reset = function() {
 var Interface = function() {
     // Cache DOM objects
     this.$level = $("#game-level");
-    this.$lifeBox = $("#lives");
-    this.$gameNotification = $(".game-notification");
+    this.$lifeBox = $("#life-box");
+    this.$gameNotification = $(".gm-alert-box");
     this.$gamePoints = $("#game-points");
     this.$scoreForm = $("#form-shell");
     this.$form = $("#SuperForm");
@@ -271,7 +271,7 @@ Interface.prototype.updateLife = function(numLifes, isBad) {
         } 
     }
 
-    var htmlHeart = '<i class="fa fa-heart fa-fw"></i>';
+    var htmlHeart = '<i class="fa fa-heart fa-fw gm-icon"></i>';
 
     this.$lifeBox.empty();
     for (var i = 0; i < numLifes; i++) {
@@ -301,9 +301,9 @@ Interface.prototype.updatePoints = function(newPoints) {
 Interface.prototype.showNotification = function(type, msg) {
     // Apply appropriate css class
     if (type === "good") {
-        this.$gameNotification.removeClass("notify-bad");
+        this.$gameNotification.removeClass("alert-negative");
     } else if (type === "bad") {
-        this.$gameNotification.addClass("notify-bad");
+        this.$gameNotification.addClass("alert-negative");
     }
 
     // Construct HTML message

@@ -16,10 +16,10 @@
 
 
         <div>
-          <div class="inline">
-            <h1 class="title">ArcadeGame2000</h1>
+          <div class="inline-box">
+            <h1 class="super-title">ArcadeGame2000</h1>
           </div>
-          <div class="inline social-media">
+          <div class="inline-box social-media-box">
             <span> - </span>
             <a href="https://github.com/jcoluch" target="_blank"><i class="fa fa-github fa-fw"></i></a>
             <a href="https://www.linkedin.com/in/joelcolucci" target="_blank"><i class="fa fa-linkedin fa-fw"></i></a>
@@ -27,27 +27,34 @@
         </div>
 
 
-        <div class="score-board text-center">
-          <h2 class="primary-heading text-left">Scoreboard</h2>
-          <div class="board-level">
-            <h3 class="sub-heading">Current Level</h3>
-            <div class="game-board text-center">
-              <span id="game-level">1</span>
+        <div>
+          <h2 class="primary-heading">Scoreboard</h2>
+
+          <div class="text-center">
+
+            <div class="inline-box">
+              <h3 class="sub-heading">Current Level</h3>
+              <div class="gm-score-box">
+                <span id="game-level">1</span>
+              </div>
             </div>
-          </div>
-          <div class="board-points">
-            <h3 class="sub-heading">Total Points</h3>
-            <div class="game-board text-right">
-              <span id="game-points">0</span>
+
+            <div class="inline-box">
+              <h3 class="sub-heading">Total Points</h3>
+              <div class="gm-score-box text-right">
+                <span id="game-points">0</span>
+              </div>
             </div>
+
           </div>
+
         </div>
 
 
-        <div class="top-scores-board">
+        <div>
           <h2 class="primary-heading">Top 5 Scores</h2>
-          <div class="high-scores">
-            <table id="high-scores-table" class="table table-condensed table-hover">
+          <div class="table-box">
+            <table id="high-scores-table" class="table table-condensed table-hover table-dark">
               <thead>
                 <th scope="col">Rank</th>
                 <th scope="col">Player</th>
@@ -67,10 +74,14 @@
 Instructions</button>
           <button type="button" class="btn btn-warning btn-lg btn-restart">Restart</button>
         </div>
+
+
       </div> <!-- End col-md-6 -->
 
 
       <div class="col-md-6">
+
+
         <div id="form-shell" class="hidden">
           <div class="form-box">
             <h2 class="text-center form-title">Submit your score!</h2>
@@ -96,15 +107,20 @@ Instructions</button>
 
 
 
-        <div id="game-canvas" class="">
-          <div class="game-notification text-center"></div>
-          <div id="lives" class="game-lives">
-            <i class="fa fa-heart fa-fw"></i>
-            <i class="fa fa-heart fa-fw"></i>
-            <i class="fa fa-heart fa-fw"></i>
+        <div>
+          <div class="alert-box gm-alert-box text-center">
+            <!-- JS fills content -->
           </div>
-          <!-- Canvas inserted by engine.js -->
-        </div> <!-- End game-canvas -->
+          <div id="life-box" class="gm-icon-box">
+            <i class="fa fa-heart fa-fw gm-icon"></i>
+            <i class="fa fa-heart fa-fw gm-icon"></i>
+            <i class="fa fa-heart fa-fw gm-icon"></i>
+          </div>
+          <div id="gm-canvas">
+            <!-- Canvas inserted by engine.js -->
+          </div>
+        </div> 
+
       </div> <!-- End col-md-6 -->
 
 

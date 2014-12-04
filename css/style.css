@@ -1,19 +1,12 @@
-/* General Styles */
+/*------------------------------------*\
+    #GENERAL-STYLES
+\*------------------------------------*/
 body {
   background: #333;
   box-shadow: inset 0 0 100px rgba(0,0,0,.5);
   color: #fff;
 }
 
-/* Table styles */
-tbody {
-  background: rgba(255, 255, 255, .1);
-
-}
-tbody tr:hover {
-  color: #333;
-  text-shadow: none;
-}
 a {
   color: #fff;
 }
@@ -22,13 +15,19 @@ a:hover {
 }
 
 
-/* Helper Classes */
-.hidden {
-  display: none;
+
+
+
+/*------------------------------------*\
+    #HELPER-STYLES
+\*------------------------------------*/
+
+.super-title {
+  letter-spacing: 2px;
 }
 
-.title {
-  letter-spacing: 2px;
+.sub-title {
+
 }
 
 .primary-heading,
@@ -40,27 +39,62 @@ a:hover {
   margin-top: 5px;
 }
 
-.inline {
-  display: inline-block;
-}
 
-.social-media {
+.social-media-box {
   padding-left: 10px;
   font-size: 36px;
 }
 
+.social-media-stacked {
 
-/* Scoreboard Styles */
-.board-level,
-.board-points {
+}
+
+.alert-box {
+  display: none;
+  width: 505px;
+  height: 83px;
+  background: rgba(0, 255, 0, .6);
+}
+
+.alert-positive {
+  background: rgba(0, 255, 0, .6);
+}
+
+.alert-negative {
+  background: rgba(255, 0, 0, .6);
+}
+
+
+.table-box {
+  padding: 0 10%;
+}
+
+.table-dark tbody {
+  background: rgba(255, 255, 255, .1);
+}
+
+.table-dark tbody tr:hover {
+  color: #333;
+  text-shadow: none;
+}
+
+
+.inline-box {
   display: inline-block;
 }
 
-.board-points {
-  margin-left: 20px;
+
+.hidden {
+  display: none;
 }
 
-.game-board {
+
+
+/*------------------------------------*\
+    #GAME-STYLES
+\*------------------------------------*/
+
+.gm-score-box {
   height: 110px;
   width: 180px;
   margin: 0 auto;
@@ -71,44 +105,33 @@ a:hover {
   letter-spacing: 2px;
 }
 
-/* High scores table container */
-.high-scores {
-  width: 385px;
-  margin: 0 auto;
-}
-
-
-
-/* Game Notification Styles */
-.game-notification {
-  display: none;
+.gm-alert-box {
   position: absolute;
-  width: 505px;
-  height: 83px;
   margin: 50px 0 0;
-  background: rgba(0, 255, 0, .6);
 }
 
-.notify-bad {
-  background: rgba(255, 0, 0, .6);
-}
-
-.game-lives {
+.gm-icon-box {
   position: absolute;
   bottom: 30px;
   padding-left: 10px;
   font-size: 56px;
-  color: rgba(255, 0, 0, .8);
 }
 
-.fa-heart {
+.gm-icon {
   margin-left: -10px;
 }
 
+.fa-heart {
+    color: rgba(255, 0, 0, .8);
+}
 
 
 
-/* Modal Styles */
+
+/*------------------------------------*\
+    #MODAL-STYLES
+\*------------------------------------*/
+
 .modal {
   color: #333;
 }
@@ -145,4 +168,55 @@ a:hover {
 
 .form-box h2 {
   margin: 10px 0 11px;
+}
+
+
+
+/*
+  #TODO: 
+  Factor out of alert-box: display none and background;
+  Factor table styles
+  Factor styles
+  Factor UI Manip to app.js
+  AJAX.js should only be AJAX
+
+
+*/
+
+/*
+General Rules
+
+Your selectors are fundamental to writing good CSS. To very briefly sum up the above sections:
+
+Select what you want explicitly, rather than relying on circumstance or coincidence. Good Selector Intent will rein in the reach and leak of your styles.
+Write selectors for reusability, so that you can work more efficiently and reduce waste and repetition.
+Do not nest selectors unnecessarily, because this will increase specificity and affect where else you can use your styles.
+Do not qualify selectors unnecessarily, as this will impact the number of different elements you can apply styles to.
+Keep selectors as short as possible, in order to keep specificity down and performance up.
+Focussing on these points will keep your selectors a lot more sane and easy to work with on changing and long-running projects.
+*/
+
+/*
+A good naming convention will tell you and your team
+
+what type of thing a class does;
+where a class can be used;
+what (else) a class might be related to.
+*/
+
+
+/**
+ * Text-level errors.
+ */
+.error-text {
+    color: red;
+    font-weight: bold;
+}
+
+/**
+ * Elements that contain errors.
+ */
+.error-box {
+    padding: 10px;
+    border: 1px solid;
 }

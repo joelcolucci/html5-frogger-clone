@@ -247,10 +247,10 @@ var Interface = function() {
     this.$lifeBox = $("#life-box");
     this.$gameNotification = $(".gm-alert-box");
     this.$gamePoints = $("#game-points");
-    this.$scoreForm = $("#form-shell");
+    this.$scoreForm = $(".gm-form-box");
     this.$form = $("#SuperForm");
     this.$scoreInput = $("#score");
-    this.$btnRestart = $("#form-shell .btn-restart");
+    this.$btnRestart = $(".gm-form-box .btn-restart");
 }
 
 Interface.prototype.updateLevel = function(level) {

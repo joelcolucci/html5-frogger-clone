@@ -84,28 +84,38 @@ Instructions</button>
       <div class="col-md-6">
 
 
-        <div id="form-shell" class="hidden">
-          <div class="form-box">
+        <div class="gm-form-box hidden">
+
+          <div class="gm-form-frame">
+
             <h2 class="text-center form-title">Submit your score!</h2>
+
             <form id="SuperForm" method="post">
+
               <div class="form-group">
-                <input type="text" class="form-control" placeholder="Initials" maxlength="3" id="initials" name="initials" required>
+                <input type="text" class="form-control" placeholder="Initials (max length: 3)" maxlength="3" id="initials" name="initials" required>
               </div>
+
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="State or Country" maxlength="20" id="location" name="location" required>
               </div>
+
               <div class="form-group hidden">
                 <input type="number" class="form-control" id="score" name="score">
               </div>
+
               <div class="text-center">
                 <button id="myButton" type="submit" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off">Submit</button>
               </div>
+
             </form>
+
             <div class="text-center">
-              <button type="button" class="btn btn-primary btn-lg hidden btn-restart">Play again?</button>
+              <button type="button" class="btn btn-primary btn-lg btn-restart hidden">Play again?</button>
             </div>
-          </div>
-        </div>
+
+          </div> <!-- End gm-form-frame -->
+        </div> <!-- End gm-form-box  -->
 
 
 
@@ -139,16 +149,16 @@ Instructions</button>
           <h4 class="modal-title">ArcadeGame2000 - Instructions</h4>
         </div>
         <div class="modal-body">
-          <h3>Controls</h3>
+          <h3 class="modal-sub-heading">Controls</h3>
           <ul>
             <li>Move left - left arrow</li>
             <li>Move right - right arrow</li>
             <li>Move up - up arrow</li>
             <li>Move down - down arrow</li>
           </ul>
-          <h3>How to win</h3>
+          <h3 class="modal-sub-heading">How to win</h3>
           <p>Using the controls noted above, move your player across the stone pathways until you get to the river!</p>
-          <h3>Rules</h3>
+          <h3 class="modal-sub-heading">Rules</h3>
           <ul>
             <li>Players receive 3 lives at the start of the game</li>
             <li>Each time a player is hit by a bug, he/she loses a life</li>

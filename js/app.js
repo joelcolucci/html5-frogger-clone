@@ -295,7 +295,7 @@ Game.prototype.reset = function() {
     allEnemies.push(new Enemy());
 
     // Notify user ready to go!
-    this.interface.showNotification("good", "New Game!");
+    this.interface.showAlert("good", "New Game!");
 }
 
 
@@ -334,7 +334,7 @@ var Interface = function() {
 Interface.prototype.updateLevel = function(level) {
     // Prevent notification showing on game reset 
     if (!GAME_OVER) {
-        this.showNotification("good", "WICKED - Level up!");
+        this.showAlert("good", "WICKED - Level up!");
     }
 
     // Update DOM with current level
@@ -352,7 +352,7 @@ Interface.prototype.updateLife = function(numLifes, isBad) {
     // Prevent notification showing on game reset 
     if (!GAME_OVER) {
         if (isBad) {
-            this.showNotification("bad", "Life lost!"); 
+            this.showAlert("bad", "Life lost!"); 
         } 
     }
 
@@ -397,22 +397,27 @@ Interface.prototype.updatePoints = function(newPoints) {
  *     comment that needs to be wrapped to two lines.
  * @return {boolean} Whether something occurred.
  */
-Interface.prototype.showNotification = function(type, msg) {
+Interface.prototype.showAlert = function(type, msg) {
     // Apply appropriate css class
     if (type === "good") {
         this.$alert.removeClass("alert-negative");
+        this.$alert.addClass("alert-positive");
     } else if (type === "bad") {
+        this.$alert.removeClass("alert-positive");
         this.$alert.addClass("alert-negative");
     }
 
     // Construct HTML message
     var htmlMsg = '<h1>' + msg + '</h1>';
 
-    // Add message to DOM
+    // Remove previous message from the Alert
     this.$alert.empty();
+
+    // Add message to DOM
     this.$alert.append(htmlMsg);
 
-    // Diplay notification to user
+    // If game is not over flash the alert to user
+    // else alert stays static on canvas
     this.$alert.fadeIn(100);
     if (!GAME_OVER) {
         this.$alert.fadeOut(1000, "swing");
@@ -429,9 +434,9 @@ Interface.prototype.showNotification = function(type, msg) {
 Interface.prototype.displayForm = function(bool) {
     if (bool) {
         this.$formContainer.removeClass("hidden");
-        return;
+    } else {
+        this.$formContainer.addClass("hidden");
     }
-    this.$formContainer.addClass("hidden");
 }
 
 
@@ -442,7 +447,7 @@ Interface.prototype.displayForm = function(bool) {
  * @return {boolean} Whether something occurred.
  */
 Interface.prototype.endGame = function() {
-    this.showNotification("bad", "GAME OVER");
+    this.showAlert("bad", "GAME OVER");
     this.displayForm(true);
 }
 
@@ -465,7 +470,7 @@ Interface.prototype.reset = function() {
 
     $("#score-form input").attr("disabled", false);
     $("#myButton").attr("disabled", false).text("Submit");
-    
+
     this.$btnRestart.hide();
 }
 

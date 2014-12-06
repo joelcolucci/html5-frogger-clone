@@ -4,30 +4,44 @@
 
 // TODO:
     // Notifications
-        // Handle discrepancy between dom manip and effects
-            // Two flashes on game over, 1 for death, 1 for game over
-            // Both display game over because of DOM manip occurring 
-            // faster than effects
-        // MAIN culprit is the showNotification() method on Interface
-    // FEATURE Extra life if necessary on every 5th level
+        // Note bug but agree with it
+
+
+
+    // Point Scoring
+        // Document in rules
+        // Review for improvement
     // Leader board
-        // Google app engine leader board on data store
-        // SOMEHOW PREVENT BOGUS POSTS??? Salts?
-        // modal form for high score
-        // auto submit on game over
-    // Rolling scoreboard
-        // Numbers should roll into place and not jump!!!
-        // Add var points to game object
-        // add rollPoints method to interface object
-        // SOMEHOW SALT???
+
+    // Back-End
+        // Validate form input
+        // Call back for form errors
     // REFACTOR
     // COMMENT
 
+// BIG FOCUS
+// SEPARATION OF CONCERNS
+// GAME OBJECT CONTROLLER
+
+// INTERFACE WITH TAKES CARE OF MANIPULATING THE DOM
+
+// OBJECT ORIENTATION
+    // TRUE OOP has getters and setters and no direct manipulation of instance variables
+    // See page 82 of Object Oriented Programming by Nicholas Zakas
+    // Methods can be used on the object instance itself but it makes use overall less efficient
+    // because now the object takes up more memory, benefit is private properties
+
+    // THINK ABOUT DEPENDENCIES
+    // READ SOURCEMAKING ON REFACTORING!!!
+
+// Thnk about dependices
+// Think about moving "checkWin" method to Game. Doesn't make sense for control of that to be on Player.
+// the Game object is our master controller
 
 
-
-/***** Game Settings & Constants *****/
-
+/***** 
+ * Game Settings & Constants
+ *****/
 var FINISH_LINE = 83,
     LEFT_WALL = -5,
     RIGHT_WALL = 500,
@@ -41,30 +55,26 @@ var DEFAULT_LIVES = 3,
 var SPEED_MULTIPLIER = 100;
 
 var PLAYER_START_X = 200,
-    PLAYER_START_Y = 380;
-
-var PLAYER_STEP_X = 101,
-    PLAYER_STEP_Y = 83;
-
-var PLAYER_FRAME = {
-    "left offset": 20,
-    "top offset": 100,
-    "sprite width": 82,
-    "sprite height": 170
-}
+    PLAYER_START_Y = 380,
+    PLAYER_STEP_X = 101,
+    PLAYER_STEP_Y = 83,
+    PLAYER_FRAME = {
+        "left offset": 20,
+        "top offset": 100,
+        "sprite width": 82,
+        "sprite height": 170
+    }
 
 var ENEMY_X_STARTS = [-300, -200, -100, -50],
-    ENEMY_Y_STARTS = [60, 140, 225];
-
-var ENEMY_MAX_SPEED = 5,
-    ENEMY_MIN_SPEED = 1;
-
-var ENEMY_FRAME = {
-    "left offset": 3,
-    "top offset": 90,
-    "sprite width": 100,
-    "sprite height": 170 
-}
+    ENEMY_Y_STARTS = [60, 140, 225],
+    ENEMY_MAX_SPEED = 5,
+    ENEMY_MIN_SPEED = 1,
+    ENEMY_FRAME = {
+        "left offset": 3,
+        "top offset": 90,
+        "sprite width": 100,
+        "sprite height": 170 
+    }
 
 var GAME_OVER = false;
 
@@ -87,6 +97,14 @@ function getRandomInt(min, max) {
  * A Game
  * @constructor
  */
+
+/**
+ * Class making something fun and easy.
+ * @param {string} arg1 An argument that makes this more interesting.
+ * @param {Array.<number>} arg2 List of numbers to be processed.
+ * @constructor
+ * @extends {goog.Disposable}
+ */
 var Game = function() {
     this.lives = DEFAULT_LIVES;
     this.level = DEFAULT_LEVEL;
@@ -96,14 +114,30 @@ var Game = function() {
     this.swarm = new Swarm();
 }
 
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Game.prototype.addLevel = function() {
-    // Up the level
     this.level++;
 
-    // Update the DOM
-    this.interface.updateLevel(this.level);
+    this.increaseDifficulty();
 
-    // Increase difficulty
+    this.addPoints();
+
+    this.interface.updateLevel(this.level);
+}
+
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
+Game.prototype.increaseDifficulty = function() {
     switch (this.level) {
         case 1:
         case 2:
@@ -154,9 +188,16 @@ Game.prototype.addLevel = function() {
             // Less slow pokes!!!
             ENEMY_MIN_SPEED++;
     }
+}
 
 
-
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
+Game.prototype.addPoints = function(points) {
     var pointsEarned = 25;
     // Bonus time?
     if (this.level % 4 === 0) {
@@ -168,10 +209,19 @@ Game.prototype.addLevel = function() {
             this.addLife();
         }
     }
-    
-    this.addPoints(pointsEarned);
+
+    this.points += pointsEarned;
+
+    this.interface.updatePoints(pointsEarned);
 }
 
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Game.prototype.subtractLife = function() {
     // Subtract life
     this.lives--;
@@ -185,6 +235,13 @@ Game.prototype.subtractLife = function() {
     }
 }
 
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Game.prototype.addLife = function() {
     // Add life
     this.lives++;
@@ -193,12 +250,14 @@ Game.prototype.addLife = function() {
     this.interface.updateLife(this.lives);
 }
 
-Game.prototype.addPoints = function(points) {
-    this.points += points;
 
-    this.interface.updatePoints(points);
-}
 
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Game.prototype.endGame = function() {
     // Remove all enemies
     allEnemies = [];
@@ -210,6 +269,13 @@ Game.prototype.endGame = function() {
     this.interface.endGame();  
 }
 
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Game.prototype.reset = function() {
     // End sure game over protocol trickles down
     GAME_OVER = true;
@@ -241,6 +307,14 @@ Game.prototype.reset = function() {
  * A Interface
  * @constructor
  */
+
+/**
+ * Class making something fun and easy.
+ * @param {string} arg1 An argument that makes this more interesting.
+ * @param {Array.<number>} arg2 List of numbers to be processed.
+ * @constructor
+ * @extends {goog.Disposable}
+ */
 var Interface = function() {
     // Cache DOM objects
     this.$level = $("#game-level");
@@ -253,6 +327,13 @@ var Interface = function() {
     this.$btnRestart = $(".gm-form-box .btn-restart");
 }
 
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Interface.prototype.updateLevel = function(level) {
     // Prevent notification showing on game reset 
     if (!GAME_OVER) {
@@ -263,6 +344,13 @@ Interface.prototype.updateLevel = function(level) {
     this.$level.text(level);
 }
 
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Interface.prototype.updateLife = function(numLifes, isBad) {
     // Prevent notification showing on game reset 
     if (!GAME_OVER) {
@@ -279,6 +367,13 @@ Interface.prototype.updateLife = function(numLifes, isBad) {
     }   
 }
 
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Interface.prototype.updatePoints = function(newPoints) {
     var points = parseInt(this.$gamePoints.text());
     var target = points + newPoints;
@@ -298,6 +393,13 @@ Interface.prototype.updatePoints = function(newPoints) {
     this.$scoreInput.val(target);
 }
 
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Interface.prototype.showNotification = function(type, msg) {
     // Apply appropriate css class
     if (type === "good") {
@@ -320,6 +422,13 @@ Interface.prototype.showNotification = function(type, msg) {
     }
 }
 
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Interface.prototype.displayForm = function(bool) {
     if (bool) {
         this.$scoreForm.removeClass("hidden");
@@ -328,11 +437,25 @@ Interface.prototype.displayForm = function(bool) {
     this.$scoreForm.addClass("hidden");
 }
 
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Interface.prototype.endGame = function() {
     this.showNotification("bad", "GAME OVER");
     this.displayForm(true);
 }
 
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Interface.prototype.reset = function() {
     // Reset DOM
     this.updateLevel(DEFAULT_LEVEL);
@@ -352,24 +475,61 @@ Interface.prototype.reset = function() {
  * A Sprite
  * @constructor
  */
+
+/**
+ * Class making something fun and easy.
+ * @param {string} arg1 An argument that makes this more interesting.
+ * @param {Array.<number>} arg2 List of numbers to be processed.
+ * @constructor
+ * @extends {goog.Disposable}
+ */
 var Sprite = function() {
     // Enemy and Player prototype chains points here
 }
 
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Sprite.prototype.setCollisionFrame = function(settings) {
     this.left = this.x + settings["left offset"];
     this.right = this.x + settings["sprite width"];
     this.top = this.y + settings["top offset"];
     this.bottom = this.y + settings["sprite height"];   
 }
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Sprite.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
 
+
+
+
+
+
+
+
 /** 
  * An Enemy
  * @constructor
+ */
+
+/**
+ * Class making something fun and easy.
+ * @param {string} arg1 An argument that makes this more interesting.
+ * @param {Array.<number>} arg2 List of numbers to be processed.
+ * @constructor
+ * @extends {goog.Disposable}
  */
 var Enemy = function() {
     this.x = this.getRandomX();
@@ -387,6 +547,13 @@ Enemy.prototype.constructor = Enemy;
 
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Enemy.prototype.update = function(dt) {
     var newX = (this.speed * SPEED_MULTIPLIER * dt) + this.x;
 
@@ -400,12 +567,26 @@ Enemy.prototype.update = function(dt) {
     }
 }
 
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Enemy.prototype.reset = function() {
     this.x = this.getRandomX();
     this.y = this.getRandomY();
     this.speed = this.getRandomSpeed();
 }
 
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Enemy.prototype.getRandomX = function() {
     // Get valid random index for ENEMY_X_STARTS array
     var len = ENEMY_X_STARTS.length;
@@ -414,6 +595,14 @@ Enemy.prototype.getRandomX = function() {
     return ENEMY_X_STARTS[rand];
 }
 
+
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Enemy.prototype.getRandomY = function() {
     // Get valid random index for ENEMY_Y_STARTS array
     var len = ENEMY_Y_STARTS.length;
@@ -422,6 +611,14 @@ Enemy.prototype.getRandomY = function() {
     return ENEMY_Y_STARTS[rand];
 }
 
+
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Enemy.prototype.getRandomSpeed = function() {
     // Get random int within min and max speed constraints
     return getRandomInt(ENEMY_MIN_SPEED, ENEMY_MAX_SPEED);
@@ -433,10 +630,25 @@ Enemy.prototype.getRandomSpeed = function() {
  * A Swarm
  * @constructor
  */
+
+/**
+ * Class making something fun and easy.
+ * @param {string} arg1 An argument that makes this more interesting.
+ * @param {Array.<number>} arg2 List of numbers to be processed.
+ * @constructor
+ * @extends {goog.Disposable}
+ */
 var Swarm = function() {
     // Factory of Swarmees
 
 }
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Swarm.prototype.spawn = function(pattern, speed) {
     // Handler for creation
     var patterns = {
@@ -460,6 +672,14 @@ Swarm.prototype.spawn = function(pattern, speed) {
     allEnemies = [];
     this.createPattern(patterns[pattern]);
 }
+
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Swarm.prototype.createPattern = function(options) {
     for (var i = 0; i < 3; i++) {
         var swarmee = new Swarmee({
@@ -472,9 +692,23 @@ Swarm.prototype.createPattern = function(options) {
     }
 }
 
+
+
+
+
+
+
 /** 
  * A Swarmee
  * @constructor
+ */
+
+ /**
+ * Class making something fun and easy.
+ * @param {string} arg1 An argument that makes this more interesting.
+ * @param {Array.<number>} arg2 List of numbers to be processed.
+ * @constructor
+ * @extends {goog.Disposable}
  */
 var Swarmee = function(options) {
     this.x = options.x;
@@ -488,6 +722,12 @@ var Swarmee = function(options) {
 Swarmee.prototype = Object.create(Enemy.prototype);
 Swarmee.prototype.constructor = Swarmee;
 
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Swarmee.prototype.reset = function() {
     this.x = this.startX;
 }
@@ -497,6 +737,14 @@ Swarmee.prototype.reset = function() {
 /** 
  * A Player
  * @constructor
+ */
+
+/**
+ * Class making something fun and easy.
+ * @param {string} arg1 An argument that makes this more interesting.
+ * @param {Array.<number>} arg2 List of numbers to be processed.
+ * @constructor
+ * @extends {goog.Disposable}
  */
 var Player = function() {
     this.x = PLAYER_START_X;
@@ -511,6 +759,13 @@ Player.prototype = Object.create(Sprite.prototype);
 Player.prototype.constructor = Player;
 
 
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Player.prototype.update = function(axis, step) {
     var collisionDetected = this.checkForCollisions();
 
@@ -538,6 +793,14 @@ Player.prototype.update = function(axis, step) {
     }
 }
 
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
+
 // Conditional Check Source: http://silentmatt.com/rectangle-intersection/
 Player.prototype.checkForCollisions = function() {
     for (var i in allEnemies) {
@@ -554,6 +817,13 @@ Player.prototype.checkForCollisions = function() {
     return false;
 }
 
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Player.prototype.checkWin = function() {
     if (this.top < FINISH_LINE) {
         this.reset();
@@ -561,6 +831,13 @@ Player.prototype.checkWin = function() {
     }
 }
 
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Player.prototype.reset = function() {
     this.x = PLAYER_START_X;
     this.y = PLAYER_START_Y;
@@ -573,7 +850,12 @@ Player.prototype.reset = function() {
 
 
 
-
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Player.prototype.handleInput = function(direction) {
     if (!GAME_OVER) {
         switch (direction) {

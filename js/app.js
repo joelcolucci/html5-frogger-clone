@@ -100,8 +100,6 @@ function getRandomInt(min, max) {
 
 /**
  * Class making something fun and easy.
- * @param {string} arg1 An argument that makes this more interesting.
- * @param {Array.<number>} arg2 List of numbers to be processed.
  * @constructor
  * @extends {goog.Disposable}
  */
@@ -115,7 +113,7 @@ var Game = function() {
 }
 
 /**
- * Operates on an instance of MyClass and returns something.
+ * Operates on an instance of Game and returns something.
  * @param {project.MyClass} obj Instance of MyClass which leads to a long
  *     comment that needs to be wrapped to two lines.
  * @return {boolean} Whether something occurred.
@@ -197,7 +195,7 @@ Game.prototype.increaseDifficulty = function() {
  *     comment that needs to be wrapped to two lines.
  * @return {boolean} Whether something occurred.
  */
-Game.prototype.addPoints = function(points) {
+Game.prototype.addPoints = function() {
     var pointsEarned = 25;
     // Bonus time?
     if (this.level % 4 === 0) {
@@ -222,6 +220,21 @@ Game.prototype.addPoints = function(points) {
  *     comment that needs to be wrapped to two lines.
  * @return {boolean} Whether something occurred.
  */
+Game.prototype.addLife = function() {
+    // Add life
+    this.lives++;
+
+    // Update the Dom
+    this.interface.updateLife(this.lives);
+}
+
+
+/**
+ * Operates on an instance of MyClass and returns something.
+ * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ *     comment that needs to be wrapped to two lines.
+ * @return {boolean} Whether something occurred.
+ */
 Game.prototype.subtractLife = function() {
     // Subtract life
     this.lives--;
@@ -234,22 +247,6 @@ Game.prototype.subtractLife = function() {
         this.endGame();
     }
 }
-
-
-/**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
- */
-Game.prototype.addLife = function() {
-    // Add life
-    this.lives++;
-
-    // Update the Dom
-    this.interface.updateLife(this.lives);
-}
-
 
 
 /**
@@ -303,10 +300,7 @@ Game.prototype.reset = function() {
 
 
 
-/** 
- * A Interface
- * @constructor
- */
+
 
 /**
  * Class making something fun and easy.
@@ -318,11 +312,14 @@ Game.prototype.reset = function() {
 var Interface = function() {
     // Cache DOM objects
     this.$level = $("#game-level");
-    this.$lifeBox = $("#life-box");
-    this.$gameNotification = $(".gm-alert-box");
-    this.$gamePoints = $("#game-points");
-    this.$scoreForm = $(".gm-form-box");
-    this.$form = $("#SuperForm");
+    this.$points = $("#game-points");
+    this.$lifeBox = $("#life-icon-box");
+
+    this.$alert = $(".gm-alert-box");
+
+    this.$formContainer = $(".gm-form-box");
+    this.$form = $("#score-form");
+
     this.$scoreInput = $("#score");
     this.$btnRestart = $(".gm-form-box .btn-restart");
 }
@@ -375,7 +372,7 @@ Interface.prototype.updateLife = function(numLifes, isBad) {
  * @return {boolean} Whether something occurred.
  */
 Interface.prototype.updatePoints = function(newPoints) {
-    var points = parseInt(this.$gamePoints.text());
+    var points = parseInt(this.$points.text());
     var target = points + newPoints;
     var gmPt = document.getElementById("game-points");
     
@@ -389,7 +386,7 @@ Interface.prototype.updatePoints = function(newPoints) {
     // Roll score
     var interval = setInterval(render, 1);
 
-    // Add score to form
+    // Update hidden score form input
     this.$scoreInput.val(target);
 }
 
@@ -403,22 +400,22 @@ Interface.prototype.updatePoints = function(newPoints) {
 Interface.prototype.showNotification = function(type, msg) {
     // Apply appropriate css class
     if (type === "good") {
-        this.$gameNotification.removeClass("alert-negative");
+        this.$alert.removeClass("alert-negative");
     } else if (type === "bad") {
-        this.$gameNotification.addClass("alert-negative");
+        this.$alert.addClass("alert-negative");
     }
 
     // Construct HTML message
     var htmlMsg = '<h1>' + msg + '</h1>';
 
     // Add message to DOM
-    this.$gameNotification.empty();
-    this.$gameNotification.append(htmlMsg);
+    this.$alert.empty();
+    this.$alert.append(htmlMsg);
 
     // Diplay notification to user
-    this.$gameNotification.fadeIn(100);
+    this.$alert.fadeIn(100);
     if (!GAME_OVER) {
-        this.$gameNotification.fadeOut(1000, "swing");
+        this.$alert.fadeOut(1000, "swing");
     }
 }
 
@@ -431,10 +428,10 @@ Interface.prototype.showNotification = function(type, msg) {
  */
 Interface.prototype.displayForm = function(bool) {
     if (bool) {
-        this.$scoreForm.removeClass("hidden");
+        this.$formContainer.removeClass("hidden");
         return;
     }
-    this.$scoreForm.addClass("hidden");
+    this.$formContainer.addClass("hidden");
 }
 
 
@@ -457,16 +454,19 @@ Interface.prototype.endGame = function() {
  * @return {boolean} Whether something occurred.
  */
 Interface.prototype.reset = function() {
-    // Reset DOM
+    // Reset DOM games
     this.updateLevel(DEFAULT_LEVEL);
     this.updateLife(DEFAULT_LIVES);
-    this.displayForm(false);
-    this.$gamePoints.text('0');
-    this.$form.show()
-    $("#SuperForm input").attr("disabled", false);
-    $("#myButton").attr("disabled", false).text("Submit");
-    this.$btnRestart.hide();
 
+    this.displayForm(false);
+
+    this.$points.text('0');
+    this.$form.show();
+
+    $("#score-form input").attr("disabled", false);
+    $("#myButton").attr("disabled", false).text("Submit");
+    
+    this.$btnRestart.hide();
 }
 
 

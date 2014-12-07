@@ -753,7 +753,7 @@ Player.prototype.update = function(axis, step) {
 
     if (axis === "x") {
         var newX = this.x + step;
-        if (newX <= RIGHT_WALL && newX >= LEFT_WALL) {
+        if (newX >= LEFT_WALL && newX <= RIGHT_WALL ) {
             this.x = newX;
             this.setCollisionFrame(PLAYER_FRAME);
         }

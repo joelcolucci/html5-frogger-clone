@@ -641,7 +641,7 @@ Swarm.prototype.spawn = function(pattern, speed) {
         pattern.speed = speed;
     }
     
-    this.createPattern(pattern);
+    this.generateSwarmees(pattern);
 }
 
 
@@ -651,9 +651,11 @@ Swarm.prototype.spawn = function(pattern, speed) {
  *     comment that needs to be wrapped to two lines.
  * @return {boolean} Whether something occurred.
  */
-Swarm.prototype.createPattern = function(options) {
+Swarm.prototype.generateSwarmees = function(options) {
+    // Remove enemies from canvas
     allEnemies = [];
 
+    // Generate swarmees according to pattern
     for (var i = 0; i < 3; i++) {
         var swarmee = new Swarmee({
             x: options.xCoords[i],

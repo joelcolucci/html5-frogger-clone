@@ -1,6 +1,5 @@
-/***** 
- * Game Settings & Constants
- *****/
+/*----------------- Game Settings & Constants -----------------*/
+
 var FINISH_LINE = 83,
     LEFT_WALL = -5,
     RIGHT_WALL = 500,
@@ -39,8 +38,8 @@ var GAME_OVER = false;
 
 
 
-/***** Utilities *****/
 
+/*----------------- Utilities -----------------*/
 // Returns a random integer between min (included) and max (excluded)
 // Using Math.round() will give you a non-uniform distribution!
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
@@ -50,7 +49,7 @@ function getRandomInt(min, max) {
 
 
 
-/***** Classes *****/
+/*----------------- Classes -----------------*/
 
 /** 
  * A Game
@@ -332,10 +331,12 @@ Interface.prototype.updateLife = function(numLifes, isBad) {
 Interface.prototype.updatePoints = function(newPoints) {
     var points = parseInt(this.$points.text());
     var target = points + newPoints;
-    var gmPt = document.getElementById("game-points");
-    
+
+    // Get around 'this' closure scope context issue
+    var tempPointsRef = this.$points;
+
     function render() {
-        gmPt.innerHTML = points;
+        tempPointsRef.text(points);
         if (points >= target) {
             clearInterval(interval);
         }
@@ -843,8 +844,7 @@ Player.prototype.handleInput = function(direction) {
 
 
 
-/***** Game Play *****/
-
+/*----------------- Game Play -----------------*/
 // Instantiate all necessary game objects.
 var game = new Game();
 

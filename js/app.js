@@ -58,9 +58,8 @@ function getRandomInt(min, max) {
  */
 
 /**
- * Class making something fun and easy.
+ * Class (singleton) representing a game
  * @constructor
- * @extends {goog.Disposable}
  */
 var Game = function() {
     this.lives = DEFAULT_LIVES;
@@ -75,7 +74,7 @@ var Game = function() {
  * Operates on an instance of Game and returns something.
  * @param {project.MyClass} obj Instance of MyClass which leads to a long
  *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * @return {undefined} Whether something occurred.
  */
 Game.prototype.addLevel = function() {
     this.level++;
@@ -89,10 +88,10 @@ Game.prototype.addLevel = function() {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
+ * Operates on an instance of Game and returns something.
  * @param {project.MyClass} obj Instance of MyClass which leads to a long
  *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * @return {undefined} Whether something occurred.
  */
 Game.prototype.increaseDifficulty = function() {
     switch (this.level) {
@@ -149,10 +148,10 @@ Game.prototype.increaseDifficulty = function() {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
+ * Operates on an instance of Game and returns something.
  * @param {project.MyClass} obj Instance of MyClass which leads to a long
  *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * @return {undefined} Whether something occurred.
  */
 Game.prototype.addPoints = function() {
     var pointsEarned = 25;
@@ -254,7 +253,7 @@ Game.prototype.reset = function() {
     allEnemies.push(new Enemy());
 
     // Notify user ready to go!
-    this.interface.showAlert("good", "New Game!");
+    this.interface.showAlert("positive", "New Game!");
 }
 
 
@@ -276,9 +275,9 @@ var Interface = function() {
 
     this.$alert = $(".gm-alert-box");
 
+    // Form relate jQuery objects
     this.$formContainer = $(".gm-form-box");
     this.$form = $("#score-form");
-
     this.$scoreInput = $("#score");
     this.$btnRestart = $(".gm-form-box .btn-restart");
 }
@@ -293,7 +292,7 @@ var Interface = function() {
 Interface.prototype.updateLevel = function(level) {
     // Prevent notification showing on game reset 
     if (!GAME_OVER) {
-        this.showAlert("good", "WICKED - Level up!");
+        this.showAlert("positive", "WICKED - Level up!");
     }
 
     // Update DOM with current level
@@ -311,7 +310,7 @@ Interface.prototype.updateLife = function(numLifes, isBad) {
     // Prevent notification showing on game reset 
     if (!GAME_OVER) {
         if (isBad) {
-            this.showAlert("bad", "Life lost!"); 
+            this.showAlert("negative", "Life lost!"); 
         } 
     }
 
@@ -358,10 +357,10 @@ Interface.prototype.updatePoints = function(newPoints) {
  */
 Interface.prototype.showAlert = function(type, msg) {
     // Apply appropriate css class
-    if (type === "good") {
+    if (type === "positive") {
         this.$alert.removeClass("alert-negative");
         this.$alert.addClass("alert-positive");
-    } else if (type === "bad") {
+    } else if (type === "negative") {
         this.$alert.removeClass("alert-positive");
         this.$alert.addClass("alert-negative");
     }
@@ -406,7 +405,7 @@ Interface.prototype.displayForm = function(bool) {
  * @return {boolean} Whether something occurred.
  */
 Interface.prototype.endGame = function() {
-    this.showAlert("bad", "GAME OVER");
+    this.showAlert("negative", "GAME OVER");
     this.displayForm(true);
 }
 
@@ -422,6 +421,7 @@ Interface.prototype.reset = function() {
     this.updateLevel(DEFAULT_LEVEL);
     this.updateLife(DEFAULT_LIVES);
 
+    // Hide submit form
     this.displayForm(false);
 
     this.$points.text('0');

@@ -50,9 +50,9 @@ class JsonHandler(webapp2.RequestHandler):
     location = self.request.get('location')
     score = self.request.get('score')
 
-    # logging.error("value of initials is %s", str(initials))
-    # logging.error("value of location is %s", str(location))
-    # logging.error("value of score is %s", str(score))
+    #logging.error("value of initials is %s", str(initials))
+    #logging.error("value of location is %s", str(location))
+    #logging.error("value of score is %s", str(score))
     
     #TODO: Validate form post
     if score:

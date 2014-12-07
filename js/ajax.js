@@ -23,7 +23,7 @@ $(document).ready(function(){
     $("#form-submit-btn").text("Working...").attr("disabled", true);
     
     // Disable form inputs
-    $("#SuperForm input").attr("disabled", true);
+    $("#score-form input").attr("disabled", true);
   }); // End Form Submit
 
 
@@ -76,7 +76,7 @@ $(document).ready(function(){
   function onSubmitSuccess(data) {
     // Handle data from AJAX Post response
     loadScores(data);
-
+    resetScoreForm();
     // Notifiy user of success
     $(".form-title").text("Score Submitted!")
 
@@ -85,6 +85,18 @@ $(document).ready(function(){
 
     // Show game reset button on form
     $("#form-reset-btn").removeClass("hidden");
+  }
+
+  // Reset form to default state
+  function resetScoreForm() {
+    // Reset submit button text and enable
+    $("#form-submit-btn").text("Submit").attr("disabled", false);
+    
+    // Enable all form inputs
+    $("#score-form input").attr("disabled", false);
+
+    // Clear form inputs
+    $("#score-form")[0].reset();
   }
 
 }); // End document.ready

@@ -418,20 +418,19 @@ Interface.prototype.endGame = function() {
  * @return {boolean} Whether something occurred.
  */
 Interface.prototype.reset = function() {
-    // Reset DOM games
+    // Reset DOM elements to game constants
     this.updateLevel(DEFAULT_LEVEL);
     this.updateLife(DEFAULT_LIVES);
+    this.$points.text(DEFAULT_POINTS);
 
-    // Hide submit form
+    // Hide form container 
     this.displayForm(false);
 
-    this.$points.text('0');
+    // Show form inside hidden container
     this.$form.show();
 
-    $("#score-form input").attr("disabled", false);
-    $("#myButton").attr("disabled", false).text("Submit");
-
-    this.$btnRestart.hide();
+    // Hide form "play again" button
+    $("#form-reset-btn").addClass("hidden");
 }
 
 

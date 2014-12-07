@@ -423,6 +423,9 @@ Interface.prototype.reset = function() {
     this.updateLife(DEFAULT_LIVES);
     this.$points.text(DEFAULT_POINTS);
 
+    // Set Form Title 
+    $(".form-title").text("Submit your score!");
+
     // Hide form container 
     this.displayForm(false);
 

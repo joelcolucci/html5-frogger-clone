@@ -26,7 +26,7 @@ $(document).ready(function(){
     $("#score-form input").attr("disabled", true);
   }); // End Form Submit
 
-
+  // Bind Game reset method to all restart buttons
   $(".btn-restart").on("click", function() {
     game.reset();
   }); // End btn click

@@ -34,6 +34,24 @@ var ENEMY_X_STARTS = [-300, -200, -100, -50],
         "sprite height": 170 
     }
 
+var SWARM_PATTERNS = {
+    pattern1: {
+        xCoords: [-150, -100, -50],
+        yCoords: ENEMY_Y_STARTS,
+        speed: 1
+    },
+    pattern2: {
+        xCoords: [-50, -100, -150],
+        yCoords: ENEMY_Y_STARTS,
+        speed: 1
+    },
+    pattern3: {
+        xCoords: [-125, -50, -125],
+        yCoords: ENEMY_Y_STARTS,
+        speed: 1
+    }
+};
+
 var GAME_OVER = false;
 
 
@@ -617,27 +635,13 @@ var Swarm = function() {
  * @return {boolean} Whether something occurred.
  */
 Swarm.prototype.spawn = function(pattern, speed) {
-    // Handler for creation
-    var patterns = {
-        pattern1: {
-            xCoords: [-150, -100, -50],
-            yCoords: ENEMY_Y_STARTS,
-            speed: speed
-        },
-        pattern2: {
-            xCoords: [-50, -100, -150],
-            yCoords: ENEMY_Y_STARTS,
-            speed: speed
-        },
-        pattern3: {
-            xCoords: [-125, -50, -125],
-            yCoords: ENEMY_Y_STARTS,
-            speed: speed
-        }
-    };
+    var pattern = SWARM_PATTERNS[pattern];
 
-    allEnemies = [];
-    this.createPattern(patterns[pattern]);
+    if (speed) {
+        pattern.speed = speed;
+    }
+    
+    this.createPattern(pattern);
 }
 
 
@@ -648,6 +652,8 @@ Swarm.prototype.spawn = function(pattern, speed) {
  * @return {boolean} Whether something occurred.
  */
 Swarm.prototype.createPattern = function(options) {
+    allEnemies = [];
+
     for (var i = 0; i < 3; i++) {
         var swarmee = new Swarmee({
             x: options.xCoords[i],

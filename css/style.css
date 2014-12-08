@@ -8,7 +8,9 @@ body {
   color: #fff;
 }
 
-
+hr {
+  height: 1px;
+}
 
 
 
@@ -16,8 +18,23 @@ body {
     #HELPER-STYLES
 \*------------------------------------*/
 
+.header {
+  padding: 1px;
+  margin-top: -2px;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  background: url("../images/brushed_metal.jpg") no-repeat right bottom; /*  www.myfreetextures.com  */
+}
+
+.section {
+  padding: 0 10px;
+}
+
 .super-title {
+  margin: 8px 0 12px;
   letter-spacing: 2px;
+  text-shadow: hsla(0,0%,40%,.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px;
+  color: #000;
 }
 
 .sub-title {
@@ -70,11 +87,11 @@ body {
 }
 
 .table-dark tbody {
-  background: rgba(255, 255, 255, .1);
+  background: rgba(0, 0, 0, .05);
 }
 
 .table-dark tbody tr:hover {
-  color: #333;
+  background: rgba(255, 255, 255, .1);
   text-shadow: none;
 }
 
@@ -87,7 +104,13 @@ body {
   display: none;
 }
 
+.hover-low {
+  box-shadow: 0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24); /* lower hover */
+}
 
+.hover-high {
+  box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28); /* high hover */
+}
 
 /*------------------------------------*\
     #GAME-STYLES
@@ -96,12 +119,13 @@ body {
 .gm-score-box {
   height: 110px;
   width: 180px;
-  margin: 0 auto;
+  margin: 0 10px;
   padding: 14px;
-  background: rgba(255, 255, 255, .1);
+  background: rgba(0, 0, 0, .05);
   border: 1px solid #aaa;
   font-size: 52px;
   letter-spacing: 2px;
+  border-radius: 3px;
 }
 
 .gm-alert-box {
@@ -168,13 +192,36 @@ body {
   background: #fff;
   border-radius: 5px;
   color: #333;
-  box-shadow: 0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24); /* lower hover */
-  box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28); /* high hover */
 }
 
 
 
 
+
+/*------------------------------------*\
+    #SPECIAL-STYLES
+\*------------------------------------*/
+
+.metal {
+  font: bold 6em/2em "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;
+  text-align: center;
+  color: hsla(0,0%,20%,1);
+  text-shadow: hsla(0,0%,40%,.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px;
+  
+  background-color: hsl(0,0%,90%);
+}
+.linear {
+  font-size: 4em;
+  height: 80px;
+  background-image: -webkit-repeating-linear-gradient(left, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%, .1) 7.5%),
+    -webkit-repeating-linear-gradient(left, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   4%, hsla(0,0%,  0%,.03) 4.5%),
+    -webkit-repeating-linear-gradient(left, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0,0%,100%,.15) 2.2%),
+    
+    linear-gradient(180deg, hsl(0,0%,78%)  0%, 
+    hsl(0,0%,90%) 47%, 
+    hsl(0,0%,78%) 53%,
+    hsl(0,0%,70%)100%);
+}
 
 /*
   #TODO: 

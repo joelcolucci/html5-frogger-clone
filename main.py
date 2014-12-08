@@ -39,17 +39,18 @@ class JsonHandler(webapp2.RequestHandler):
 
     if not Validator.valid_initals(self.initials):
       have_error = True
-      params['error_initials'] = True
+      params['error_initials'] = "Invalid initials! Max: 3 char"
 
     if not Validator.valid_location(self.location):
       have_error = True
-      params['error_location'] = True
+      params['error_location'] = "Invalid location! Max: 20 char"
     
     if not Validator.valid_score(self.score):
       have_error = True
-      params['error_score'] = True
+      params['error_score'] = "Invalid score!"
 
     if have_error:
+      params['has_error'] = True
       return self.render_json(params)
 
     #Post to datastore

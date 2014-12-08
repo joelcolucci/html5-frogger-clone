@@ -57,7 +57,9 @@ var GAME_OVER = false;
 
 
 
+
 /*----------------- Utilities -----------------*/
+
 // Returns a random integer between min (included) and max (excluded)
 // Using Math.round() will give you a non-uniform distribution!
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
@@ -67,15 +69,12 @@ function getRandomInt(min, max) {
 
 
 
+
+
 /*----------------- Classes -----------------*/
 
-/** 
- * A Game
- * @constructor
- */
-
 /**
- * Class (singleton) representing a game
+ * Game - Controls game functionality
  * @constructor
  */
 var Game = function() {
@@ -456,6 +455,8 @@ Interface.prototype.reset = function() {
 
 
 
+
+
 /** 
  * A Sprite
  * @constructor
@@ -486,6 +487,7 @@ Sprite.prototype.setCollisionFrame = function(settings) {
     this.bottom = this.y + settings["sprite height"];   
 }
 
+
 /**
  * Operates on an instance of MyClass and returns something.
  * @param {project.MyClass} obj Instance of MyClass which leads to a long
@@ -495,10 +497,6 @@ Sprite.prototype.setCollisionFrame = function(settings) {
 Sprite.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
-
-
-
-
 
 
 
@@ -581,7 +579,6 @@ Enemy.prototype.getRandomX = function() {
 }
 
 
-
 /**
  * Operates on an instance of MyClass and returns something.
  * @param {project.MyClass} obj Instance of MyClass which leads to a long
@@ -597,7 +594,6 @@ Enemy.prototype.getRandomY = function() {
 }
 
 
-
 /**
  * Operates on an instance of MyClass and returns something.
  * @param {project.MyClass} obj Instance of MyClass which leads to a long
@@ -608,6 +604,8 @@ Enemy.prototype.getRandomSpeed = function() {
     // Get random int within min and max speed constraints
     return getRandomInt(ENEMY_MIN_SPEED, ENEMY_MAX_SPEED);
 }
+
+
 
 
 
@@ -627,6 +625,7 @@ var Swarm = function() {
     // Factory of Swarmees
 
 }
+
 
 /**
  * Operates on an instance of MyClass and returns something.
@@ -671,8 +670,6 @@ Swarm.prototype.generateSwarmees = function(options) {
 
 
 
-
-
 /** 
  * A Swarmee
  * @constructor
@@ -697,6 +694,7 @@ var Swarmee = function(options) {
 Swarmee.prototype = Object.create(Enemy.prototype);
 Swarmee.prototype.constructor = Swarmee;
 
+
 /**
  * Operates on an instance of MyClass and returns something.
  * @param {project.MyClass} obj Instance of MyClass which leads to a long
@@ -706,6 +704,8 @@ Swarmee.prototype.constructor = Swarmee;
 Swarmee.prototype.reset = function() {
     this.x = this.startX;
 }
+
+
 
 
 
@@ -732,7 +732,6 @@ var Player = function() {
 
 Player.prototype = Object.create(Sprite.prototype);
 Player.prototype.constructor = Player;
-
 
 
 /**
@@ -821,10 +820,6 @@ Player.prototype.reset = function() {
 }
 
 
-
-
-
-
 /**
  * Operates on an instance of MyClass and returns something.
  * @param {project.MyClass} obj Instance of MyClass which leads to a long
@@ -854,13 +849,15 @@ Player.prototype.handleInput = function(direction) {
 
 
 
+
+
 /*----------------- Game Play -----------------*/
+
 // Instantiate all necessary game objects.
 var game = new Game();
-
 var player = new Player();
-
 var allEnemies = [new Enemy()];
+
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.

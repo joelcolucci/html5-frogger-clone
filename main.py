@@ -17,26 +17,7 @@ class MainPage(webapp2.RequestHandler):
     #highscores = HighScore.getTopFive()
     template = jinja_env.get_template('index.html')
     self.response.write(template.render())
-
-  def post(self):
-    #Get the parameters from the request
-    initials = self.request.get('initials')
-    location = self.request.get('location')
-    score = self.request.get('score')
-
-    # logging.error("value of initials is %s", str(initials))
-    # logging.error("value of location is %s", str(location))
-    # logging.error("value of score is %s", str(score))
     
-    #TODO: Validate form post
-    if score:
-      score = int(score)
-
-    #Post to datastore
-    post = HighScore.newScore(initials, location, score)
-    post.put()
-    
-
 
 
 class JsonHandler(webapp2.RequestHandler):
@@ -46,17 +27,30 @@ class JsonHandler(webapp2.RequestHandler):
 
   def post(self):
     #Get the parameters from the request
-    initials = self.request.get('initials')
-    location = self.request.get('location')
-    score = self.request.get('score')
+    self.initials = self.request.get('initials')
+    self.location = self.request.get('location')
+    self.score = self.request.get('score')
 
-    #logging.error("value of initials is %s", str(initials))
-    #logging.error("value of location is %s", str(location))
-    #logging.error("value of score is %s", str(score))
+    params = dict(initials = self.initials,
+            location = self.location,
+            score = self.score)
+
+    have_error = False
+
+    if not Validator.valid_initals(self.initials):
+      have_error = True
+      params['error_initials'] = True
+
+    if not Validator.valid_location(self.location):
+      have_error = True
+      params['error_location'] = True
     
-    #TODO: Validate form post
-    if score:
-      score = int(score)
+    if not Validator.valid_score(self.score):
+      have_error = True
+      params['error_score'] = True
+
+    if have_error:
+      return self.render_json(params)
 
     #Post to datastore
     post = HighScore.newScore(initials, location, score)
@@ -74,6 +68,8 @@ class JsonHandler(webapp2.RequestHandler):
     json_txt = json.dumps(d)
     self.response.headers['Content-Type'] = 'application/json; charset=UTF-8'
     self.response.write(json_txt)
+
+
 
 
 
@@ -106,7 +102,34 @@ class HighScore(db.Model):
     }
     return d
 
+
+
+
+
 ### Utilities ###
+class Validator:
+  """Contains methods to validate form input through use of regex
+  """
+  initals_re = re.compile(r'^[a-zA-Z]{1,3}$')
+  location_re = re.compile(r'^[a-zA-Z]{1,20}$')
+  score_re = re.compile(r'^[0-9]{1,20}$')
+
+  @classmethod
+  def valid_initials(cls, initials):
+    """checks that initials exists and if it matches acceptable regex"""
+    return initials and cls.initials_re.match(initials)
+
+  @classmethod
+  def valid_location(cls, location):
+    """checks that location exists and if it matches acceptable regex"""
+    return location and cls.location_re.match(location)
+
+  @classmethod
+  def valid_score(cls, score):
+    """checks if score exists, if it does, it checks if it matches regex"""
+    return score or cls.score_re.match(score)
+
+
 
 
 

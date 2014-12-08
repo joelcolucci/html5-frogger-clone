@@ -2,7 +2,7 @@ import os
 import webapp2
 import jinja2
 import json
-
+import re
 import logging
 
 from google.appengine.ext import db
@@ -29,7 +29,7 @@ class JsonHandler(webapp2.RequestHandler):
     #Get the parameters from the request
     self.initials = self.request.get('initials')
     self.location = self.request.get('location')
-    self.score = self.request.get('score')
+    self.score = int(self.request.get('score'))
 
     params = dict(initials = self.initials,
             location = self.location,
@@ -37,13 +37,13 @@ class JsonHandler(webapp2.RequestHandler):
 
     have_error = False
 
-    if not Validator.valid_initals(self.initials):
+    if not Validator.valid_initials(self.initials):
       have_error = True
-      params['error_initials'] = "Invalid initials! Max: 3 char"
+      params['error_initials'] = "Invalid initials!"
 
     if not Validator.valid_location(self.location):
       have_error = True
-      params['error_location'] = "Invalid location! Max: 20 char"
+      params['error_location'] = "Invalid location!"
     
     if not Validator.valid_score(self.score):
       have_error = True
@@ -54,7 +54,7 @@ class JsonHandler(webapp2.RequestHandler):
       return self.render_json(params)
 
     #Post to datastore
-    post = HighScore.newScore(initials, location, score)
+    post = HighScore.newScore(self.initials, self.location, self.score)
     post.put()
 
     return self.getHighScoresAsJson()
@@ -111,7 +111,7 @@ class HighScore(db.Model):
 class Validator:
   """Contains methods to validate form input through use of regex
   """
-  initals_re = re.compile(r'^[a-zA-Z]{1,3}$')
+  initials_re = re.compile(r'^[a-zA-Z]{1,3}$')
   location_re = re.compile(r'^[a-zA-Z]{1,20}$')
   score_re = re.compile(r'^[0-9]{1,20}$')
 

@@ -257,11 +257,8 @@ Game.prototype.reset = function() {
 
 
 /**
- * Class making something fun and easy.
- * @param {string} arg1 An argument that makes this more interesting.
- * @param {Array.<number>} arg2 List of numbers to be processed.
+ * Interface - Controls interaction with DOM objects
  * @constructor
- * @extends {goog.Disposable}
  */
 var Interface = function() {
     // Cache DOM objects
@@ -271,48 +268,53 @@ var Interface = function() {
 
     this.$alert = $(".gm-alert-box");
 
-    // Form relate jQuery objects
+    // Form related jQuery objects
     this.$formContainer = $(".gm-form-box");
     this.$form = $("#score-form");
     this.$scoreInput = $("#score");
-    this.$btnRestart = $(".gm-form-box .btn-restart");
+    this.$btnRestart = $("#form-reset-btn");
 }
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Interface
+ * @param {level} int current level player is on
+ * @return {undefined}
  */
 Interface.prototype.updateLevel = function(level) {
     // Prevent notification showing on game reset 
     if (!GAME_OVER) {
+        // Flash alert
         this.showAlert("positive", "WICKED - Level up!");
     }
 
-    // Update DOM with current level
+    // Update DOM scoreboard with current level
     this.$level.text(level);
 }
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Interface
+ * @param {numLifes} int number of lives player should have
+ * @param {isBad} boolean flag to note life was lost rather than gained
+ * @return {undefined}
  */
 Interface.prototype.updateLife = function(numLifes, isBad) {
-    // Prevent notification showing on game reset 
+    // Prevent alert showing on game reset 
     if (!GAME_OVER) {
+        // Alert user only when life is lost
         if (isBad) {
             this.showAlert("negative", "Life lost!"); 
         } 
     }
 
+    // Construct html FontAwesome heart element
     var htmlHeart = '<i class="fa fa-heart fa-fw gm-heart"></i>';
 
+    // Remove all elements from life box
     this.$lifeBox.empty();
+
+    // Add the correct number of hearts to life box
     for (var i = 0; i < numLifes; i++) {
         this.$lifeBox.append(htmlHeart);
     }   
@@ -320,10 +322,9 @@ Interface.prototype.updateLife = function(numLifes, isBad) {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Interface
+ * @param {newPoints} int number of points to add to score 
+ * @return {undefined}
  */
 Interface.prototype.updatePoints = function(newPoints) {
     var points = parseInt(this.$points.text());
@@ -348,10 +349,10 @@ Interface.prototype.updatePoints = function(newPoints) {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Interface
+ * @param {type} string determines style applied
+ * @param {msg} string text shown in alert
+ * @return {undefined}
  */
 Interface.prototype.showAlert = function(type, msg) {
     // Apply appropriate css class
@@ -382,10 +383,9 @@ Interface.prototype.showAlert = function(type, msg) {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Interface
+ * @param {bool} bool flag value if true show form else hide
+ * @return {undefined}
  */
 Interface.prototype.displayForm = function(bool) {
     if (bool) {
@@ -397,15 +397,13 @@ Interface.prototype.displayForm = function(bool) {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Interface
+ * @return {undefined}
  */
 Interface.prototype.endGame = function() {
     this.showAlert("negative", "GAME OVER");
 
-    // Only display submit score if user has actually scored
+    // Only display submit score form if user has actually scored
     var points = parseInt(this.$points.text());
     if (points !== 0) {
         this.displayForm(true);
@@ -414,10 +412,8 @@ Interface.prototype.endGame = function() {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Interface
+ * @return {undefined}
  */
 Interface.prototype.reset = function() {
     // Reset DOM elements to game constants

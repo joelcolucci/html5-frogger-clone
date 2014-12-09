@@ -12,111 +12,82 @@
 <body>
   <div class="container">
     <div class="row">
+
       <div class="col-md-6">
-
-
         <div class="header text-center hover-low">
           <h1 class="super-title inline text-inset">ArcadeGame2000</h1>
           <div class="social-media-box inline">
             <a href="https://github.com/JColuch/Udacity-Nanodegree-FE-Project3-v1" class="social-media-link text-inset" target="_blank"><i class="fa fa-github"></i></a>
           </div>
         </div>
-
-
         <div class="section">
           <h2 class="primary-heading">Scoreboard</h2>
-
           <div class="text-center">
-
             <div class="inline">
               <h3 class="sub-heading text-uppercase">Level</h3>
               <div class="gm-score-box">
                 <span id="game-level">1</span>
               </div>
             </div>
-
             <div class="inline">
               <h3 class="sub-heading text-uppercase">Points</h3>
               <div class="gm-score-box text-right">
                 <span id="game-points">0</span>
               </div>
             </div>
-
           </div>
           <hr>
         </div>
-
-
         <div class="section">
           <h2 class="primary-heading">Top Scores</h2>
-
           <div class="table-box">
             <table id="high-scores-table" class="table table-condensed table-hover table-dark">
               <thead>
-                <th scope="col">Rank</th>
-                <th scope="col">Player</th>
-                <th scope="col">State/Country</th>
-                <th scope="col">Score</th>
+                <tr>
+                  <th scope="col">Rank</th>
+                  <th scope="col">Player</th>
+                  <th scope="col">State/Country</th>
+                  <th scope="col">Score</th>
+                </tr>
               </thead>
               <tbody>
                 <!-- Data will load via AJAX -->
               </tbody>
             </table>
           </div> <!-- End table-box -->
-
         </div>
-
-
         <div class="text-center">
           <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
 Instructions</button>
           <button type="button" class="btn btn-warning btn-lg btn-restart">Restart</button>
         </div>
-
-
       </div> <!-- End col-md-6 -->
 
-
       <div class="col-md-6">
-
-
         <div class="gm-form-box hidden">
-
           <div class="gm-form-frame hover-high">
-
             <h2 class="text-center form-title">Submit your score!</h2>
-
             <form id="score-form" method="post">
-
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="Initials (max length: 3)" maxlength="3" id="initials" name="initials" required>
                 <span id="error-initials" class="error"></span>
               </div>
-
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="State or Country" maxlength="20" id="location" name="location" required>
                 <span id="error-location" class="error"></span>
               </div>
-
               <div class="form-group hidden">
                 <input type="number" class="form-control" id="score" name="score">
               </div>
-
               <div class="text-center">
                 <button id="form-submit-btn" type="submit" data-loading-text="Loading..." class="btn btn-primary" autocomplete="off">Submit</button>
               </div>
-
             </form>
-
             <div class="text-center">
               <button id="form-reset-btn" type="button" class="btn btn-primary btn-restart hidden">Play again?</button>
             </div>
-
           </div> <!-- End gm-form-frame -->
         </div> <!-- End gm-form-box  -->
-
-
-
         <div>
           <div class="alert-box gm-alert-box text-center">
             <!-- Content inserted by app.js -->
@@ -130,14 +101,10 @@ Instructions</button>
             <!-- Canvas inserted by engine.js -->
           </div>
         </div> 
-
       </div> <!-- End col-md-6 -->
-
 
     </div> <!-- End row -->
   </div> <!-- End container -->
-
-
 
   <div id="myModal" class="modal fade">
     <div class="modal-dialog">
@@ -169,8 +136,6 @@ Instructions</button>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
-
-
 
   <script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>

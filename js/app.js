@@ -439,18 +439,9 @@ Interface.prototype.reset = function() {
     this.updateLevel(DEFAULT_LEVEL);
     this.updateLife(DEFAULT_LIVES);
     this.$points.text(DEFAULT_POINTS);
-
-    // Set Form Title 
-    $(".form-title").text("Submit your score!");
-
+    
     // Hide form container 
     this.displayForm(false);
-
-    // Show form inside hidden container
-    this.$form.show();
-
-    // Hide form "play again" button
-    $("#form-reset-btn").addClass("hidden");
 }
 
 

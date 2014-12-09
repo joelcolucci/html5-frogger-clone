@@ -1,39 +1,7 @@
 $(document).ready(function(){
-  // Load highscores on page load
-  fetchHighScores();
-
-  // Event handler for form submissions
-  $("#score-form").submit(function(data) {
-    event.preventDefault();
-
-    var postData = $(this).serializeArray();
-
-    $.ajax({
-      type: "POST",
-      url: "/json",
-      data: postData,
-      success: onSubmitSuccess
-    }).error(function(){
-
-      console.log("eRRoR on submit post");
-    });
-
-    // Notify user that AJAX is working
-    // Disable multiple button to prevent multiple submissions
-    $("#form-submit-btn").text("Working...").attr("disabled", true);
-    
-    // Disable form inputs
-    $("#score-form input").attr("disabled", true);
-  }); // End Form Submit
-
-  // Bind Game reset method to all restart buttons
-  $(".btn-restart").on("click", function() {
-    game.reset();
-  }); // End btn click
-
 
   /**
-   * Load high scores on on page load
+   * Fetch high scores via AJAX
    */
   function fetchHighScores() {
     $.ajax({
@@ -49,7 +17,97 @@ $(document).ready(function(){
     });
   }
 
+
+  /**
+   * Handle AJAX form submit response
+   */
+  function onAjaxSuccess(data) {
+    // check to see if data returned is validation error
+    if (data.hasOwnProperty("has_error")) {
+      handleServerValidation(data);
+      return;
+    }
+    // Handle data from AJAX Post response
+    loadScores(data);
+
+    // Notify users
+    showPlayAgain();
+
+    // Prepare form for next use
+    enableFormInputs();
+    resetFormInputs();
+  }
+
+  /**
+   * Handle server response due to invalid form data
+   */
+  function handleServerValidation(data) {
+    // data.error_initials
+    // add appropriate error messages
+    $("#error-location").text(data.error_location || "");
+    $("#error-initials").text(data.error_initials || "");
+
+    // add values back to input if necessary
+    $("#initials").val(data.initials);
+    $("#location").val(data.location);
+    $("#score").val(data.score);
+
+    // Renable all form controls
+    enableFormInputs();
+  }
+
+  function showPlayAgain() {
+    // Notifiy user of success
+    $(".form-title").text("Score Submitted!")
+
+    // Hide form
+    $("#score-form").slideUp()
+
+    // Show game reset button on form
+    $("#form-reset-btn").removeClass("hidden");
+  }
+
+  // Reset form to default state
+  function enableFormInputs() {
+    // Reset submit button text and enable
+    $("#form-submit-btn").text("Submit").attr("disabled", false);
+    
+    // Enable all form inputs
+    $("#score-form input").attr("disabled", false);
+  }
+
+  function disableFormInputs() {
+    // Reset submit button text and enable
+    $("#form-submit-btn").text("Working...").attr("disabled", true);
+    
+    // Enable all form inputs
+    $("#score-form input").attr("disabled", true);
+  }
+
+  function resetFormInputs() {
+    // Remove any server validation responses
+    $(".error").empty();
+
+    // Clear form inputs
+    $("#score-form")[0].reset();
+  }
+
+  function resetFormDisplay() {
+    // Set Form Title 
+    $(".form-title").text("Submit your score!");
+
+    // Hide form "play again" button
+    $("#form-reset-btn").addClass("hidden");
+
+    // Show form in hidden container
+    $("#score-form").show();
+  }
+
   /* Call Back Functiona */
+
+  /**
+   * Load highscores into DOM
+   */
   function loadScores(data) {
     // Clear table rows
     $("#high-scores-table tbody tr").remove();
@@ -71,33 +129,42 @@ $(document).ready(function(){
 
     // Add to table
     $("#high-scores-table").append(tableContent);
-  }
+  } // End loadScores
 
-  function onSubmitSuccess(data) {
-    // Handle data from AJAX Post response
-    loadScores(data);
-    resetScoreForm();
-    // Notifiy user of success
-    $(".form-title").text("Score Submitted!")
 
-    // Hide form
-    $("#score-form").slideUp()
+  // Event handler for form submissions
+  $("#score-form").submit(function(data) {
+    event.preventDefault();
 
-    // Show game reset button on form
-    $("#form-reset-btn").removeClass("hidden");
-  }
+    var postData = $(this).serializeArray();
 
-  // Reset form to default state
-  function resetScoreForm() {
-    // Reset submit button text and enable
-    $("#form-submit-btn").text("Submit").attr("disabled", false);
+    $.ajax({
+      type: "POST",
+      url: "/json",
+      data: postData,
+      success: onAjaxSuccess
+    }).error(function(){
+
+      console.log("eRRoR on submit post");
+    });
+
+    // Notify user that AJAX is working
+    disableFormInputs();
     
-    // Enable all form inputs
-    $("#score-form input").attr("disabled", false);
+  }); // End Form Submit
 
-    // Clear form inputs
-    $("#score-form")[0].reset();
-  }
+
+  /**
+   * Bind Game reset method to all restart buttons
+   */
+  $(".btn-restart").on("click", function() {
+    resetFormDisplay();
+    game.reset();
+  }); // End btn click
+
+
+  // Load highscores on page load
+  fetchHighScores();
 
 }); // End document.ready
 

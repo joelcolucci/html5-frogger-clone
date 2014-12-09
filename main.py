@@ -29,7 +29,7 @@ class JsonHandler(webapp2.RequestHandler):
     #Get the parameters from the request
     self.initials = self.request.get('initials')
     self.location = self.request.get('location')
-    self.score = int(self.request.get('score'))
+    self.score = self.request.get('score')
 
     params = dict(initials = self.initials,
             location = self.location,
@@ -54,7 +54,7 @@ class JsonHandler(webapp2.RequestHandler):
       return self.render_json(params)
 
     #Post to datastore
-    post = HighScore.newScore(self.initials, self.location, self.score)
+    post = HighScore.newScore(self.initials, self.location, int(self.score))
     post.put()
 
     return self.getHighScoresAsJson()
@@ -128,7 +128,7 @@ class Validator:
   @classmethod
   def valid_score(cls, score):
     """checks if score exists, if it does, it checks if it matches regex"""
-    return score or cls.score_re.match(score)
+    return score and cls.score_re.match(score)
 
 
 

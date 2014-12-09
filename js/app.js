@@ -430,16 +430,8 @@ Interface.prototype.reset = function() {
 
 
 /** 
- * A Sprite
+ * Sprite - Contains standard methods for a game sprite
  * @constructor
- */
-
-/**
- * Class making something fun and easy.
- * @param {string} arg1 An argument that makes this more interesting.
- * @param {Array.<number>} arg2 List of numbers to be processed.
- * @constructor
- * @extends {goog.Disposable}
  */
 var Sprite = function() {
     // Enemy and Player prototype chains points here
@@ -447,10 +439,10 @@ var Sprite = function() {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Sprite
+ * @param {settings} obj contains offset values to assist in creating
+ *      box frame used to detect collisions
+ * @return {undefined}
  */
 Sprite.prototype.setCollisionFrame = function(settings) {
     this.left = this.x + settings["left offset"];
@@ -461,10 +453,8 @@ Sprite.prototype.setCollisionFrame = function(settings) {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Sprite
+ * @return {undefined}
  */
 Sprite.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -474,17 +464,10 @@ Sprite.prototype.render = function() {
 
 
 
-/** 
- * An Enemy
- * @constructor
- */
-
 /**
- * Class making something fun and easy.
- * @param {string} arg1 An argument that makes this more interesting.
- * @param {Array.<number>} arg2 List of numbers to be processed.
+ * Enemy - Bug object that streams across the page
  * @constructor
- * @extends {goog.Disposable}
+ * @extends {Sprite}
  */
 var Enemy = function() {
     this.x = this.getRandomX();
@@ -500,14 +483,10 @@ Enemy.prototype = Object.create(Sprite.prototype);
 Enemy.prototype.constructor = Enemy;
 
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
-
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Enemy - Update the enemy's position
+ * @param {dt} float a time delta between ticks
+ * @return {undefined}
  */
 Enemy.prototype.update = function(dt) {
     var newX = (this.speed * SPEED_MULTIPLIER * dt) + this.x;

@@ -34,7 +34,7 @@ hr {
 }
 
 .sub-title {
-  /* #TODO: */
+  /* NOT USED */
 }
 
 .primary-heading {
@@ -62,6 +62,7 @@ hr {
 .error {
   color: #ff0000;
 }
+
 .alert-box {
   display: none;
   width: 505px;

@@ -7,9 +7,12 @@ Student: Joel Tanguay-Colucci
 
 Welcome to ArcadeGame2000!
 
+Play game: https://www.arcadegame2000.appspot.com
+View github: https://github.com/JColuch/Udacity-Nanodegree-FE-Project3-v1
+
 Goal
   Move character safely across the stone pathway to the river
-  For each succesful cross you will advance to the next level
+  For each succesful cross player will advance to the next level
   Avoid getting hit by crossing bugs
 
 Rules

@@ -567,7 +567,7 @@ Swarm.prototype.spawn = function(pattern, speed) {
 
 
 /**
- * Operates on an instance of Swarm  - generates group of 3 Swarmees
+ * Operates on an instance of Swarm  - Generates group of 3 Swarmees
  * @param {obj} options Object contains the coords and speed for each
  *      Swarmee generated
  */
@@ -593,8 +593,8 @@ Swarm.prototype.generateSwarmees = function(options) {
 
 
  /**
- * Swarmee 
- * @param {obj} options An argument that makes this more interesting.
+ * A Swarmee 
+ * @param {obj} options Contains all settings needed to create Swarmee
  * @constructor
  * @extends {Enemy}
  */
@@ -607,15 +607,13 @@ var Swarmee = function(options) {
 
     this.sprite = 'images/enemy-bug.png';
 }
+
 Swarmee.prototype = Object.create(Enemy.prototype);
 Swarmee.prototype.constructor = Swarmee;
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Swarmee - Resets x coordinate
  */
 Swarmee.prototype.reset = function() {
     this.x = this.startX;

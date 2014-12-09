@@ -19,7 +19,7 @@
           <div class="social-media-box inline">
             <a href="https://github.com/JColuch/Udacity-Nanodegree-FE-Project3-v1" class="social-media-link text-inset" target="_blank"><i class="fa fa-github"></i></a>
           </div>
-        </div>
+        </div> <!-- End section -->
         <div class="section">
           <h2 class="primary-heading">Scoreboard</h2>
           <div class="text-center">
@@ -37,7 +37,7 @@
             </div>
           </div>
           <hr>
-        </div>
+        </div> <!-- End section -->
         <div class="section">
           <h2 class="primary-heading">Top Scores</h2>
           <div class="table-box">
@@ -55,12 +55,12 @@
               </tbody>
             </table>
           </div> <!-- End table-box -->
-        </div>
-        <div class="text-center">
+        </div> <!-- End section -->
+        <div class="section text-center">
           <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
 Instructions</button>
           <button type="button" class="btn btn-warning btn-lg btn-restart">Restart</button>
-        </div>
+        </div> <!-- End section -->
       </div> <!-- End col-md-6 -->
 
       <div class="col-md-6">
@@ -114,6 +114,31 @@ Instructions</button>
           <h4 class="modal-title">ArcadeGame2000 - Instructions</h4>
         </div>
         <div class="modal-body">
+
+          <h3 class="modal-sub-heading">Goal</h3>
+          <ul>
+            <li>Move character safely across the stone pathway to the river</li>
+            <li>For each succesful cross you will advance to the next level</li>
+            <li>Avoid getting hit by crossing bugs</li>
+          </ul>
+
+          <h3 class="modal-sub-heading">Rules</h3>
+          <ul>
+            <li>All players receive 3 lives at the start of the game</li>
+            <li>Each time a player is hit by a bug, he/she loses a life</li>
+            <li>The game will end when a player has no remaining lives</li>
+          </ul>
+
+          <h3 class="modal-sub-heading">Scoring</h3>
+          <ul>
+            <li>Players receive 25 points for every level completed</li>
+            <li>Bonus - Every fourth level:</li>
+              <ul>
+                <li>If player has all three lives, player will recieve 50 bonus points</li>
+                <li>Else, player will receive an additional life</li>
+              </ul>
+          </ul>
+
           <h3 class="modal-sub-heading">Controls</h3>
           <ul>
             <li>Move left - left arrow</li>
@@ -121,14 +146,7 @@ Instructions</button>
             <li>Move up - up arrow</li>
             <li>Move down - down arrow</li>
           </ul>
-          <h3 class="modal-sub-heading">How to win</h3>
-          <p>Using the controls noted above, move your player across the stone pathways until you get to the river!</p>
-          <h3 class="modal-sub-heading">Rules</h3>
-          <ul>
-            <li>Players receive 3 lives at the start of the game</li>
-            <li>Each time a player is hit by a bug, he/she loses a life</li>
-            <li>If a player loses all 3 lifes the game is over</li>
-          </ul>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

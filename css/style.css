@@ -54,6 +54,9 @@ hr {
   color: #000;
 }
 
+.error {
+  color: #ff0000;
+}
 .alert-box {
   display: none;
   width: 505px;

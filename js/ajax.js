@@ -1,5 +1,7 @@
 $(document).ready(function(){
 
+  /*----------------- Functions -----------------*/
+
   /**
    * Fetch high scores via AJAX
    */
@@ -17,6 +19,72 @@ $(document).ready(function(){
     });
   }
 
+  /**
+   * Hide form and provide button to prompt user to play again
+   */
+  function showPlayAgain() {
+    // Notifiy user of success
+    $(".form-title").text("Score Submitted!")
+
+    // Hide form
+    $("#score-form").slideUp()
+
+    // Show game reset button on form
+    $("#form-reset-btn").removeClass("hidden");
+  }
+
+  /**
+   * Enable form inputs and button to allow for future submissions
+   */
+  function enableFormInputs() {
+    // Reset submit button text and enable
+    $("#form-submit-btn").text("Submit").attr("disabled", false);
+    
+    // Enable all form inputs
+    $("#score-form input").attr("disabled", false);
+  }
+
+  /**
+   * Disabled form inputs and button to prevent multiple submissions
+   */
+  function disableFormInputs() {
+    // Reset submit button text and enable
+    $("#form-submit-btn").text("Working...").attr("disabled", true);
+    
+    // Enable all form inputs
+    $("#score-form input").attr("disabled", true);
+  }
+
+  /**
+   * Clear any values from previous form submission
+   */
+  function resetFormInputs() {
+    // Remove any server validation responses
+    $(".error").empty();
+
+    // Clear form inputs
+    $("#score-form")[0].reset();
+  }
+
+  /**
+   * Reset form container to default state
+   */
+  function resetFormDisplay() {
+    // Set form title 
+    $(".form-title").text("Submit your score!");
+
+    // Hide form "play again" button
+    $("#form-reset-btn").addClass("hidden");
+
+    // Show form in hidden container
+    $("#score-form").show();
+  }
+
+
+
+
+
+  /*----------------- Call Back Functions -----------------*/
 
   /**
    * Handle AJAX form submit response
@@ -56,55 +124,6 @@ $(document).ready(function(){
     enableFormInputs();
   }
 
-  function showPlayAgain() {
-    // Notifiy user of success
-    $(".form-title").text("Score Submitted!")
-
-    // Hide form
-    $("#score-form").slideUp()
-
-    // Show game reset button on form
-    $("#form-reset-btn").removeClass("hidden");
-  }
-
-  // Reset form to default state
-  function enableFormInputs() {
-    // Reset submit button text and enable
-    $("#form-submit-btn").text("Submit").attr("disabled", false);
-    
-    // Enable all form inputs
-    $("#score-form input").attr("disabled", false);
-  }
-
-  function disableFormInputs() {
-    // Reset submit button text and enable
-    $("#form-submit-btn").text("Working...").attr("disabled", true);
-    
-    // Enable all form inputs
-    $("#score-form input").attr("disabled", true);
-  }
-
-  function resetFormInputs() {
-    // Remove any server validation responses
-    $(".error").empty();
-
-    // Clear form inputs
-    $("#score-form")[0].reset();
-  }
-
-  function resetFormDisplay() {
-    // Set Form Title 
-    $(".form-title").text("Submit your score!");
-
-    // Hide form "play again" button
-    $("#form-reset-btn").addClass("hidden");
-
-    // Show form in hidden container
-    $("#score-form").show();
-  }
-
-  /* Call Back Functiona */
-
   /**
    * Load highscores into DOM
    */
@@ -132,7 +151,14 @@ $(document).ready(function(){
   } // End loadScores
 
 
-  // Event handler for form submissions
+
+
+
+  /*-----------------  Event Handlers -----------------*/
+
+  /**
+   * Bind Game reset method to all restart buttons
+   */
   $("#score-form").submit(function(data) {
     event.preventDefault();
 
@@ -150,9 +176,7 @@ $(document).ready(function(){
 
     // Notify user that AJAX is working
     disableFormInputs();
-    
   }); // End Form Submit
-
 
   /**
    * Bind Game reset method to all restart buttons
@@ -161,7 +185,6 @@ $(document).ready(function(){
     resetFormDisplay();
     game.reset();
   }); // End btn click
-
 
   // Load highscores on page load
   fetchHighScores();

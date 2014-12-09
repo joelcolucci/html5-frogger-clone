@@ -87,10 +87,7 @@ var Game = function() {
 }
 
 /**
- * Operates on an instance of Game and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {undefined} Whether something occurred.
+ * Operates on an instance of Game
  */
 Game.prototype.addLevel = function() {
     this.level++;
@@ -104,10 +101,7 @@ Game.prototype.addLevel = function() {
 
 
 /**
- * Operates on an instance of Game and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {undefined} Whether something occurred.
+ * Operates on an instance of Game
  */
 Game.prototype.increaseDifficulty = function() {
     switch (this.level) {
@@ -164,20 +158,18 @@ Game.prototype.increaseDifficulty = function() {
 
 
 /**
- * Operates on an instance of Game and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {undefined} Whether something occurred.
+ * Operates on an instance of Game
  */
 Game.prototype.addPoints = function() {
     var pointsEarned = 25;
-    // Bonus time?
+    
+    // Add bonus points or life every fourth level
     if (this.level % 4 === 0) {
         if (this.lives === 3) {
-            // Reward no lives lost
+            // Reward for no lives lost
             pointsEarned += 50;
         } else {
-            // Throw a dog a bone
+            // Help a person out
             this.addLife();
         }
     }
@@ -189,10 +181,7 @@ Game.prototype.addPoints = function() {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Game
  */
 Game.prototype.addLife = function() {
     // Add life
@@ -204,10 +193,7 @@ Game.prototype.addLife = function() {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Game
  */
 Game.prototype.subtractLife = function() {
     // Subtract life
@@ -224,10 +210,7 @@ Game.prototype.subtractLife = function() {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Game
  */
 Game.prototype.endGame = function() {
     // Remove all enemies
@@ -242,13 +225,10 @@ Game.prototype.endGame = function() {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Game
  */
 Game.prototype.reset = function() {
-    // End sure game over protocol trickles down
+    // Ensure game over protocol trickles down
     GAME_OVER = true;
 
     // Reset properties

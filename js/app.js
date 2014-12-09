@@ -278,7 +278,7 @@ var Interface = function() {
 
 /**
  * Operates on an instance of Interface
- * @param {level} int current level player is on
+ * @param {int} level Current level player is on
  */
 Interface.prototype.updateLevel = function(level) {
     // Prevent notification showing on game reset 
@@ -294,8 +294,8 @@ Interface.prototype.updateLevel = function(level) {
 
 /**
  * Operates on an instance of Interface
- * @param {numLifes} int number of lives player should have
- * @param {isBad} boolean flag to note life was lost rather than gained
+ * @param {int} numLifes Number of lives player should have
+ * @param {boolean} isBad Flag to note life was lost rather than gained
  */
 Interface.prototype.updateLife = function(numLifes, isBad) {
     // Prevent alert showing on game reset 
@@ -321,7 +321,7 @@ Interface.prototype.updateLife = function(numLifes, isBad) {
 
 /**
  * Operates on an instance of Interface
- * @param {newPoints} int number of points to add to score 
+ * @param {int} newPoints Number of points to add to score 
  */
 Interface.prototype.updatePoints = function(newPoints) {
     var points = parseInt(this.$points.text());
@@ -347,8 +347,8 @@ Interface.prototype.updatePoints = function(newPoints) {
 
 /**
  * Operates on an instance of Interface
- * @param {type} string determines style applied
- * @param {msg} string text shown in alert
+ * @param {string} type Determines style applied
+ * @param {string} msg Text shown in alert
  */
 Interface.prototype.showAlert = function(type, msg) {
     // Apply appropriate css class
@@ -433,7 +433,7 @@ var Sprite = function() {
 
 /**
  * Operates on an instance of Sprite
- * @param {settings} obj contains offset values to assist in creating
+ * @param {obj} settings Contains offset values to assist in creating
  *      box frame used to detect collisions
  */
 Sprite.prototype.setCollisionFrame = function(settings) {
@@ -476,7 +476,7 @@ Enemy.prototype.constructor = Enemy;
 
 /**
  * Operates on an instance of Enemy - Update the enemy's position
- * @param {dt} float a time delta between ticks
+ * @param {float} dt A time delta between ticks
  */
 Enemy.prototype.update = function(dt) {
     var newX = (this.speed * SPEED_MULTIPLIER * dt) + this.x;
@@ -552,9 +552,8 @@ var Swarm = function() {
 
 /**
  * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * @param {obj} pattern Contains settings to be used to generate Swarmees
+ * @param {int} speed Contains settings to be used to generate Swarmees 
  */
 Swarm.prototype.spawn = function(pattern, speed) {
     var pattern = SWARM_PATTERNS[pattern];
@@ -568,10 +567,9 @@ Swarm.prototype.spawn = function(pattern, speed) {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Swarm  - generates group of 3 Swarmees
+ * @param {obj} options Object contains the coords and speed for each
+ *      Swarmee generated
  */
 Swarm.prototype.generateSwarmees = function(options) {
     // Remove enemies from canvas
@@ -580,6 +578,7 @@ Swarm.prototype.generateSwarmees = function(options) {
     // Generate swarmees according to pattern
     for (var i = 0; i < 3; i++) {
         var swarmee = new Swarmee({
+            // Assign x,y coords via parallel arrays
             x: options.xCoords[i],
             y: options.yCoords[i],
             speed: options.speed
@@ -593,17 +592,11 @@ Swarm.prototype.generateSwarmees = function(options) {
 
 
 
-/** 
- * A Swarmee
- * @constructor
- */
-
  /**
- * Class making something fun and easy.
- * @param {string} arg1 An argument that makes this more interesting.
- * @param {Array.<number>} arg2 List of numbers to be processed.
+ * Swarmee 
+ * @param {obj} options An argument that makes this more interesting.
  * @constructor
- * @extends {goog.Disposable}
+ * @extends {Enemy}
  */
 var Swarmee = function(options) {
     this.x = options.x;

@@ -424,7 +424,12 @@ Interface.prototype.displayForm = function(bool) {
  */
 Interface.prototype.endGame = function() {
     this.showAlert("negative", "GAME OVER");
-    this.displayForm(true);
+
+    // Only display submit score if user has actually scored
+    var points = parseInt(this.$points.text());
+    if (points !== 0) {
+        this.displayForm(true);
+    }
 }
 
 

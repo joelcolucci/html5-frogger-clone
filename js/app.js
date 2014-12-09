@@ -596,7 +596,7 @@ Swarm.prototype.generateSwarmees = function(options) {
  * A Swarmee 
  * @param {obj} options Contains all settings needed to create Swarmee
  * @constructor
- * @extends {Enemy}
+ * @extends {Sprite.Enemy}
  */
 var Swarmee = function(options) {
     this.x = options.x;
@@ -626,14 +626,7 @@ Swarmee.prototype.reset = function() {
 /** 
  * A Player
  * @constructor
- */
-
-/**
- * Class making something fun and easy.
- * @param {string} arg1 An argument that makes this more interesting.
- * @param {Array.<number>} arg2 List of numbers to be processed.
- * @constructor
- * @extends {goog.Disposable}
+ * @extends {Sprite}
  */
 var Player = function() {
     this.x = PLAYER_START_X;
@@ -649,10 +642,9 @@ Player.prototype.constructor = Player;
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Player
+ * @param {string} axis String describing the coordinate axis to update
+ * @param {int} step Number describing the amount to move on axis
  */
 Player.prototype.update = function(axis, step) {
     var collisionDetected = this.checkForCollisions();
@@ -683,13 +675,9 @@ Player.prototype.update = function(axis, step) {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Player
+ * Conditional Source: http://silentmatt.com/rectangle-intersection/
  */
-
-// Conditional Check Source: http://silentmatt.com/rectangle-intersection/
 Player.prototype.checkForCollisions = function() {
     for (var i in allEnemies) {
         var enemy = allEnemies[i];
@@ -698,6 +686,7 @@ Player.prototype.checkForCollisions = function() {
             this.right > enemy.left &&
             this.top < enemy.bottom &&
             this.bottom > enemy.top) {
+            // Collision detected!
             return true;
         }
     }
@@ -707,10 +696,8 @@ Player.prototype.checkForCollisions = function() {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Player - Checks if Player has reached the
+ *      river tiles signalling level completed
  */
 Player.prototype.checkWin = function() {
     if (this.top < FINISH_LINE) {
@@ -721,10 +708,7 @@ Player.prototype.checkWin = function() {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Player - Resets player coords
  */
 Player.prototype.reset = function() {
     this.x = PLAYER_START_X;
@@ -735,10 +719,9 @@ Player.prototype.reset = function() {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
+ * Operates on an instance of Player
+ * @param {string} direction String describing key pressed
  *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
  */
 Player.prototype.handleInput = function(direction) {
     if (!GAME_OVER) {

@@ -12,7 +12,7 @@ $(document).ready(function(){
             url: "/json",
             success: loadScores,
         }).error(function() {
-            var errorMsg = '<tr><td colspan="4">Whoops! Failed to load highscores.</td></tr>';
+            var errorMsg = '<tr><td colspan="4">Failed to load highscores.</td></tr>';
             $("#high-scores-table").append(errorMsg);
         });
     }
@@ -168,7 +168,7 @@ $(document).ready(function(){
             data: postData,
             success: onAjaxSuccess
         }).error(function(){
-            // #TODO
+            alert("Score failed to submit. Please refresh and play again.");
         });
 
         // Notify user that AJAX is working

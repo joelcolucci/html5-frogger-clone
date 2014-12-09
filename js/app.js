@@ -279,7 +279,6 @@ var Interface = function() {
 /**
  * Operates on an instance of Interface
  * @param {level} int current level player is on
- * @return {undefined}
  */
 Interface.prototype.updateLevel = function(level) {
     // Prevent notification showing on game reset 
@@ -297,7 +296,6 @@ Interface.prototype.updateLevel = function(level) {
  * Operates on an instance of Interface
  * @param {numLifes} int number of lives player should have
  * @param {isBad} boolean flag to note life was lost rather than gained
- * @return {undefined}
  */
 Interface.prototype.updateLife = function(numLifes, isBad) {
     // Prevent alert showing on game reset 
@@ -324,7 +322,6 @@ Interface.prototype.updateLife = function(numLifes, isBad) {
 /**
  * Operates on an instance of Interface
  * @param {newPoints} int number of points to add to score 
- * @return {undefined}
  */
 Interface.prototype.updatePoints = function(newPoints) {
     var points = parseInt(this.$points.text());
@@ -352,7 +349,6 @@ Interface.prototype.updatePoints = function(newPoints) {
  * Operates on an instance of Interface
  * @param {type} string determines style applied
  * @param {msg} string text shown in alert
- * @return {undefined}
  */
 Interface.prototype.showAlert = function(type, msg) {
     // Apply appropriate css class
@@ -385,7 +381,6 @@ Interface.prototype.showAlert = function(type, msg) {
 /**
  * Operates on an instance of Interface
  * @param {bool} bool flag value if true show form else hide
- * @return {undefined}
  */
 Interface.prototype.displayForm = function(bool) {
     if (bool) {
@@ -398,7 +393,6 @@ Interface.prototype.displayForm = function(bool) {
 
 /**
  * Operates on an instance of Interface
- * @return {undefined}
  */
 Interface.prototype.endGame = function() {
     this.showAlert("negative", "GAME OVER");
@@ -413,7 +407,6 @@ Interface.prototype.endGame = function() {
 
 /**
  * Operates on an instance of Interface
- * @return {undefined}
  */
 Interface.prototype.reset = function() {
     // Reset DOM elements to game constants
@@ -442,7 +435,6 @@ var Sprite = function() {
  * Operates on an instance of Sprite
  * @param {settings} obj contains offset values to assist in creating
  *      box frame used to detect collisions
- * @return {undefined}
  */
 Sprite.prototype.setCollisionFrame = function(settings) {
     this.left = this.x + settings["left offset"];
@@ -454,7 +446,6 @@ Sprite.prototype.setCollisionFrame = function(settings) {
 
 /**
  * Operates on an instance of Sprite
- * @return {undefined}
  */
 Sprite.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
@@ -486,7 +477,6 @@ Enemy.prototype.constructor = Enemy;
 /**
  * Operates on an instance of Enemy - Update the enemy's position
  * @param {dt} float a time delta between ticks
- * @return {undefined}
  */
 Enemy.prototype.update = function(dt) {
     var newX = (this.speed * SPEED_MULTIPLIER * dt) + this.x;
@@ -503,10 +493,7 @@ Enemy.prototype.update = function(dt) {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Enemy - resets position on canvas
  */
 Enemy.prototype.reset = function() {
     this.x = this.getRandomX();
@@ -516,10 +503,8 @@ Enemy.prototype.reset = function() {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Enemy
+ * @return {int} x coordinate to be used for position on canvas
  */
 Enemy.prototype.getRandomX = function() {
     // Get valid random index for ENEMY_X_STARTS array
@@ -531,10 +516,8 @@ Enemy.prototype.getRandomX = function() {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Enemy
+ * @return {int} y coordinate to be used for position on canvas
  */
 Enemy.prototype.getRandomY = function() {
     // Get valid random index for ENEMY_Y_STARTS array
@@ -546,10 +529,8 @@ Enemy.prototype.getRandomY = function() {
 
 
 /**
- * Operates on an instance of MyClass and returns something.
- * @param {project.MyClass} obj Instance of MyClass which leads to a long
- *     comment that needs to be wrapped to two lines.
- * @return {boolean} Whether something occurred.
+ * Operates on an instance of Enemy
+ * @return {int} returns speed to be used as multiplier
  */
 Enemy.prototype.getRandomSpeed = function() {
     // Get random int within min and max speed constraints
@@ -561,20 +542,11 @@ Enemy.prototype.getRandomSpeed = function() {
 
 
 /** 
- * A Swarm
+ * A Swarm - A factory that produces Swarmees with specific coord patterns
  * @constructor
- */
-
-/**
- * Class making something fun and easy.
- * @param {string} arg1 An argument that makes this more interesting.
- * @param {Array.<number>} arg2 List of numbers to be processed.
- * @constructor
- * @extends {goog.Disposable}
  */
 var Swarm = function() {
-    // Factory of Swarmees
-
+    /* Factory producing Swarmees with specific coord patterns */
 }
 
 

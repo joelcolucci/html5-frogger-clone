@@ -143,7 +143,6 @@ Game.prototype.increaseDifficulty = function() {
             break;
         case 13:
             allEnemies.pop();
-            console.log("level 13");
             break;
         case 15:
             allEnemies.pop();

@@ -3,14 +3,19 @@ Frontend: OOP JavaScript, jQuery, HTML5, CSS
 
 Backend: Google App Engine, Python
 
-###Course Project
+###Nanodegree Project
 School: Udacity
 
 Program: Front-End Web Development Nanodegree
 
-Course: Object oriented JavaScript
+Associated Course(s): Object oriented JavaScript
 
-###Welcome to ArcadeGame2000!
+Files provided: engine.js, resources.js
+
+###Project Description
+Coming soon...
+
+##Welcome to ArcadeGame2000!
 
 Play game: https://www.arcadegame2000.appspot.com
 

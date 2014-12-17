@@ -8,6 +8,8 @@ School: Udacity
 
 Program: Front-End Web Development Nanodegree
 
+Version: 1
+
 Associated Course(s): Object oriented JavaScript
 
 Files provided: engine.js, resources.js

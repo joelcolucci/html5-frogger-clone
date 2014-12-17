@@ -14,7 +14,7 @@ Course: Object oriented JavaScript
 
 Play game: https://www.arcadegame2000.appspot.com
 
-View github: https://github.com/JColuch/Udacity-Nanodegree-FE-Project3-v1
+View github: https://github.com/JColuch/Game-HTML5-FroggerClone
 
 ####Goal
 * Move character safely across the stone pathway to the river

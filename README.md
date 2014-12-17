@@ -1,7 +1,4 @@
 ##HTML5 Game - Frogger Clone
-Frontend: OOP JavaScript, jQuery, HTML5, CSS
-
-Backend: Google App Engine, Python
 
 ###Nanodegree Project
 School: Udacity
@@ -15,7 +12,9 @@ Associated Course(s): Object oriented JavaScript
 Files provided: engine.js, resources.js
 
 ###Project Description
-Coming soon...
+Frontend: OOP JavaScript, jQuery, HTML5, CSS
+
+Backend: Google App Engine, Python
 
 ##Welcome to ArcadeGame2000!
 

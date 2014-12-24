@@ -21,7 +21,7 @@ var PLAYER_START_X = 200,
         "top offset": 100,
         "sprite width": 82,
         "sprite height": 170
-    }
+    };
 
 var ENEMY_X_STARTS = [-300, -200, -100, -50],
     ENEMY_Y_STARTS = [60, 140, 225],
@@ -32,7 +32,7 @@ var ENEMY_X_STARTS = [-300, -200, -100, -50],
         "top offset": 90,
         "sprite width": 100,
         "sprite height": 170 
-    }
+    };
 
 var SWARM_PATTERNS = {
     pattern1: {
@@ -84,7 +84,7 @@ var Game = function() {
 
     this.interface = new Interface();
     this.swarm = new Swarm();
-}
+};
 
 /**
  * Operates on an instance of Game
@@ -97,7 +97,7 @@ Game.prototype.addLevel = function() {
     this.addPoints();
 
     this.interface.updateLevel(this.level);
-}
+};
 
 
 /**
@@ -119,7 +119,7 @@ Game.prototype.increaseDifficulty = function() {
             this.swarm.spawn("pattern2", 3);
             break;
         case 7:
-            this.swarm.spawn("pattern2", 4)
+            this.swarm.spawn("pattern2", 4);
             break;
         case 8:
             this.swarm.spawn("pattern3", 3);
@@ -153,7 +153,7 @@ Game.prototype.increaseDifficulty = function() {
             // Less slow pokes!!!
             ENEMY_MIN_SPEED++;
     }
-}
+};
 
 
 /**
@@ -176,7 +176,7 @@ Game.prototype.addPoints = function() {
     this.points += pointsEarned;
 
     this.interface.updatePoints(pointsEarned);
-}
+};
 
 
 /**
@@ -188,7 +188,7 @@ Game.prototype.addLife = function() {
 
     // Update the Dom
     this.interface.updateLife(this.lives);
-}
+};
 
 
 /**
@@ -205,7 +205,7 @@ Game.prototype.subtractLife = function() {
     if (this.lives === 0) {
         this.endGame();
     }
-}
+};
 
 
 /**
@@ -220,7 +220,7 @@ Game.prototype.endGame = function() {
 
     // Update DOM
     this.interface.endGame();  
-}
+};
 
 
 /**
@@ -249,7 +249,7 @@ Game.prototype.reset = function() {
 
     // Notify user ready to go!
     this.interface.showAlert("positive", "New Game!");
-}
+};
 
 
 
@@ -272,7 +272,7 @@ var Interface = function() {
     this.$form = $("#score-form");
     this.$scoreInput = $("#score");
     this.$btnRestart = $("#form-reset-btn");
-}
+};
 
 
 /**
@@ -288,7 +288,7 @@ Interface.prototype.updateLevel = function(level) {
 
     // Update DOM scoreboard with current level
     this.$level.text(level);
-}
+};
 
 
 /**
@@ -315,7 +315,7 @@ Interface.prototype.updateLife = function(numLifes, isBad) {
     for (var i = 0; i < numLifes; i++) {
         this.$lifeBox.append(htmlHeart);
     }   
-}
+};
 
 
 /**
@@ -341,7 +341,7 @@ Interface.prototype.updatePoints = function(newPoints) {
 
     // Update hidden score form input
     this.$scoreInput.val(target);
-}
+};
 
 
 /**
@@ -374,7 +374,7 @@ Interface.prototype.showAlert = function(type, msg) {
     if (!GAME_OVER) {
         this.$alert.fadeOut(1000, "swing");
     }
-}
+};
 
 
 /**
@@ -387,7 +387,7 @@ Interface.prototype.displayForm = function(bool) {
     } else {
         this.$formContainer.addClass("hidden");
     }
-}
+};
 
 
 /**
@@ -401,7 +401,7 @@ Interface.prototype.endGame = function() {
     if (points !== 0) {
         this.displayForm(true);
     }
-}
+};
 
 
 /**
@@ -415,7 +415,7 @@ Interface.prototype.reset = function() {
     
     // Hide form container 
     this.displayForm(false);
-}
+};
 
 
 
@@ -427,7 +427,7 @@ Interface.prototype.reset = function() {
  */
 var Sprite = function() {
     // Enemy and Player prototype chains points here
-}
+};
 
 
 /**
@@ -440,7 +440,7 @@ Sprite.prototype.setCollisionFrame = function(settings) {
     this.right = this.x + settings["sprite width"];
     this.top = this.y + settings["top offset"];
     this.bottom = this.y + settings["sprite height"];   
-}
+};
 
 
 /**
@@ -448,7 +448,7 @@ Sprite.prototype.setCollisionFrame = function(settings) {
  */
 Sprite.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 
 
@@ -467,7 +467,7 @@ var Enemy = function() {
     this.setCollisionFrame(ENEMY_FRAME);
 
     this.sprite = 'images/enemy-bug.png';
-}
+};
 
 Enemy.prototype = Object.create(Sprite.prototype);
 Enemy.prototype.constructor = Enemy;
@@ -488,7 +488,7 @@ Enemy.prototype.update = function(dt) {
         this.x = newX;   
         this.setCollisionFrame(ENEMY_FRAME);
     }
-}
+};
 
 
 /**
@@ -498,7 +498,7 @@ Enemy.prototype.reset = function() {
     this.x = this.getRandomX();
     this.y = this.getRandomY();
     this.speed = this.getRandomSpeed();
-}
+};
 
 
 /**
@@ -511,7 +511,7 @@ Enemy.prototype.getRandomX = function() {
     var rand = getRandomInt(0, len);
 
     return ENEMY_X_STARTS[rand];
-}
+};
 
 
 /**
@@ -524,7 +524,7 @@ Enemy.prototype.getRandomY = function() {
     var rand = getRandomInt(0, len);
 
     return ENEMY_Y_STARTS[rand];
-}
+};
 
 
 /**
@@ -534,7 +534,7 @@ Enemy.prototype.getRandomY = function() {
 Enemy.prototype.getRandomSpeed = function() {
     // Get random int within min and max speed constraints
     return getRandomInt(ENEMY_MIN_SPEED, ENEMY_MAX_SPEED);
-}
+};
 
 
 
@@ -546,7 +546,7 @@ Enemy.prototype.getRandomSpeed = function() {
  */
 var Swarm = function() {
     /* Factory producing Swarmees with specific coord patterns */
-}
+};
 
 
 /**
@@ -562,7 +562,7 @@ Swarm.prototype.spawn = function(pattern, speed) {
     }
     
     this.generateSwarmees(pattern);
-}
+};
 
 
 /**
@@ -585,7 +585,7 @@ Swarm.prototype.generateSwarmees = function(options) {
 
         allEnemies.push(swarmee);
     }
-}
+};
 
 
 
@@ -605,7 +605,7 @@ var Swarmee = function(options) {
     this.startX = this.x;
 
     this.sprite = 'images/enemy-bug.png';
-}
+};
 
 Swarmee.prototype = Object.create(Enemy.prototype);
 Swarmee.prototype.constructor = Swarmee;
@@ -616,7 +616,7 @@ Swarmee.prototype.constructor = Swarmee;
  */
 Swarmee.prototype.reset = function() {
     this.x = this.startX;
-}
+};
 
 
 
@@ -634,7 +634,7 @@ var Player = function() {
     this.setCollisionFrame(PLAYER_FRAME);
     
     this.sprite = 'images/char-boy.png';
-}
+};
 
 Player.prototype = Object.create(Sprite.prototype);
 Player.prototype.constructor = Player;
@@ -670,7 +670,7 @@ Player.prototype.update = function(axis, step) {
             this.checkWin();
         }
     }
-}
+};
 
 
 /**
@@ -691,7 +691,7 @@ Player.prototype.checkForCollisions = function() {
     }
 
     return false;
-}
+};
 
 
 /**
@@ -703,7 +703,7 @@ Player.prototype.checkWin = function() {
         this.reset();
         game.addLevel();
     }
-}
+};
 
 
 /**
@@ -714,7 +714,7 @@ Player.prototype.reset = function() {
     this.y = PLAYER_START_Y;
 
     this.setCollisionFrame(PLAYER_FRAME);
-}
+};
 
 
 /**
@@ -729,10 +729,10 @@ Player.prototype.handleInput = function(direction) {
                 this.update("x", -PLAYER_STEP_X);
                 break;
             case "right":
-                this.update("x", PLAYER_STEP_X)
+                this.update("x", PLAYER_STEP_X);
                 break;
             case "up":
-                this.update("y", -PLAYER_STEP_Y)
+                this.update("y", -PLAYER_STEP_Y);
                 break;
             case "down":
                 this.update("y", PLAYER_STEP_Y);
@@ -741,7 +741,7 @@ Player.prototype.handleInput = function(direction) {
                 return;
         }
     }
-}
+};
 
 
 

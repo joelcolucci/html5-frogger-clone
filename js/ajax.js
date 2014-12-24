@@ -22,10 +22,10 @@ $(document).ready(function(){
      */
     function showPlayAgain() {
         // Notifiy user of success
-        $(".form-title").text("Score Submitted!")
+        $(".form-title").text("Score Submitted!");
 
         // Hide form
-        $("#score-form").slideUp()
+        $("#score-form").slideUp();
 
         // Show game reset button on form
         $("#form-reset-btn").removeClass("hidden");
@@ -157,7 +157,7 @@ $(document).ready(function(){
     /**
      * Bind Game reset method to all restart buttons
      */
-    $("#score-form").submit(function(data) {
+    $("#score-form").submit(function() {
         event.preventDefault();
 
         var postData = $(this).serializeArray();
@@ -189,4 +189,3 @@ $(document).ready(function(){
     fetchHighScores();
 
 }); // End document.ready
-

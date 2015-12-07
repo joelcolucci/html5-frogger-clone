@@ -1,5 +1,2 @@
-/main.pyc
-/notes.txt
-/todo.txt
-/main.py
-/app.yaml
+*.pyc
+venv/

@@ -1,0 +1,218 @@
+/*------------------------------------*\
+        #GENERAL-STYLES
+\*------------------------------------*/
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    background: #333;
+    box-shadow: inset 0 0 100px rgba(0,0,0,.5);
+    color: #fff;
+}
+
+hr {
+    height: 1px;
+}
+
+
+
+/*------------------------------------*\
+        #HELPER-STYLES
+\*------------------------------------*/
+
+.section {
+    padding: 0 10px;
+}
+
+.super-title {
+    margin: 8px 0 12px;
+    letter-spacing: 2px;
+    color: #000;
+}
+
+.sub-title {
+    /* NOT USED */
+}
+
+.primary-heading {
+    font-size: 24px;
+    color: #f8f8f8;
+}
+
+.sub-heading {
+    margin-top: 5px;
+    color: #fff;
+}
+
+.social-media-box {
+    padding-left: 10px;
+    font-size: 36px;
+}
+
+.social-media-link {
+    color: #000;
+}
+.social-media-link:hover {
+    color: #000;
+}
+
+.error {
+    color: #ff0000;
+}
+
+.alert-box {
+    display: none;
+    width: 505px;
+    height: 83px;
+}
+
+.alert-positive {
+    background: rgba(0, 255, 0, .6);
+}
+
+.alert-negative {
+    background: rgba(255, 0, 0, .6);
+}
+
+.table-box {
+    padding: 0 10%;
+}
+
+.table-dark tbody {
+    background: rgba(0, 0, 0, .05);
+}
+
+.table-dark tbody tr:hover {
+    background: rgba(255, 255, 255, .1);
+    text-shadow: none;
+}
+
+.inline {
+    display: inline-block;
+}
+
+.hidden {
+    display: none;
+}
+
+.hover-low {
+    box-shadow: 0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.24); /* lower hover */
+}
+
+.hover-high {
+    box-shadow: 0 0 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28); /* high hover */
+}
+
+.text-inset {
+    text-shadow: hsla(0,0%,40%,.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px;
+}
+
+
+
+
+
+/*------------------------------------*\
+        #HEADER-STYLES
+\*------------------------------------*/
+
+.header {
+    padding: 1px;
+    margin-top: -2px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    background: #ccc url("../images/brushed_metal.jpg") no-repeat right bottom; /*  www.myfreetextures.com  */
+}
+
+
+
+
+
+/*------------------------------------*\
+        #GAME-STYLES
+\*------------------------------------*/
+
+.gm-score-box {
+    height: 110px;
+    width: 180px;
+    margin: 0 10px;
+    padding: 14px;
+    background: rgba(0, 0, 0, .05);
+    border: 1px solid #aaa;
+    font-size: 52px;
+    letter-spacing: 2px;
+    border-radius: 3px;
+}
+
+.gm-alert-box {
+    position: absolute;
+    margin: 50px 0 0;
+}
+
+.gm-icon-box {
+    position: absolute;
+    bottom: 30px;
+    padding-left: 10px;
+    font-size: 56px;
+}
+
+.gm-heart {
+    margin-left: -10px;
+    color: rgba(255, 0, 0, .8);
+}
+
+
+
+
+
+/*------------------------------------*\
+        #MODAL-STYLES
+\*------------------------------------*/
+
+.modal {
+    color: #333;
+}
+
+.modal-sub-heading {
+    /* #TODO: */
+}
+
+.modal-sub-heading:first-child {
+    margin-top: 0;
+}
+
+
+
+
+
+/*------------------------------------*\
+        #FORM-STYLES
+\*------------------------------------*/
+
+/* Override bootstrap class*/
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-title {
+    margin: 10px 0 11px;
+}
+
+.gm-form-box {
+    position: absolute;
+    width: 505px;
+}
+
+.gm-form-frame {
+    margin: 150px 65px 0;
+    padding: 10px 20px;
+    background: #fff;
+    border-radius: 5px;
+    color: #333;
+}
+
+
+
+
